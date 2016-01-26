@@ -1,0 +1,89 @@
+== README
+
+Used this guide for devise authentication
+http://guides.railsgirls.com/devise/
+
+
+Models:
+
+User-
+id
+firstname 
+Lastname
+email
+password 
+role: (0 = admin, 1 = user)
+
+(1 user to many resources)
+Resources
+id
+name: string
+description: string
+userid: integer
+
+(Many tags to many with resources)
+Tags :
+id
+text: string
+
+(1 resource to many reservations)
+Reservations:
+id
+occupied: integer (userid, -1 = available, -2 = unavailable by admin)
+start time: datetime
+end time: datetime
+recurring: string
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This README would normally document whatever steps are necessary to get the
+application up and running.
+
+Things you may want to cover:
+
+* Ruby version
+
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
+
+
+Please feel free to use a different markup language if you do not plan to run
+<tt>rake doc:app</tt>.

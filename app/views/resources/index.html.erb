@@ -1,0 +1,12 @@
+<h1>Welcome to your home page! </h1>
+
+
+<% @resources.each do |resource| %>
+	<%= resource.name %> |
+	<%= resource.description %>	|
+	<%= link_to 'Edit', edit_resource_path(resource) %> | 
+	<%= link_to 'Delete', resource_path(resource),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %>
+	<br>
+<% end %>
