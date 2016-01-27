@@ -1,5 +1,6 @@
 class ResourcesController < ApplicationController
 	def index
+		current_user.checkadmin
 		@resources = Resource.all
 	end
 	def new 

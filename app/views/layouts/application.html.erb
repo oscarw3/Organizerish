@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Organizerish</title>
+  <title>Hypotheticorp - Organizerish</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -11,6 +11,7 @@
 <!-- Temporary Navbar for devise authentication -->
 <p class="navbar-text pull-right">
 <% if user_signed_in? %>
+  <strong>Hypotheticorp</strong> |
   Logged in as <strong><%= current_user.email %></strong>.
   <%= link_to 'New', new_resource_path %> |
   <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
