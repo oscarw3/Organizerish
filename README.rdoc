@@ -1,11 +1,11 @@
 == README
 Backend TODO list:
-2. Users can edit/delete reservations
 3. Reservations won't overlap
 4. Invisible reservations when resource is created
 5. Add Tags
 6. Admin can create/edit/delete users
 7. Remove Sign Up Option
+8. Set up with Heroku/postgres
 
 
 
