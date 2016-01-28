@@ -1,5 +1,16 @@
-<h1>Reservations</h1>
+<h1>My Reservations</h1>
+<% @reservations.each do |reservation| %>
+	<%= reservation.resource.name %> |
+	<%= reservation.starttime %> |
+	<%= reservation.endtime %> |
+	<%= reservation.recurring %> |
+	<%= link_to 'Edit', edit_reservation_path(reservation) %> | 
+	<%= link_to 'Delete', reservation_path(reservation),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %>
+<% end %>
 
+<h1>Rooms</h1>
 <% @resources.each do |resource| %>
 	<%= resource.name %> |
 	<%= resource.description %>	| 

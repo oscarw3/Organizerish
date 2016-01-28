@@ -1,7 +1,9 @@
 class ReservationsController < ApplicationController
   
   def index
+  	@reservations = Reservation.where(occupied: current_user.id)
   	@resources = Resource.all
+
   end
 
   def new
@@ -12,6 +14,7 @@ class ReservationsController < ApplicationController
   def create
 
 		@reservation = Reservation.new(reservation_params)
+		@reservation.occupied = current_user.id
   		if @reservation.save
   			redirect_to reservations_path
   		else
@@ -24,6 +27,7 @@ class ReservationsController < ApplicationController
 
 	def edit
 		@reservation = Reservation.find(params[:id])
+		@resource = @reservation.resource
 	end
 
 	def update
@@ -37,7 +41,7 @@ class ReservationsController < ApplicationController
 	end
 
 	def destroy
-		@reservation = reservation.find(params[:id])
+		@reservation = Reservation.find(params[:id])
     	@reservation.destroy
  
     	redirect_to reservations_path

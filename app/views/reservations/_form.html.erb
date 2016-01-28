@@ -1,4 +1,5 @@
 <!-- Form for creating reservations -->
+<p><%= @resource.name %></p>
 <%= form_for @reservation do |f| %>
   
   <%= f.hidden_field :resource_id, :value => @resource.id %>
