@@ -1,7 +1,6 @@
 == README
 Backend TODO list:
-1. Finish reservation model
-2. Users can add/edit/delete reservations
+2. Users can edit/delete reservations
 3. Reservations won't overlap
 4. Invisible reservations when resource is created
 5. Add Tags
@@ -43,7 +42,7 @@ id
 occupied: integer (userid, -1 = available, -2 = unavailable by admin)
 start time: datetime
 end time: datetime
-recurring: string
+recurring: integer (enum)
 
 
 

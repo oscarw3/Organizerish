@@ -1,2 +1,10 @@
 <h1>Reservations</h1>
-<p></p>
+
+<% @resources.each do |resource| %>
+	<%= resource.name %> |
+	<%= resource.description %>	| 
+	<%= link_to 'Reserve', new_reservation_path(:resource => resource.id) %> 
+	<br>
+
+
+<% end %>

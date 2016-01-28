@@ -11,13 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160128190732) do
+ActiveRecord::Schema.define(version: 20160128213500) do
 
   create_table "reservations", force: :cascade do |t|
     t.integer  "occupied"
     t.integer  "resource_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.datetime "starttime"
+    t.datetime "endtime"
+    t.integer  "recurring"
   end
 
   add_index "reservations", ["resource_id"], name: "index_reservations_on_resource_id"

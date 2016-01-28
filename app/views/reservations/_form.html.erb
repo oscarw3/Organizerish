@@ -1,0 +1,24 @@
+<!-- Form for creating reservations -->
+<%= form_for @reservation do |f| %>
+  
+  <%= f.hidden_field :resource_id, :value => @resource.id %>
+
+  <p>
+    	<%= f.label :starttime %><br>
+    	<%= f.datetime_select :starttime %>
+  	</p>
+ 
+	<p>
+    	<%= f.label :endtime %><br>
+   		<%= f.datetime_select :endtime %>
+ 	</p>
+
+ 	<p>
+    	<%= f.label :recurring %><br>
+   		<%= f.text_field :recurring %>
+ 	</p>
+ 
+	<p>
+    	<%= f.submit %>
+  	</p>
+<% end %>

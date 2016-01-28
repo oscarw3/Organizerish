@@ -49,7 +49,7 @@ class ResourcesController < ApplicationController
 
 	def checkadmin
 		if !current_user.admin?
-			render 'reservations/index'
+			redirect_to reservations_path
 		end
 	end
 
