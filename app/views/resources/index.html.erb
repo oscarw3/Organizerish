@@ -1,7 +1,7 @@
 <h1>Admin Home</h1>
 <h2>Welcome <%= current_user.firstname %>! </h2>
 
-
+<!-- Currently set up to display all resources -->
 <% @resources.each do |resource| %>
 	<%= resource.name %> |
 	<%= resource.description %>	|
@@ -10,4 +10,6 @@
               method: :delete,
               data: { confirm: 'Are you sure?' } %>
 	<br>
+
+
 <% end %>

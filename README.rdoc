@@ -1,4 +1,15 @@
 == README
+Backend TODO list:
+1. Finish reservation model
+2. Users can add/edit/delete reservations
+3. Reservations won't overlap
+4. Invisible reservations when resource is created
+5. Add Tags
+6. Admin can create/edit/delete users
+7. Remove Sign Up Option
+
+
+
 
 Used this guide for devise authentication
 http://guides.railsgirls.com/devise/

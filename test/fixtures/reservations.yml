@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  occupied: 1
+  resource_id: 
+
+two:
+  occupied: 1
+  resource_id: 

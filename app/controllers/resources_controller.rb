@@ -1,13 +1,15 @@
 class ResourcesController < ApplicationController
 	def index
-		current_user.checkadmin
+		checkadmin
 		@resources = Resource.all
 	end
-	def new 
+	def new
+		checkadmin 
 		@resource = Resource.new
 	end
 
 	def create
+		checkadmin
 		@resource = Resource.new(resource_params)
  		@resource.user_id = current_user.id
   		if @resource.save
@@ -21,10 +23,12 @@ class ResourcesController < ApplicationController
 	end
 
 	def edit
+		checkadmin
 		@resource = Resource.find(params[:id])
 	end
 
 	def update
+		checkadmin
 		@resource = Resource.find(params[:id])
  
     	if @resource.update(resource_params)
@@ -35,10 +39,18 @@ class ResourcesController < ApplicationController
 	end
 
 	def destroy
+		checkadmin
 		@resource = Resource.find(params[:id])
     	@resource.destroy
  
     	redirect_to resources_path
+	end
+
+
+	def checkadmin
+		if !current_user.admin?
+			render 'reservations/index'
+		end
 	end
 
 	private
