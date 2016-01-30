@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
+# Class not currently working
   before_filter :authorize_admin, only: :create
-  
+
   def new
 		checkadmin 
 		@user = User.new
