@@ -1,6 +1,13 @@
 <h1>Admin Home</h1>
 <h2>Welcome <%= current_user.firstname %>! </h2>
 
+<%= link_to 'New User', new_user_path %> <br> <br>
+<% @users.each do |user| %>
+	<%= user.id%> | 
+	<%= user.email %>
+	<br> 
+<% end %>
+<h2> Resources </h2>
 <!-- Currently set up to display all resources -->
 <% @resources.each do |resource| %>
 	<%= resource.name %> |

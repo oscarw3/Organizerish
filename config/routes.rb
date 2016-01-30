@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'users/new'
+
   get 'reservations/index'
 
   devise_for :users
@@ -6,6 +8,8 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
   resources :resources
   resources :reservations
+  resources :users  
+
   root 'resources#index'
   # You can have the root of your site routed with "root"
   

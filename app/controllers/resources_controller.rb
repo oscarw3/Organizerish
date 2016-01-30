@@ -1,8 +1,14 @@
 class ResourcesController < ApplicationController
+
+	
+	# Admin Index
 	def index
 		checkadmin
+		# @users are users without admins
+		@users = User.where(role: 1)
 		@resources = Resource.all
 	end
+
 	def new
 		checkadmin 
 		@resource = Resource.new
@@ -47,11 +53,7 @@ class ResourcesController < ApplicationController
 	end
 
 
-	def checkadmin
-		if !current_user.admin?
-			redirect_to reservations_path
-		end
-	end
+
 
 	private
   	def resource_params
