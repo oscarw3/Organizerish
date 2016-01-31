@@ -15,7 +15,10 @@ class ReservationsController < ApplicationController
 
 		@reservation = Reservation.new(reservation_params)
 		@reservation.occupied = current_user.id
-  		if @reservation.save
+      if @reservation.overlaps?
+        # do something here
+        
+  		elsif @reservation.save
   			redirect_to reservations_path
   		else
   			render 'new'
