@@ -9,6 +9,8 @@ Backend TODO list:
 8. Email Reminders - try sendgrid: https://devcenter.heroku.com/articles/sendgrid#ruby-rails
 
 Frontend TODO list:
+Setting up react: https://www.airpair.com/reactjs/posts/reactjs-a-guide-for-rails-developers
+
 1. Removing tags
 2. Display all tags/ Filter with tags
 3. Display time span
