@@ -2,12 +2,18 @@
 Backend TODO list:
 3. Reservations won't overlap
 4. Invisible reservations when resource is created
-5. Add Tags
-6. Admin can create/edit/delete users
+
+6. Admin can create/edit/delete users- need to do something with users_controller and devise sessions_controller
 7. Remove Sign Up Option
-8. Set up with Heroku/postgres
 
+8. Email Reminders - try sendgrid: https://devcenter.heroku.com/articles/sendgrid#ruby-rails
 
+Frontend TODO list:
+1. Removing tags
+2. Display all tags/ Filter with tags
+3. Display time span
+4. Display resources intuitively 
+5. Basic UI
 
 
 Used this guide for devise authentication
