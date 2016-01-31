@@ -1,6 +1,6 @@
 class ResourcesController < ApplicationController
 
-	
+
 	# Admin Index
 	def index
 		checkadmin
@@ -19,6 +19,7 @@ class ResourcesController < ApplicationController
 		@resource = Resource.new(resource_params)
  		@resource.user_id = current_user.id
   		if @resource.save
+  			@resource.storetags
   			redirect_to resources_path
   		else
   			render 'new'
@@ -31,6 +32,7 @@ class ResourcesController < ApplicationController
 	def edit
 		checkadmin
 		@resource = Resource.find(params[:id])
+		@resource.displaytags
 	end
 
 	def update
@@ -38,6 +40,7 @@ class ResourcesController < ApplicationController
 		@resource = Resource.find(params[:id])
  
     	if @resource.update(resource_params)
+    		@resource.storetags
     		redirect_to resources_path
     	else
     	render 'edit'
@@ -57,6 +60,6 @@ class ResourcesController < ApplicationController
 
 	private
   	def resource_params
-    	params.require(:resource).permit(:name, :description)
+    	params.require(:resource).permit(:name, :description, :temp_tags)
   	end
 end

@@ -16,7 +16,13 @@
 	<%= link_to 'Delete', resource_path(resource),
               method: :delete,
               data: { confirm: 'Are you sure?' } %>
+    <% resource.tags.each do |tag| %>
+    	| <%= tag.text %>
+
+    <% end %>
 	<br>
+
+
 
 
 <% end %>
