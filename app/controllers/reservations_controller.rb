@@ -16,8 +16,8 @@ class ReservationsController < ApplicationController
 		@reservation = Reservation.new(reservation_params)
 		@reservation.occupied = current_user.id
       if @reservation.overlaps?
-        # do something here
-        
+        flash[:notice] = "This reservation overlaps!"
+        redirect_to reservations_path
   		elsif @reservation.save
   			redirect_to reservations_path
   		else

@@ -1,6 +1,6 @@
 == README
 Backend TODO list:
-3. Reservations won't overlap
+3. Recurring reservations
 4. Invisible reservations when resource is created
 
 6. Admin can create/edit/delete users- need to do something with users_controller and devise sessions_controller
