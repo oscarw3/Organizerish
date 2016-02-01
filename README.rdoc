@@ -1,8 +1,5 @@
 == README
 Backend TODO list:
-3. Recurring reservations
-4. Invisible reservations when resource is created
-
 6. Admin can create/edit/delete users- need to do something with users_controller and devise sessions_controller
 7. Remove Sign Up Option
 
@@ -17,6 +14,10 @@ Setting up react: https://www.airpair.com/reactjs/posts/reactjs-a-guide-for-rail
 4. Display resources intuitively 
 5. Basic UI
 
+
+Optional:
+1. Recurring reservations
+2. Invisible reservations
 
 Used this guide for devise authentication
 http://guides.railsgirls.com/devise/
