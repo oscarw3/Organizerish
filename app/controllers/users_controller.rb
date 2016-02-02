@@ -10,9 +10,8 @@ class UsersController < ApplicationController
 	def create
 		checkadmin
 		@user = User.new(user_params)
- 		@user.user_id = current_user.id
   		if @user.save
-  			redirect_to users_path
+  			redirect_to resources_path
   		else
   			render 'new'
   		end
@@ -22,8 +21,8 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-		# checkadmin
-		# @user = User.find(params[:id])
+	# checkadmin
+	# 	@user = User.find(params[:id])
 	end
 
 	def update
@@ -42,7 +41,7 @@ class UsersController < ApplicationController
 		@user = User.find(params[:id])
     	@user.destroy
  
-    	redirect_to users_path
+    	redirect_to resources_path
 	end
 
 

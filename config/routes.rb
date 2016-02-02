@@ -8,8 +8,8 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
   resources :resources
   resources :reservations
-  resources :users  
-
+  resources :users, except: :create
+  post 'create_user' => 'users#create', as: :create_user
   root 'resources#index'
   # You can have the root of your site routed with "root"
   

@@ -1,5 +1,5 @@
 <!-- Form for Admins to create resources -->
-<%= form_for @user do |f| %>
+<%= form_for @user, url: create_user_path do |f| %>
 	<p>
     	<%= f.label :firstname %><br>
     	<%= f.text_field :firstname %>
