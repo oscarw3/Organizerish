@@ -1,7 +1,5 @@
 == README
 Backend TODO list:
-7. Remove Sign Up Option
-
 8. Email Reminders - try sendgrid: https://devcenter.heroku.com/articles/sendgrid#ruby-rails
 
 Frontend TODO list:
