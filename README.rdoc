@@ -1,6 +1,5 @@
 == README
 Backend TODO list:
-6. Admin can create/edit/delete users- need to do something with users_controller and devise sessions_controller
 7. Remove Sign Up Option
 
 8. Email Reminders - try sendgrid: https://devcenter.heroku.com/articles/sendgrid#ruby-rails
