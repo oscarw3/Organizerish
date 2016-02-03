@@ -19,7 +19,7 @@ class ReservationsController < ApplicationController
         flash[:notice] = "This reservation overlaps!"
         redirect_to reservations_path
   		elsif @reservation.save
-        #Delayed::Job.enqueue(ReservationMailer.reservation_started(@reservation).deliver_now, :run_at => @reservation.starttime) 
+        ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation) 
   			redirect_to reservations_path
   		else
   			render 'new'

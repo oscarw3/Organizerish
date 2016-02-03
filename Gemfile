@@ -9,6 +9,8 @@ gem 'rails', '4.2.1'
 gem 'pg'
 #  Figaro for email password
 gem 'figaro'
+# Delayed jobs for doing tasks at a later time
+gem 'delayed_job_active_record'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
