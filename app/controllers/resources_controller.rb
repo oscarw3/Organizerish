@@ -50,10 +50,11 @@ class ResourcesController < ApplicationController
 	def destroy
 		checkadmin
 		@resource = Resource.find(params[:id])
+		@resource.delete_reservations
     	@resource.destroy
- 
     	redirect_to resources_path
 	end
+
 
 
 

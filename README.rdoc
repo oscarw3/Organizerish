@@ -21,6 +21,10 @@ Optional:
 Used this guide for devise authentication
 http://guides.railsgirls.com/devise/
 
+gmail:
+see application.yml
+username: organizerish@gmail.com
+password: organizerish123
 
 Models:
 

@@ -6,10 +6,11 @@
   <body>
     <p>Hi <%= @user.firstname %>,</p>
     <p>
-      The resource for your reservation has been deleted :(.
+      The resource <%= @reservation.resource.name %> was deleted. As a result, your reservation from <%= @reservation.starttime %> to <%= @reservation.endtime %> was also deleted. Please log on to the website to make a new reservation. 
     </p>
     <p>
     - Organizerish
     </p>
+    <h3>Hypotheticorp </h3>
   </body>
 </html>

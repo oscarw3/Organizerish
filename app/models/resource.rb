@@ -41,5 +41,11 @@ class Resource < ActiveRecord::Base
   	self.temp_tags = tagarray.join
   end
 
+  def delete_reservations
+    self.reservations.each do |reservation|
+      ReservationMailer.resource_deleted(reservation).deliver_now
+      reservation.destroy
+    end
+  end
   
 end
