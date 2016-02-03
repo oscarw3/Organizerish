@@ -11,6 +11,7 @@ class ReservationMailer < ApplicationMailer
   	 	@reservation = reservation
   	 	@user = User.find(@reservation.occupied)
   	 	mail(to: @user.email, subject: 'The resource was deleted :(')
+
   	end
 
 
