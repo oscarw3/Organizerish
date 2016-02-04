@@ -12,6 +12,8 @@ Setting up react: https://www.airpair.com/reactjs/posts/reactjs-a-guide-for-rail
 
 'Bugs':
 1. Email time won't update when the time of the reservation is updated
+2. Add security so only current_user or admin can edit the reservation 
+
 Optional:
 1. Recurring reservations
 2. Invisible reservations
