@@ -10,7 +10,8 @@ Setting up react: https://www.airpair.com/reactjs/posts/reactjs-a-guide-for-rail
 4. Display resources intuitively 
 5. Basic UI
 
-
+'Bugs':
+1. Email time won't update when the time of the reservation is updated
 Optional:
 1. Recurring reservations
 2. Invisible reservations

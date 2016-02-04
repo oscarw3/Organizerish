@@ -1,5 +1,6 @@
 <h1>My Reservations</h1>
 <% @reservations.each do |reservation| %>
+	<%= User.find(reservation.occupied).firstname %> |
 	<%= reservation.resource.name %> |
 	<%= reservation.starttime %> |
 	<%= reservation.endtime %> |
@@ -8,6 +9,7 @@
 	<%= link_to 'Delete', reservation_path(reservation),
               method: :delete,
               data: { confirm: 'Are you sure?' } %>
+    <br>
 <% end %>
 
 <h1>Rooms</h1>

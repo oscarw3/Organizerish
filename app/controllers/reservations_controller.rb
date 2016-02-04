@@ -1,7 +1,11 @@
 class ReservationsController < ApplicationController
   
   def index
-  	@reservations = Reservation.where(occupied: current_user.id)
+    if current_user.admin?
+      @reservations = Reservation.all 
+    else
+      @reservations = Reservation.where(occupied: current_user.id)
+    end
   	@resources = Resource.all
 
   end
@@ -36,8 +40,10 @@ class ReservationsController < ApplicationController
 
 	def update
 		@reservation = Reservation.find(params[:id])
- 
-    	if @reservation.update(reservation_params)
+      if @reservation.overlaps?
+        flash[:notice] = "This reservation overlaps!"
+        redirect_to reservations_path
+    	elsif @reservation.update(reservation_params)
     		redirect_to reservations_path
     	else
     	render 'edit'
