@@ -1,5 +1,5 @@
 <h1>My Reservations</h1>
-<% @reservations.each do |reservation| %>
+<% @myreservations.each do |reservation| %>
 	<%= User.find(reservation.occupied).firstname %> |
 	<%= reservation.resource.name %> |
 	<%= reservation.starttime %> |
@@ -9,6 +9,22 @@
 	<%= link_to 'Delete', reservation_path(reservation),
               method: :delete,
               data: { confirm: 'Are you sure?' } %>
+    <br>
+<% end %>
+
+<h1>All Reservations</h1>
+<% @allreservations.each do |reservation| %>
+	<%= User.find(reservation.occupied).firstname %> |
+	<%= reservation.resource.name %> |
+	<%= reservation.starttime %> |
+	<%= reservation.endtime %> |
+	<%= reservation.recurring %> |
+	<% if current_user.admin? %>
+		<%= link_to 'Edit', edit_reservation_path(reservation) %> | 
+		<%= link_to 'Delete', reservation_path(reservation),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %>
+    <% end %>
     <br>
 <% end %>
 
