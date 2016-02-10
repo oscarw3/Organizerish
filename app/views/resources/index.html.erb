@@ -21,7 +21,7 @@
               method: :delete,
               data: { confirm: 'Are you sure?' } %>
     <% resource.tags.each do |tag| %>
-    	| <%= tag.text %>
+    	| <%= link_to tag.text, resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH %>
 
     <% end %>
 	<br>

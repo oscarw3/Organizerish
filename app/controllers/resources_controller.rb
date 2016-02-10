@@ -55,7 +55,13 @@ class ResourcesController < ApplicationController
     	redirect_to resources_path
 	end
 
-
+	def removetag
+		checkadmin
+		tag = Tag.find(params[:tag])
+		resource = Resource.find(params[:resource])
+		resource.tags.delete(tag)
+		redirect_to resources_path
+	end
 
 
 

@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   resources :users, except: :create
   post 'create_user' => 'users#create', as: :create_user
   root 'resources#index'
+
+  patch '/resources/tags/:resource/:tag', to: 'resources#removetag', as: 'resource_remove_tags'
   # You can have the root of your site routed with "root"
   
 
