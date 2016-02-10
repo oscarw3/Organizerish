@@ -1,12 +1,25 @@
 class ReservationsController < ApplicationController
-  
+  include ReservationsHelper
+
   def index
+
     if current_user.admin?
       @reservations = Reservation.all 
     else
       @reservations = Reservation.where(occupied: current_user.id)
     end
-  	@resources = Resource.all
+    
+    if params[:tag] != nil && params[:tags] != nil
+      @tagstring = params[:tags] + '%' + params[:tag]
+    elsif params[:tag] != nil && params[:tags] == nil
+      @tagstring = params[:tag]
+    else
+      @tagstring = ''
+    end
+  
+  	@resources = getresources(@tagstring)
+    @tags = Tag.all
+
 
   end
 

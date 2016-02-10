@@ -12,10 +12,21 @@
     <br>
 <% end %>
 
-<h1>Rooms</h1>
+<h1>Resources</h1>
+<h3>Sort by tags</h3>
+<% @tags.each do |tag| %>
+
+		<%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring}) %> |
+	 
+<% end %>
+<br> 
+<br>
 <% @resources.each do |resource| %>
 	<%= resource.name %> |
-	<%= resource.description %>	| 
+	<%= resource.description %>	|
+	<% resource.tags.each do |tag| %> 
+		<%= tag.text %> |
+	<% end %> 
 	<%= link_to 'Reserve', new_reservation_path(:resource => resource.id) %> 
 	<br>
 
