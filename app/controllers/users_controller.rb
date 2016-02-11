@@ -40,7 +40,9 @@ class UsersController < ApplicationController
 		checkadmin
 		@user = User.find(params[:id])
     	@user.destroy
- 
+ 		Reservation.where(:occupied => @user.id).each do |reservation|
+ 			reservation.destroy
+ 		end
     	redirect_to resources_path
 	end
 

@@ -12,9 +12,8 @@ Setting up react: https://www.airpair.com/reactjs/posts/reactjs-a-guide-for-rail
 
 'Bugs':
 1. Email time won't update when the time of the reservation is updated
-2. Add security so only current_user or admin can edit the reservation (link not present, but hacker could type it into the url to access the page)
+2. Add security so only the ones with reservation permission or admin or current_user can edit the reservation (link not present, but hacker could type it into the url to access the page)
 3. tag filtering is buggy, if two filters displays overlapping objects twice
-4. When you delete a user, all of his reservations are deleted too
 
 Cool things to do later on:
 1. Recurring reservations
