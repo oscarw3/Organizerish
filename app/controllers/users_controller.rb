@@ -21,19 +21,19 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-	# checkadmin
-	# 	@user = User.find(params[:id])
+		checkadmin
+		@user = User.find(params[:id])
 	end
 
 	def update
-		# checkadmin
-		# @user = User.find(params[:id])
+		checkadmin
+		@user = User.find(params[:id])
  
-  #   	if @user.update(user_params)
-  #   		redirect_to users_path
-  #   	else
-  #   	render 'edit'
-  #   	end
+    	if @user.update(user_params)
+    		redirect_to resources_path
+    	else
+    	render 'edit'
+    	end
 	end
 
 	def destroy
