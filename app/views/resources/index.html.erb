@@ -1,6 +1,5 @@
 <h1>Admin Home</h1>
 <h2>Welcome <%= current_user.firstname %>! </h2>
-
 <%= link_to 'New User', new_user_path %> <br> <br>
 <% @users.each do |user| %>
 	<%= user.id%> | 
@@ -24,6 +23,7 @@
     	| <%= link_to tag.text, resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH %>
 
     <% end %>
+    
 	<br>
 
 

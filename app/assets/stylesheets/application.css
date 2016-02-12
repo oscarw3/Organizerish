@@ -13,3 +13,35 @@
  *= require_tree .
  *= require_self
  */
+
+body {
+    font-family: Merriweather,'Helvetica Neue',Arial,sans-serif;
+    background-color: #ccffff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+
+}
+
+p {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    font-size: 16px;
+
+
+}
+
+.navbar-default {
+    border-color: #ff0066;
+    font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+    background-color: #ccffff;
+	text-transform: uppercase;
+    font-weight: 700;
+  
+}

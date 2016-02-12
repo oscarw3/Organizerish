@@ -9,7 +9,7 @@
 <body>
 
 <!-- Temporary Navbar for devise authentication -->
-<p class="navbar-text pull-right">
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
 <% if user_signed_in? %>
   <% if current_user.admin? %>
     <strong><%= link_to 'Hypotheticorp', resources_path %></strong>
@@ -27,7 +27,9 @@
   
   <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
 <% end %>
-
+</nav>
+<br> 
+<br>
 <!-- Notification for devise authentication-->
 <% if notice %>
   <p class="alert alert-success"><%= notice %></p>
@@ -35,7 +37,7 @@
 <% if alert %>
   <p class="alert alert-danger"><%= alert %></p>
 <% end %>
-
+<br>
 <%= yield %>
 
 </body>
