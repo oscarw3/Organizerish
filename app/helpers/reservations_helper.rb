@@ -11,7 +11,7 @@ module ReservationsHelper
       				@resources = @resources + newresources
       			end
       		end
-   			return @resources
+   			return @resources.uniq
       	else
       		return Resource.all
       	end
