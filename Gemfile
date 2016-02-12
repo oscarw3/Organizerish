@@ -5,6 +5,13 @@ source 'http://rubygems.org'
 gem 'rails', '4.2.1'
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
+# Bootstrap for css formatting
+gem "twitter-bootstrap-rails"
+# autoformatting for bootstrap
+gem 'autoprefixer-rails'
+# Also for bootstrap
+gem "therubyracer"
+gem "less-rails"
 # Changed database to postgres
 gem 'pg'
 #  Figaro for email password
