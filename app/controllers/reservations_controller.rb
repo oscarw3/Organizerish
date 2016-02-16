@@ -13,8 +13,10 @@ class ReservationsController < ApplicationController
       @tagstring = ''
     end
   
-  	@resources = getresources(@tagstring)
-    @tags = Tag.all
+  	@resources, @tags_selected = getresources(@tagstring)
+    @tags_left = removeselectedtags(@tags_selected)
+
+    
 
 
   end

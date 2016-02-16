@@ -29,8 +29,14 @@
 <% end %>
 
 <h1>Resources</h1>
-<h3>Sort by tags</h3>
-<% @tags.each do |tag| %>
+<h3>Selected Tags</h3>
+<% @tags_selected.each do |tag| %>
+		<%= tag.text %> |
+<% end %>
+<br>
+<hr>
+<h3>Other Tags</h3>
+<% @tags_left.each do |tag| %>
 
 		<%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring}) %> |
 	 
