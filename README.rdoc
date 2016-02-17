@@ -7,8 +7,9 @@ Backend TODO list:
 Frontend TODO list:
 Setting up react: https://www.airpair.com/reactjs/posts/reactjs-a-guide-for-rails-developers
 
-1. Add filtering for displaying reservations for timespan
-2. Display things more intuitively
+1. Have Calendar display my reservations and all reservations and have the user able to edit his reservations
+2. Have Drag and Drop for Tags
+3. Be able to delete tags
 
 'Bugs':
 1. Email time won't update when the time of the reservation is updated
@@ -34,7 +35,8 @@ firstname
 Lastname
 email
 password 
-role: (0 = admin, 1 = user)
+role: (0 = admin = , 1 = user)
+
 
 (1 user to many resources)
 Resources
@@ -55,4 +57,18 @@ occupied: integer (userid, -1 = available, -2 = unavailable by admin)
 start time: datetime
 end time: datetime
 recurring: integer (enum)
+
+Groups
+(1 group to many users)
+name: string
+resourcemanagement: (0= no access, 1= yes access)
+reservationmanagement: (0= no access, 1= yes access)
+usermanagement: (0= no access, 1= yes access)
+
+
+Permission 
+(1 Resource to many permissions)
+(1 Group to many permissions)
+viewaccess: (0= no access, 1= yes access)
+reserveaccess: (0= no access, 1= yes access)
 

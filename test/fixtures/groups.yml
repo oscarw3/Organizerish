@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  resourcemanagement: 1
+  reservationmanagement: 1
+  usermanagement: 1
+
+two:
+  name: MyString
+  resourcemanagement: 1
+  reservationmanagement: 1
+  usermanagement: 1
