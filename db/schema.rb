@@ -11,10 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217185157) do
+ActiveRecord::Schema.define(version: 20160217190419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "Groups_Users", id: false, force: :cascade do |t|
+    t.integer "group_id", null: false
+    t.integer "user_id",  null: false
+  end
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -40,6 +45,18 @@ ActiveRecord::Schema.define(version: 20160217185157) do
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
   end
+
+  create_table "permissions", force: :cascade do |t|
+    t.integer  "viewaccess"
+    t.integer  "reserveaccess"
+    t.integer  "resource_id"
+    t.integer  "group_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "permissions", ["group_id"], name: "index_permissions_on_group_id", using: :btree
+  add_index "permissions", ["resource_id"], name: "index_permissions_on_resource_id", using: :btree
 
   create_table "reservations", force: :cascade do |t|
     t.integer  "occupied"
@@ -90,14 +107,13 @@ ActiveRecord::Schema.define(version: 20160217185157) do
     t.string   "firstname"
     t.string   "lastname"
     t.integer  "role",                   default: 1
-    t.integer  "group_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["group_id"], name: "index_users_on_group_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "permissions", "groups"
+  add_foreign_key "permissions", "resources"
   add_foreign_key "reservations", "resources"
   add_foreign_key "resources", "users"
-  add_foreign_key "users", "groups"
 end

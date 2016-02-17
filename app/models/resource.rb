@@ -2,6 +2,7 @@ class Resource < ActiveRecord::Base
   belongs_to :user
   has_and_belongs_to_many :tags
   has_many :reservations
+  has_many :permissions
 
   attr_accessor :temp_tags
 

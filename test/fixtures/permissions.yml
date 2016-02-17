@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  viewaccess: 1
+  reserveaccess: 1
+  resource_id: 
+  group_id: 
+
+two:
+  viewaccess: 1
+  reserveaccess: 1
+  resource_id: 
+  group_id: 
