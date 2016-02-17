@@ -1,0 +1,26 @@
+<%= form_for @group do |f| %>
+	<p>
+    	<%= f.label :name %><br>
+    	<%= f.text_field :name %>
+  	</p>
+ 
+	<p>
+    	<%= f.label :resourcemanagement %><br>
+   		<%= f.text_area :resourcemanagement %>
+ 	</p>
+
+	<p>
+    	<%= f.label :reservationmanagement %><br>
+   		<%= f.text_area :reservationmanagement %>
+ 	</p>
+
+ 		<p>
+    	<%= f.label :usermanagement %><br>
+   		<%= f.text_area :usermanagement %>
+ 	</p>
+
+	<p>
+    	<%= f.submit %>
+
+  </p>
+<% end %>

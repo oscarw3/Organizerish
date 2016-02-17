@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  
+
   get 'users/new'
 
   get 'reservations/index'
@@ -8,6 +10,7 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   resources :resources
+  resources :groups
   resources :reservations
   resources :users, except: :create
   post 'create_user' => 'users#create', as: :create_user
