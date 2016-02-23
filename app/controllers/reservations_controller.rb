@@ -46,11 +46,17 @@ class ReservationsController < ApplicationController
 
 	def edit
 		@reservation = Reservation.find(params[:id])
+    if @reservation.occupied != current_user.id
+      checkaccess
+    end
 		@resource = @reservation.resource
 	end
 
 	def update
 		@reservation = Reservation.find(params[:id])
+    if @reservation.occupied != current_user.id
+      checkaccess
+    end
       if @reservation.overlaps?
         flash[:notice] = "This reservation overlaps!"
         redirect_to reservations_path
@@ -63,6 +69,9 @@ class ReservationsController < ApplicationController
 
 	def destroy
 		@reservation = Reservation.find(params[:id])
+    if @reservation.occupied != current_user.id
+      checkaccess
+    end
     	@reservation.destroy
  
     	redirect_to reservations_path

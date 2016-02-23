@@ -3,17 +3,22 @@
 deployed app: organizerish.herokuapp.com
 
 Backend TODO list:
+1. Add permissions for view/reserve access 
+2. Add login with netid feature
+3. Add third party API 
 
 Frontend TODO list:
 Setting up react: https://www.airpair.com/reactjs/posts/reactjs-a-guide-for-rails-developers
 
 1. Have Calendar display my reservations and all reservations and have the user able to edit his reservations
 2. Have Drag and Drop for Tags
-3. Be able to delete tags
+3. Be able to remove tags from search tags
+4. Have the view altered based on permissions (which navbar to display, what buttons to display)
+5. filter based on time (using calendar)
 
 'Bugs':
 1. Email time won't update when the time of the reservation is updated
-2. Add security so only the ones with reservation permission or admin or current_user can edit the reservation (link not present, but hacker could type it into the url to access the page)
+2. Can't edit reservation if it overlaps with the reservation that is currently being edited
 
 Cool things to do later on:
 1. Recurring reservations
