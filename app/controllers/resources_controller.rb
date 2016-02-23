@@ -10,7 +10,10 @@ class ResourcesController < ApplicationController
 	end
 
 	def new
-		checkadmin 
+		
+		if !current_user.has_resource_management?
+			redirect_to resources_path
+		end
 		@resource = Resource.new
 	end
 

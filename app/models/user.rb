@@ -16,4 +16,40 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	def has_resource_management?
+		if self.admin?
+			return true
+		end
+		self.groups.each do |group|
+			if group.resourcemanagement == 1
+				return true
+			end
+		end
+		return false
+	end
+
+	def has_reservation_management?
+		if self.admin?
+			return true
+		end
+		self.groups.each do |group|
+			if group.reservationmanagement == 1
+				return true
+			end
+		end
+		return false
+	end
+
+	def has_user_management?
+		if self.admin?
+			return true
+		end
+		self.groups.each do |group|
+			if group.usermanagement == 1
+				return true
+			end
+		end
+		return false
+	end
+
 end
