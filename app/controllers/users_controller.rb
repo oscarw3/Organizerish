@@ -3,12 +3,12 @@ class UsersController < ApplicationController
   before_filter :authorize_admin, only: :create
 
   def new
-		checkadmin 
+		checkaccess
 		@user = User.new
 	end
 
 	def create
-		checkadmin
+		checkaccess
 		@user = User.new(user_params)
   		if @user.save
   			redirect_to resources_path
@@ -21,12 +21,12 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-		checkadmin
+		checkaccess
 		@user = User.find(params[:id])
 	end
 
 	def update
-		checkadmin
+		checkaccess
 		@user = User.find(params[:id])
  
     	if @user.update(user_params)
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
 	end
 
 	def destroy
-		checkadmin
+		checkaccess
 		@user = User.find(params[:id])
     	@user.destroy
  		Reservation.where(:occupied => @user.id).each do |reservation|

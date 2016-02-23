@@ -3,22 +3,20 @@ class ResourcesController < ApplicationController
 
 	# Admin Index
 	def index
-		checkadmin
+		checkaccess
 		# @users are users without admins
 		@users = User.where(role: 1)
 		@resources = Resource.all
 	end
 
 	def new
-		
-		if !current_user.has_resource_management?
-			redirect_to resources_path
-		end
+		checkaccess
 		@resource = Resource.new
+
 	end
 
 	def create
-		checkadmin
+		checkaccess
 		@resource = Resource.new(resource_params)
  		@resource.user_id = current_user.id
   		if @resource.save
@@ -33,13 +31,13 @@ class ResourcesController < ApplicationController
 	end
 
 	def edit
-		checkadmin
+		checkaccess
 		@resource = Resource.find(params[:id])
 		@resource.displaytags
 	end
 
 	def update
-		checkadmin
+		checkaccess
 		@resource = Resource.find(params[:id])
  
     	if @resource.update(resource_params)
@@ -51,7 +49,7 @@ class ResourcesController < ApplicationController
 	end
 
 	def destroy
-		checkadmin
+		checkaccess
 		@resource = Resource.find(params[:id])
 		@resource.delete_reservations
     	@resource.destroy
@@ -59,7 +57,7 @@ class ResourcesController < ApplicationController
 	end
 
 	def removetag
-		checkadmin
+		checkaccess
 		tag = Tag.find(params[:tag])
 		resource = Resource.find(params[:resource])
 		resource.tags.delete(tag)
