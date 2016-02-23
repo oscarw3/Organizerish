@@ -5,6 +5,8 @@ source 'http://rubygems.org'
 gem 'rails', '4.2.1'
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
+# Simple forms for easier forms
+gem 'simple_form'
 # Bootstrap for css formatting
 gem "twitter-bootstrap-rails"
 # autoformatting for bootstrap

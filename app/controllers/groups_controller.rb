@@ -16,6 +16,7 @@ class GroupsController < ApplicationController
 		
 		@group = Group.new(group_params)
   		if @group.save
+  			@group.addusers(params["group"]["user_ids"])
   			redirect_to groups_path
   		else
   			render 'new'
@@ -35,6 +36,7 @@ class GroupsController < ApplicationController
 		@group = Group.find(params[:id])
  
     	if @group.update(group_params)
+    		@group.addusers(params["group"]["user_ids"])
     		redirect_to groups_path
     	else
     	render 'edit'
