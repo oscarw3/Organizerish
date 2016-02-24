@@ -35,9 +35,20 @@ class Resource < ActiveRecord::Base
   end
 
   def initialize_permissions
-  end
+    noaccess = Permission.create(:viewaccess => 0, :reserveaccess => 0)
+    viewaccess = Permission.create(:viewaccess => 1, :reserveaccess => 0)
+    reserveaccess = Permission.create(:viewaccess => 0, :reserveaccess => 1)
+    bothaccess = Permission.create(:viewaccess => 1, :reserveaccess => 1)
+
+    self.permissions << noaccess
+    self.permissions << viewaccess
+    self.permissions << reserveaccess
+    self.permissions << bothaccess
+
+    self.save
     
   end
+  
   def displaytags
   	tagarray = []
   	self.tags.each do |tag|

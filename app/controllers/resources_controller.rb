@@ -68,7 +68,7 @@ class ResourcesController < ApplicationController
 	def permissions
 		checkaccess
 		@resource = Resource.find(params[:id])
-
+		@permissions = @resource.permissions
 		@groups = Group.all
 	end
 

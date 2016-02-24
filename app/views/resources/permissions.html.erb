@@ -1,1 +1,10 @@
-permissions.html.erb
+<%= simple_form_for @resource do |f| %>
+
+      <%= f.association :permissions, as: :check_boxes %>
+  </p>
+
+	<p>
+    	<%= f.submit %>
+
+  </p>
+<% end %>
