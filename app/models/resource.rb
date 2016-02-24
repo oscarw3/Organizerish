@@ -34,6 +34,10 @@ class Resource < ActiveRecord::Base
 
   end
 
+  def initialize_permissions
+  end
+    
+  end
   def displaytags
   	tagarray = []
   	self.tags.each do |tag|

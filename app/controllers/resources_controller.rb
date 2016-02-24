@@ -20,6 +20,7 @@ class ResourcesController < ApplicationController
 		@resource = Resource.new(resource_params)
  		@resource.user_id = current_user.id
   		if @resource.save
+  			@resource.initialize_permissions
   			@resource.storetags
   			redirect_to resources_path
   		else
@@ -65,6 +66,10 @@ class ResourcesController < ApplicationController
 	end
 
 	def permissions
+		checkaccess
+		@resource = Resource.find(params[:id])
+
+		@groups = Group.all
 	end
 
 	def updatepermissions
