@@ -69,11 +69,12 @@ class ResourcesController < ApplicationController
 		checkaccess
 		@resource = Resource.find(params[:id])
 		@permissions = @resource.permissions
+		@permission = @permissions.first
 		@groups = Group.all
 	end
 
 	def updatepermissions
-		
+		redirect_to resources_path
 	end
 
 

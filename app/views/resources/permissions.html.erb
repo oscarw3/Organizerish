@@ -1,10 +1,19 @@
-<%= simple_form_for @resource do |f| %>
+<div class="row">
+	<% @permissions.each do |permission| %>
+		
+	        <div class="col-lg-3 col-md-3">	
+				<%= simple_form_for permission,:url => update_permissions_resource_path do |f| %>
+		  			<p><%= f.label permission.access %></p>
+		  			<p>
+		      			<%= f.association :group, as: :check_boxes, :label_method => :name  %>
+		  			</p>
 
-      <%= f.association :permissions, as: :check_boxes %>
-  </p>
+					<p>
+		    			<%= f.submit %>
 
-	<p>
-    	<%= f.submit %>
-
-  </p>
-<% end %>
+		  			</p>
+		  	</div>
+		 
+		<% end %>
+	<% end %> 
+</div>
