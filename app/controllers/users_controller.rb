@@ -11,6 +11,9 @@ class UsersController < ApplicationController
 		checkaccess
 		@user = User.new(user_params)
   		if @user.save
+  			@group = Group.create(name: @user.email, resourcemanagement: 0, reservationmanagement: 0, usermanagement: 0, hidden: true)
+  			@group.users << @user
+  			@group.save
   			redirect_to resources_path
   		else
   			render 'new'

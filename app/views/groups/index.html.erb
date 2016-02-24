@@ -5,3 +5,11 @@
               method: :delete,
               data: { confirm: 'Are you sure?' } %><br>
 <% end %>
+<br>
+<hr>
+<% @user_groups.each do |group| %>
+	<%= group.name %> | <%= group.resourcemanagement %> | <%= group.reservationmanagement %> | <%= group.usermanagement %> | <%= link_to 'Edit', edit_group_path(group) %> | 
+	<%= link_to 'Delete', group_path(group),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %><br>
+<% end %>

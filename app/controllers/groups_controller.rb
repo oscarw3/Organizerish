@@ -3,18 +3,22 @@ class GroupsController < ApplicationController
 
 	# Only people with usermanagement access and admin should be able to access all these methods
 	def index
-		@groups = Group.all
+		checkaccess
+		@groups = Group.where(:hidden => false)
+
+		@user_groups = Group.where(:hidden => true)
 	end
 
 	def new
-		
+		checkaccess
 		@group = Group.new
 		
 	end
 
 	def create
-		
+		checkaccess
 		@group = Group.new(group_params)
+		@group.hidden = false
   		if @group.save
   			@group.addusers(params["group"]["user_ids"])
   			redirect_to groups_path
@@ -27,12 +31,12 @@ class GroupsController < ApplicationController
 	end
 
 	def edit
-		
+		checkaccess
 		@group = Group.find(params[:id])
 	end
 
 	def update
-		
+		checkaccess
 		@group = Group.find(params[:id])
  
     	if @group.update(group_params)
@@ -44,7 +48,7 @@ class GroupsController < ApplicationController
 	end
 
 	def destroy
-		
+		checkaccess
 		@group = Group.find(params[:id])
     	@group.destroy
     	redirect_to groups_path
