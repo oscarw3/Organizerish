@@ -64,6 +64,12 @@ class ResourcesController < ApplicationController
 		redirect_to resources_path
 	end
 
+	def permissions
+	end
+
+	def updatepermissions
+		
+	end
 
 
 	private
