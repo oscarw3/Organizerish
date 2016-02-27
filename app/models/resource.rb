@@ -35,26 +35,49 @@ class Resource < ActiveRecord::Base
   end
 
   def initialize_permissions
-    noaccess = Permission.create(:viewaccess => 0, :reserveaccess => 0)
     viewaccess = Permission.create(:viewaccess => 1, :reserveaccess => 0)
     reserveaccess = Permission.create(:viewaccess => 0, :reserveaccess => 1)
-    bothaccess = Permission.create(:viewaccess => 1, :reserveaccess => 1)
 
-    self.permissions << noaccess
     self.permissions << viewaccess
     self.permissions << reserveaccess
-    self.permissions << bothaccess
-
     self.save
     
   end
-  
+
+  # splits group ids and adds groups to permissions
+
+  def add_to_permissions(array)
+    array = array.split("")
+    viewgroups = array[0]
+    reservegroups = array[1]
+    viewaccess = self.permissions.where(viewaccess: 1).where(reserveaccess: 0).first
+    viewaccess.remove_groups
+    reserveaccess = self.permissions.where(viewaccess: 0).where(reserveaccess: 1).first
+    reserveaccess.remove_groups
+    viewgroups.each do |id|
+      viewaccess.groups << Group.find(id) 
+    end
+
+    reservegroups.each do |id|
+        reserveaccess.groups << Group.find(id)
+    end
+    viewaccess.save
+    reserveaccess.save
+    self.save
+  end
+
   def displaytags
   	tagarray = []
   	self.tags.each do |tag|
   		tagarray << tag.text + ', '
   	end
   	self.temp_tags = tagarray.join
+  end
+
+  def delete_permissions
+    self.permissions.each do |permission|
+      permission.destroy
+    end
   end
 
   def delete_reservations

@@ -53,6 +53,7 @@ class ResourcesController < ApplicationController
 		checkaccess
 		@resource = Resource.find(params[:id])
 		@resource.delete_reservations
+		@resource.delete_permissions
     	@resource.destroy
     	redirect_to resources_path
 	end
@@ -72,7 +73,8 @@ class ResourcesController < ApplicationController
 	end
 
 	def updatepermissions
-		grouphash = get_groups(params["permissions"]["group_id"])
+		@resource = Resource.find(params[:id])
+		@resource.add_to_permissions(params["groups"]["id"])
 		redirect_to resources_path
 	end
 

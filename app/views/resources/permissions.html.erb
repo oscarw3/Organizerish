@@ -20,7 +20,7 @@
 
 <%= form_tag update_permissions_resource_path do %>
 		<% @permissions.each do |permission| %>
-		<%= fields_for 'permissions[]', permission do |p| %>
+		<%= fields_for 'groups[]', permission do |p| %>
 			<p><%= p.label permission.access %></p>
 			<p>
 		    	

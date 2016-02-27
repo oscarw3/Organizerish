@@ -3,14 +3,18 @@ class Permission < ActiveRecord::Base
   has_and_belongs_to_many :groups
 
   def access
-  	if self.viewaccess == 0 && self.reserveaccess == 0
-  		"No Access"
-  	elsif self.viewaccess == 1 && self.reserveaccess == 0
+  	if self.viewaccess == 1 && self.reserveaccess == 0
   		"View Access"
 	elsif self.viewaccess == 0 && self.reserveaccess == 1
   		"Reserve Access"
   	else
-  		"Both Access"
+  		"Other thing"
   	end
+  end
+
+  def remove_groups
+  	self.groups.each do |group|
+			self.groups.delete(group)
+	end
   end
 end
