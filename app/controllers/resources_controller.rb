@@ -1,5 +1,5 @@
 class ResourcesController < ApplicationController
-
+	include ResourcesHelper
 
 	# Admin Index
 	def index
@@ -68,12 +68,11 @@ class ResourcesController < ApplicationController
 	def permissions
 		checkaccess
 		@resource = Resource.find(params[:id])
-		@permissions = @resource.permissions
-		@permission = @permissions.first
-		@groups = Group.all
+		@permissions = @resource.permissions.where(viewaccess: 1).where(reserveaccess: 0) + @resource.permissions.where(viewaccess: 0).where(reserveaccess: 1)
 	end
 
 	def updatepermissions
+		grouphash = get_groups(params["permissions"]["group_id"])
 		redirect_to resources_path
 	end
 

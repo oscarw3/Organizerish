@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
   resources :resources
   get '/resources/:id/permissions', to: 'resources#permissions', as: 'permissions_resource'
-  patch '/resources/:id/permissions', to: 'resources#updatepermissions', as: 'update_permissions_resource'
+  post '/resources/:id/permissions', to: 'resources#updatepermissions', as: 'update_permissions_resource'
   resources :groups
   resources :reservations
   resources :users, except: :create
