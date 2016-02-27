@@ -3,9 +3,8 @@
 deployed app: organizerish.herokuapp.com
 
 Backend TODO list:
-1. Add permissions for view/reserve access 
-2. Add login with netid feature
-3. Add third party API 
+1. Add login with netid feature
+2. Add third party API 
 
 Frontend TODO list:
 Setting up react: https://www.airpair.com/reactjs/posts/reactjs-a-guide-for-rails-developers
