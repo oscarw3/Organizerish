@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
   def no_resources?
     if params[:controller] == "resources" && !current_user.has_resource_management?
       return true
@@ -41,6 +42,6 @@ class ApplicationController < ActionController::Base
 
 
   def nopermission
-    redirect_to reservations_path, notice: "You don't have access to the page!"
+    redirect_to reservations_path, notice: "You don't have management access to the page!"
   end
 end

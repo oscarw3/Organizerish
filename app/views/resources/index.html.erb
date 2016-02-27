@@ -1,13 +1,15 @@
-<h1>Admin Home</h1>
+<h1>Resources</h1>
 <h2>Welcome <%= current_user.firstname %>! </h2>
 <%= link_to 'New User', new_user_path %> <br> <br>
 <% @users.each do |user| %>
 	<%= user.id%> | 
 	<%= user.email %> |
-	<%= link_to 'Edit', edit_user_path(user) %> | 
-	<%= link_to 'Delete', user_path(user),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %>
+	<% if current_user.has_user_management? %>
+		<%= link_to 'Edit', edit_user_path(user) %> | 
+		<%= link_to 'Delete', user_path(user),
+	              method: :delete,
+	              data: { confirm: 'Are you sure?' } %>
+	<% end %>
 	<br> 
 <% end %>
 <h2> Resources </h2>
@@ -15,13 +17,15 @@
 <% @resources.each do |resource| %>
 	<%= resource.name %> |
 	<%= resource.description %>	|
-	<%= link_to 'Edit', edit_resource_path(resource) %> | 
-	<%= link_to 'Manage Permissions', permissions_resource_path(resource) %> |
-	<%= link_to 'Delete', resource_path(resource),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %>
-    <% resource.tags.each do |tag| %>
-    	| <%= link_to tag.text, resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH %>
+	<% if current_user.has_resource_management? %>
+		<%= link_to 'Edit', edit_resource_path(resource) %> | 
+		<%= link_to 'Manage Permissions', permissions_resource_path(resource) %> |
+		<%= link_to 'Delete', resource_path(resource),
+	              method: :delete,
+	              data: { confirm: 'Are you sure?' } %>
+	    <% resource.tags.each do |tag| %>
+	    	| <%= link_to tag.text, resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH %>
+	<% end %>
 
     <% end %>
     

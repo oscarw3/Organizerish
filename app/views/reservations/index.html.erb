@@ -14,17 +14,19 @@
 
 <h1>All Reservations</h1>
 <% @allreservations.each do |reservation| %>
-	<%= User.find(reservation.occupied).firstname %> |
-	<%= reservation.resource.name %> |
-	<%= reservation.starttime %> |
-	<%= reservation.endtime %> |
-	<%= reservation.recurring %> |
-	<% if current_user.admin? %>
-		<%= link_to 'Edit', edit_reservation_path(reservation) %> | 
-		<%= link_to 'Delete', reservation_path(reservation),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %>
-    <% end %>
+	<% if current_user.view_permission?(reservation.resource) %>
+		<%= User.find(reservation.occupied).firstname %> |
+		<%= reservation.resource.name %> |
+		<%= reservation.starttime %> |
+		<%= reservation.endtime %> |
+		<%= reservation.recurring %> |
+		<% if current_user.has_reservation_management? %>
+			<%= link_to 'Edit', edit_reservation_path(reservation) %> | 
+			<%= link_to 'Delete', reservation_path(reservation),
+	              method: :delete,
+	              data: { confirm: 'Are you sure?' } %>
+	    <% end %>
+	<% end %>
     <br>
 <% end %>
 <hr>
@@ -44,13 +46,15 @@
 <br> 
 <br>
 <% @resources.each do |resource| %>
-	<%= resource.name %> |
-	<%= resource.description %>	|
-	<% resource.tags.each do |tag| %> 
-		<%= tag.text %> |
-	<% end %> 
-	<%= link_to 'Reserve', new_reservation_path(:resource => resource.id) %> 
-	<br>
+	<% if current_user.view_permission?(resource) %>
+		<%= resource.name %> |
+		<%= resource.description %>	|
+		<% resource.tags.each do |tag| %> 
+			<%= tag.text %> |
+		<% end %> 
+		<%= link_to 'Reserve', new_reservation_path(:resource => resource.id) %> 
+		<br>
+	<% end %>
 
 
 <% end %>

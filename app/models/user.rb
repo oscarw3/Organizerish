@@ -52,4 +52,34 @@ class User < ActiveRecord::Base
 		return false
 	end
 
+	def create_reservation_permission?(resource)
+		if self.has_reservation_management?
+			return true
+		end
+		groups = resource.permissions.where(reserveaccess: 1).first.groups
+		if !groups.includes(:users).where(users: { id: self.id}).empty?
+			return true
+		end
+		return false
+	end
+
+	def edit_reservation_permission?(reservation)
+		if self.has_reservation_management? || reservation.occupied == self.id
+			return true
+		else
+			return false
+		end
+	end
+
+	def view_permission?(resource)
+		if self.has_resource_management? || self.has_reservation_management?
+			return true
+		end
+		groups = resource.permissions.where(viewaccess: 1).first.groups
+		if !groups.includes(:users).where(users: { id: self.id}).empty?
+			return true
+		end
+		return false
+	end
+
 end

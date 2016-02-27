@@ -14,6 +14,7 @@ class ReservationsController < ApplicationController
     end
   
   	@resources, @tags_selected = getresources(@tagstring)
+
     @tags_left = removeselectedtags(@tags_selected)
 
     
@@ -22,23 +23,31 @@ class ReservationsController < ApplicationController
   end
 
   def new
-  	@reservation = Reservation.new
-  	@resource = Resource.find(params[:resource])
+    
+  	 @reservation = Reservation.new
+  	 @resource = Resource.find(params[:resource])
+    if !current_user.create_reservation_permission?(@resource)
+      redirect_to reservations_path, notice: "You don't have reservation access to the page!"
+    end
+
   end
 
   def create
 
 		@reservation = Reservation.new(reservation_params)
-		@reservation.occupied = current_user.id
-      if @reservation.overlaps?
-        flash[:notice] = "This reservation overlaps!"
-        redirect_to reservations_path
-  		elsif @reservation.save
-        ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation) 
-  			redirect_to reservations_path
-  		else
-  			render 'new'
-  		end
+    if !current_user.create_reservation_permission?(@reservation.resource)
+      redirect_to reservations_path, notice: "You don't have reservation access to the page!"
+    end
+  		@reservation.occupied = current_user.id
+        if @reservation.overlaps?
+          flash[:notice] = "This reservation overlaps!"
+          redirect_to reservations_path
+    		elsif @reservation.save
+          ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation) 
+    			redirect_to reservations_path
+    		else
+    			render 'new'
+    		end
 	end
 
 	def show 
@@ -46,16 +55,16 @@ class ReservationsController < ApplicationController
 
 	def edit
 		@reservation = Reservation.find(params[:id])
-    if @reservation.occupied != current_user.id
-      checkaccess
+    if !current_user.edit_reservation_permission?(@reservation)
+     redirect_to reservations_path, notice: "This isn't your reservation!"
     end
 		@resource = @reservation.resource
 	end
 
 	def update
 		@reservation = Reservation.find(params[:id])
-    if @reservation.occupied != current_user.id
-      checkaccess
+    if !current_user.edit_reservation_permission?(@reservation)
+     redirect_to reservations_path, notice: "This isn't your reservation!"
     end
       if @reservation.overlaps?
         flash[:notice] = "This reservation overlaps!"
@@ -69,8 +78,8 @@ class ReservationsController < ApplicationController
 
 	def destroy
 		@reservation = Reservation.find(params[:id])
-    if @reservation.occupied != current_user.id
-      checkaccess
+    if !current_user.edit_reservation_permission?(@reservation)
+     redirect_to reservations_path, notice: "This isn't your reservation!"
     end
     	@reservation.destroy
  
