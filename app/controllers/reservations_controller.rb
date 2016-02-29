@@ -2,6 +2,7 @@ class ReservationsController < ApplicationController
   include ReservationsHelper
 
   def index
+    byebug
     @allreservations = Reservation.all 
     @myreservations = Reservation.where(occupied: current_user.id)
     
