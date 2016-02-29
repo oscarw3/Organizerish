@@ -41,8 +41,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Used to authenticate users
 gem 'devise'
 # for API authentication
-gem 'devise_token_auth' # Token based authentication for Rails JSON APIs
-gem 'omniauth' # required for devise_token_auth
+gem 'simple_token_authentication', '~> 1.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # For Andrew

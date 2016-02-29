@@ -25,6 +25,9 @@ Cool things to do later on:
 1. Recurring reservations
 2. Invisible reservations
 
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "X-User-Email: ajg45@duke.edu" -H "X-User-Token: "-7CTFsFxQFie-Y2p7gy2"" -X GET http://localhost:3000/api/resources
+
+curl -i -H GET http://localhost:3000/api/resources?user_email=ajg45@duke.edu&user_token=-7CTFsFxQFie-Y2p7gy2
 Used this guide for devise authentication
 http://guides.railsgirls.com/devise/
 
