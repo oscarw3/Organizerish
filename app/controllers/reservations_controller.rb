@@ -2,7 +2,9 @@ class ReservationsController < ApplicationController
   include ReservationsHelper
 
   def index
-    byebug
+    puts "access token is this: #{params['access_token']}"
+    puts "token type is this: #{params['token_type']}"
+
     @allreservations = Reservation.all 
     @myreservations = Reservation.where(occupied: current_user.id)
     
