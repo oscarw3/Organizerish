@@ -25,6 +25,9 @@ Rails.application.routes.draw do
     resources :resources
     resources :groups
     resources :reservations
+    resources :users, except: :create
+    post 'create_user' => 'users#create', as: :create_user
+
   end
 
   # Example of regular route:
