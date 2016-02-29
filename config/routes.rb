@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   
   namespace :api, defaults: {format: 'json'} do 
     resources :resources
+    resources :groups
+    resources :reservations
   end
 
   # Example of regular route:
