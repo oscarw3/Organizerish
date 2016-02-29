@@ -2,8 +2,9 @@ class ReservationsController < ApplicationController
   include ReservationsHelper
 
   def index
-    puts "access token is this: #{params['access_token']}"
-    puts "token type is this: #{params['token_type']}"
+    puts "original url is this: #{request.original_url}"
+    puts "base_url is this: #{request.base_url}"
+    puts "fullpath is this: #{request.fullpath}"
 
     @allreservations = Reservation.all 
     @myreservations = Reservation.where(occupied: current_user.id)
