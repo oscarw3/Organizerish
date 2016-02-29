@@ -2,9 +2,6 @@ class ReservationsController < ApplicationController
   include ReservationsHelper
 
   def index
-    puts "original url is this: #{request.original_url}"
-    puts "base_url is this: #{request.base_url}"
-    puts "fullpath is this: #{request.fullpath}"
 
     @allreservations = Reservation.all 
     @myreservations = Reservation.where(occupied: current_user.id)
