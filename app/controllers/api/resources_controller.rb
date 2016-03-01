@@ -1,7 +1,6 @@
 class Api::ResourcesController < ApiController
 	respond_to :json
-	def index
-		
+	def index	
 		@resources = Resource.all
 		respond_with @resources
 	end
@@ -26,7 +25,7 @@ class Api::ResourcesController < ApiController
 		else
 			@resource = Resource.find(params[:id])
 			if @resource.update(resource_params)
-			
+
 				respond_with @resource
 			end
 		end
