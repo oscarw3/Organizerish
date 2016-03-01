@@ -14,7 +14,7 @@ class Api::ResourcesController < ApiController
 	 		@resource.user_id = current_user.id
 	 		@resource.save
 	  		@resource.initialize_permissions
-
+	  		@resource.addtags(params["tags"])
 	 		respond_with @resource
 	 	end
 
@@ -26,6 +26,7 @@ class Api::ResourcesController < ApiController
 		else
 			@resource = Resource.find(params[:id])
 			if @resource.update(resource_params)
+			
 				respond_with @resource
 			end
 		end

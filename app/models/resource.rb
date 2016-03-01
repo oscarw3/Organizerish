@@ -10,28 +10,39 @@ class Resource < ActiveRecord::Base
   	#break the list down into multiple tags
   	tagarray = self.temp_tags.split(', ')
 
-  	#iterate through array
-  		#create tags if they dont exist
-  		tagarray.each do |text|
-  			tagsearch = Tag.where(:text => text)
-  			# if empty, create tag
-  			if tagsearch.empty?
-  				tag = Tag.create(:text => text)
-  			else
-  				tag = tagsearch.first
-  			end
+    addtags(tagarray)
 
-  			#if tag is not yet associated with resource, add tag to resource.tags
-  			if !self.tags.exists?(tag.id)
-  				self.tags << tag
-  			end
-  		end
-  		
-  		
-  		
-  	#save resource after iterating
-  	self.save
+  end
+  #takes the tag array and actually adds them
+  def addtags(tagarray)
+      #remove all current tags
+      removealltags
 
+      #iterate through array
+      #create tags if they dont exist
+
+      tagarray.each do |text|
+        tagsearch = Tag.where(:text => text)
+        # if empty, create tag
+        if tagsearch.empty?
+          tag = Tag.create(:text => text)
+        else
+          tag = tagsearch.first
+        end
+
+        #if tag is not yet associated with resource, add tag to resource.tags
+        if !self.tags.exists?(tag.id)
+          self.tags << tag
+        end
+      end
+    #save resource after iterating
+    self.save
+  end
+
+  def removealltags
+      self.tags.each do |tag|
+        self.tags.delete(tag)
+      end
   end
 
   def initialize_permissions
