@@ -13,7 +13,10 @@ class Api::ResourcesController < ApiController
 	 		@resource.user_id = current_user.id
 	 		@resource.save
 	  		@resource.initialize_permissions
-	  		@resource.addtags(params["tags"])
+	  		#if no tags added, don't add tags
+	  		if params["tags"] != nil
+	  			@resource.addtags(params["tags"])
+	  		end
 	 		respond_with @resource
 	 	end
 
