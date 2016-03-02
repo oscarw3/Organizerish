@@ -14,6 +14,7 @@ class Api::UsersController < ApiController
 				@group = Group.create(name: @user.email, resourcemanagement: 0, reservationmanagement: 0, usermanagement: 0, hidden: true)
 				@group.users << @user
 				@group.save
+			end
 	 		respond_with @user
 	 	end
 

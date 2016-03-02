@@ -13,6 +13,7 @@ class Api::GroupsController < ApiController
 			@group.hidden = false
 	 		if @group.save
 				@group.addusers(params["group"]["user_ids"])
+			end
 	 		respond_with @group
 	 	end
 

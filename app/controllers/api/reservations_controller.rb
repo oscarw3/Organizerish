@@ -14,8 +14,10 @@ class Api::ReservationsController < ApiController
 			if !@reservation.overlaps?
 				if @reservation.save
 					ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation)
+				end
 			else
 				render json: { error: 'Overlapping Reservation'}, status: 401
+			end
 	 		respond_with @reservation
 	 	end
 
@@ -29,6 +31,7 @@ class Api::ReservationsController < ApiController
 			if !@reservation.overlaps?
 				if @reservation.update(reservation_params)
 					respond_with @reservation
+				end
 			end
 		end
 	end
