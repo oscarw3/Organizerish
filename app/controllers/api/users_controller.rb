@@ -10,7 +10,10 @@ class Api::UsersController < ApiController
 			render json: { error: 'Access Denied'}, status: 401
 		else
 			@user = User.new(user_params)
-	 		@user.save
+	 		if @user.save
+				@group = Group.create(name: @user.email, resourcemanagement: 0, reservationmanagement: 0, usermanagement: 0, hidden: true)
+				@group.users << @user
+				@group.save
 	 		respond_with @user
 	 	end
 

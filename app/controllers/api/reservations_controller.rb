@@ -26,8 +26,9 @@ class Api::ReservationsController < ApiController
 			render json: { error: 'Access Denied'}, status: 401
 		else
 			@reservation = Reservation.find(params[:id])
-			if @reservation.update(reservation_params)
-				respond_with @reservation
+			if !@reservation.overlaps?
+				if @reservation.update(reservation_params)
+					respond_with @reservation
 			end
 		end
 	end
