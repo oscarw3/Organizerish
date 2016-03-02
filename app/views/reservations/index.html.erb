@@ -26,6 +26,9 @@
   </tbody>
 </table>
 <br>
+
+<hr>
+
 <h1>All Reservations</h1>
 <table class="table table-striped">
   <thead>
@@ -59,31 +62,48 @@
 </table>
 
 <hr>
-<h1>Resources</h1>
-<h3>Selected Tags</h3>
+
+<a name = "reserve"></a>
+<h1>Reserve a Resource</h1>
+<h4>Filter Tags:
 <% @tags_selected.each do |tag| %>
-		<%= tag.text %> |
+		<%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
 <% end %>
-<br>
-<hr>
-<h3>Other Tags</h3>
 <% @tags_left.each do |tag| %>
-
-		<%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring}) %> |
-	 
+		<%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring, anchor: "reserve"}), :class => 'btn btn-xs btn-primary' %>
 <% end %>
-<br> 
+<% if @tagstring != '' %>
+<%= link_to 'reset', reservations_path({anchor: "reserve"}), :class => 'btn btn-xs btn-danger' %>
+<% end %>
+</h4>
 <br>
-<% @resources.each do |resource| %>
-	<% if current_user.view_permission?(resource) %>
-		<%= resource.name %> |
-		<%= resource.description %>	|
-		<% resource.tags.each do |tag| %> 
-			<%= tag.text %> |
-		<% end %> 
-		<%= link_to 'Reserve', new_reservation_path(:resource => resource.id) %> 
-		<br>
-	<% end %>
 
-
-<% end %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Resource</th>
+      <th>Description</th>
+      <th>Tags</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @resources.each do |resource| %>
+    <% if current_user.view_permission?(resource) %>
+      <tr>
+        <td><%= resource.name %></td>
+        <td><%= resource.description %></td>
+        <td>
+        <% (resource.tags & @tags_selected).each do |tag| %>
+        	<%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
+        <% end %>
+        <% (resource.tags & @tags_left).each do |tag| %>
+        	<%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring, anchor: "reserve"}), :class => 'btn btn-xs btn-primary' %>
+        <% end %>
+        </td>
+        <td><%= link_to 'Reserve', new_reservation_path(:resource => resource.id) %></td>
+      </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
