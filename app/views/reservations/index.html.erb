@@ -1,34 +1,63 @@
 <h1>My Reservations</h1>
-<% @myreservations.each do |reservation| %>
-	<%= User.find(reservation.occupied).firstname %> |
-	<%= reservation.resource.name %> |
-	<%= reservation.starttime %> |
-	<%= reservation.endtime %> |
-	<%= reservation.recurring %> |
-	<%= link_to 'Edit', edit_reservation_path(reservation) %> | 
-	<%= link_to 'Delete', reservation_path(reservation),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %>
-    <br>
-<% end %>
-
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Resource</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @myreservations.each do |reservation| %>
+      <tr>
+        <td><%= User.find(reservation.occupied).firstname %></td>
+        <td><%= reservation.resource.name %></td>
+        <td><%= reservation.starttime %></td>
+        <td><%= reservation.endtime %></td>
+        <td>
+          <%= link_to 'Edit', edit_reservation_path(reservation), :class => 'btn btn-xs btn-success' %>
+          <%= link_to 'Delete', reservation_path(reservation), method: :delete,
+              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
 <h1>All Reservations</h1>
-<% @allreservations.each do |reservation| %>
-	<% if current_user.view_permission?(reservation.resource) %>
-		<%= User.find(reservation.occupied).firstname %> |
-		<%= reservation.resource.name %> |
-		<%= reservation.starttime %> |
-		<%= reservation.endtime %> |
-		<%= reservation.recurring %> |
-		<% if current_user.has_reservation_management? %>
-			<%= link_to 'Edit', edit_reservation_path(reservation) %> | 
-			<%= link_to 'Delete', reservation_path(reservation),
-	              method: :delete,
-	              data: { confirm: 'Are you sure?' } %>
-	    <% end %>
-	<% end %>
-    <br>
-<% end %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Resource</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @allreservations.each do |reservation| %>
+    <% if current_user.view_permission?(reservation.resource) %>
+      <tr>
+        <td><%= User.find(reservation.occupied).firstname %></td>
+        <td><%= reservation.resource.name %></td>
+        <td><%= reservation.starttime %></td>
+        <td><%= reservation.endtime %></td>
+        <% if current_user.has_reservation_management? %>
+        <td>
+          <%= link_to 'Edit', edit_reservation_path(reservation), :class => 'btn btn-xs btn-success' %>
+          <%= link_to 'Delete', reservation_path(reservation), method: :delete,
+              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
+        </td>
+        <% end %>
+      </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
 <hr>
 <h1>Resources</h1>
 <h3>Selected Tags</h3>
