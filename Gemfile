@@ -12,6 +12,10 @@ gem "twitter-bootstrap-rails"
 # autoformatting for bootstrap
 gem 'autoprefixer-rails'
 # Also for bootstrap
+# twitter bootstrap css & javascript toolkit
+gem 'twitter-bootswatch-rails', '~> 3.3.4'
+# twitter bootstrap helpers gem, e.g., alerts etc...
+gem 'twitter-bootswatch-rails-helpers'
 gem "therubyracer"
 gem "less-rails"
 # Changed database to postgres
