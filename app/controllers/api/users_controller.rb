@@ -11,7 +11,6 @@ class Api::UsersController < ApiController
 		else
 			@user = User.new(user_params)
 	 		@user.save
-	  		#if no tags added, don't add tags
 	 		respond_with @user
 	 	end
 
@@ -33,9 +32,10 @@ class Api::UsersController < ApiController
 			render json: { error: 'Access Denied'}, status: 401
 		else
 			@user = User.find(params[:id])
-			#not sure what method is here but should delete the users reservations 
-			#@user.delete_reservations
 			@user.destroy
+			Reservation.where(:occupied => @user.id).each do |reservation|
+				reservation.destroy
+			end
 			respond_with @user
 		end
 	end
