@@ -6,6 +6,7 @@ module ReservationsHelper
 			tagarray.each do |tagtext|
 				newresources = Resource.includes(:tags).where(tags: { text: tagtext })
         newtag = Tag.where(:text => tagtext)
+        
 				if @resources == nil
 					@resources = newresources
           @tags = newtag

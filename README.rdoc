@@ -67,7 +67,7 @@ end time: datetime
 recurring: integer (enum)
 
 Groups
-(1 group to many users)
+(many groups to many users)
 name: string
 resourcemanagement: (0= no access, 1= yes access)
 reservationmanagement: (0= no access, 1= yes access)
@@ -76,7 +76,7 @@ usermanagement: (0= no access, 1= yes access)
 
 Permission 
 (1 Resource to many permissions)
-(1 Group to many permissions)
+(many groups to many permissions)
 viewaccess: (0= no access, 1= yes access)
 reserveaccess: (0= no access, 1= yes access)
 
