@@ -1,3 +1,4 @@
+<a name = "all"></a>
 <h1>Resources</h1>
 <h2>Welcome <%= current_user.firstname %>! </h2>
 <%= link_to 'New User', new_user_path %> <br> <br>
@@ -13,25 +14,37 @@
 	<br> 
 <% end %>
 <h2> Resources </h2>
-<!-- Currently set up to display all resources -->
-<% @resources.each do |resource| %>
-	<%= resource.name %> |
-	<%= resource.description %>	|
-	<% if current_user.has_resource_management? %>
-		<%= link_to 'Edit', edit_resource_path(resource) %> | 
-		<%= link_to 'Manage Permissions', permissions_resource_path(resource) %> |
-		<%= link_to 'Delete', resource_path(resource),
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Resource</th>
+      <th>Description</th>
+      <th>Tags</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @resources.each do |resource| %>
+      <tr>
+        <td><%= resource.name %></td>
+        <td><%= resource.description %></td>
+        <td>
+        <% resource.tags.each do |tag| %>
+	    	<%= link_to tag.text, resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH, :class => 'btn btn-xs btn-primary' %>
+		<% end %>
+		</td>
+        <% if current_user.has_resource_management? %>
+        <td>
+          <%= link_to 'Edit', edit_resource_path(resource), :class => 'btn btn-xs btn-success' %>
+          <%= link_to 'Manage Permissions', permissions_resource_path(resource), :class => 'btn btn-xs btn-warning'%>
+          <%= link_to 'Delete', resource_path(resource),
 	              method: :delete,
-	              data: { confirm: 'Are you sure?' } %>
-	    <% resource.tags.each do |tag| %>
-	    	| <%= link_to tag.text, resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH %>
-	<% end %>
-
+	              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger'  %>
+        </td>
+        <% end %>
+      </tr>
     <% end %>
-    
-	<br>
-
-
-
-
-<% end %>
+  </tbody>
+</table>
+<br>
