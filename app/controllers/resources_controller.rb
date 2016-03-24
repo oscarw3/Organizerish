@@ -7,12 +7,13 @@ class ResourcesController < ApplicationController
 		# @users are users without admins
 		@users = User.where(role: 1)
 		@resources = Resource.all
+		@tags = Tag.all
+		refreshtags
 	end
 
 	def new
 		checkaccess
 		@resource = Resource.new
-
 	end
 
 	def create
@@ -55,6 +56,7 @@ class ResourcesController < ApplicationController
 		@resource.delete_reservations
 		@resource.delete_permissions
     	@resource.destroy
+    	refreshtags
     	redirect_to resources_path
 	end
 
@@ -63,7 +65,26 @@ class ResourcesController < ApplicationController
 		tag = Tag.find(params[:tag])
 		resource = Resource.find(params[:resource])
 		resource.tags.delete(tag)
+		refreshtags
 		redirect_to resources_path
+	end
+
+	# update list of tags
+	def refreshtags
+		if @tags != nil
+			@badtags = @tags.select {
+				|tag|
+				@usedresources = Resource.all.select {
+	        	|resource|
+	        	resource.tags.include? tag
+	      		}
+	      		@usedresources.empty?
+			}
+			@badtags.each {
+				|tag|
+				tag.destroy
+			}
+		end
 	end
 
 	def permissions
