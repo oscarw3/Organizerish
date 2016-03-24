@@ -1,5 +1,6 @@
-<h2>Log in</h2>
-
+<div class="page-header">
+<h1>Log in </h1>
+</div>
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
     <%= f.label :email %><br />
@@ -24,3 +25,6 @@
 <% end %>
 
 <%= render "devise/shared/links" %>
+
+<br>
+<a href = "https://oauth.oit.duke.edu/oauth/authorize.php?client_id=ECE458_Resource_manager6&state=0.6590120431501418&response_type=token" class="btn btn-primary">Duke NetID Sign In</a>

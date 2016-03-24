@@ -1,3 +1,4 @@
+<a name = "all"></a>
 <h1>Groups Home </h1>
 <% @groups.each do |group| %>
 	<%= group.name %> | <%= group.resourcemanagement %> | <%= group.reservationmanagement %> | <%= group.usermanagement %> | <%= link_to 'Edit', edit_group_path(group) %> | 

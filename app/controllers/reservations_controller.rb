@@ -1,6 +1,6 @@
 class ReservationsController < ApplicationController
   include ReservationsHelper
-
+  include SortHelper
   def index
 
     @allreservations = Reservation.all 
@@ -15,11 +15,10 @@ class ReservationsController < ApplicationController
     end
   
   	@resources, @tags_selected = getresources(@tagstring)
+    @tags_selected = alphabetizetags(@tags_selected)
 
     @tags_left = removeselectedtags(@tags_selected)
-
-    
-
+    @tags_left = alphabetizetags(@tags_left)
 
   end
 
