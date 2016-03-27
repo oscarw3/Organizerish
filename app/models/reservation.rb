@@ -14,5 +14,11 @@ class Reservation < ActiveRecord::Base
   	end
   	false
   end
+
+  def clear_resources
+    self.resources.each do |resource|
+      self.resources.delete(resource)
+    end
+  end
   
 end

@@ -2,9 +2,16 @@ class Resource < ActiveRecord::Base
   belongs_to :user
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :reservations
+  has_and_belongs_to_many :groups
   has_many :permissions
 
   attr_accessor :temp_tags
+
+  def clear_groups
+    self.groups.each do |group|
+      self.groups.delete(group)
+    end
+  end
 
   def storetags
   	#break the list down into multiple tags
@@ -13,6 +20,8 @@ class Resource < ActiveRecord::Base
     addtags(tagarray)
 
   end
+
+
   #takes the tag array and actually adds them
   def addtags(tagarray)
       #remove all current tags

@@ -23,6 +23,12 @@ class ResourcesController < ApplicationController
   		if @resource.save
   			@resource.initialize_permissions
   			@resource.storetags
+	  		  params["resource"]["group_ids"].each do |group_id|
+	            if group_id != ""
+	              @resource.groups << Group.find(group_id)
+	            end
+	          end
+	          @resource.save
   			redirect_to resources_path
   		else
   			render 'new'
@@ -36,6 +42,7 @@ class ResourcesController < ApplicationController
 		checkaccess
 		@resource = Resource.find(params[:id])
 		@resource.displaytags
+		
 	end
 
 	def update
@@ -44,6 +51,13 @@ class ResourcesController < ApplicationController
  
     	if @resource.update(resource_params)
     		@resource.storetags
+    		@resource.clear_groups
+			params["resource"]["group_ids"].each do |group_id|
+	        	if group_id != ""
+	      			@resource.groups << Group.find(group_id)
+	       		end
+	    	end
+	    	@resource.save
     		redirect_to resources_path
     	else
     	render 'edit'
@@ -102,6 +116,6 @@ class ResourcesController < ApplicationController
 
 	private
   	def resource_params
-    	params.require(:resource).permit(:name, :description, :temp_tags)
+    	params.require(:resource).permit(:name, :description, :temp_tags, :group_ids)
   	end
 end
