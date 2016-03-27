@@ -21,6 +21,7 @@ Setting up react: https://www.airpair.com/reactjs/posts/reactjs-a-guide-for-rail
 1. Email time won't update when the time of the reservation is updated
 2. Can't edit reservation if it overlaps with the reservation that is currently being edited
 3. Cannot currently update tags with api
+4. the other resources that show up is when creating a reservation is all resources, not ones with reserve access
 
 Cool things to do later on:
 1. Recurring reservations

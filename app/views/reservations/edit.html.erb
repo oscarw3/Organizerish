@@ -1,2 +1,27 @@
 <h1>Edit Reservation</h1>
-<%= render 'form' %>
+<%= simple_form_for @reservation do |f| %>
+  
+
+  <p>
+    	<%= f.label :starttime %><br>
+    	<%= f.datetime_select :starttime %>
+  	</p>
+ 
+	<p>
+    	<%= f.label :endtime %><br>
+   		<%= f.datetime_select :endtime %>
+ 	</p>
+
+  <p>
+      <%= f.association :resources, as: :check_boxes, :label_method => :name %>
+  </p>
+
+<!--  	<p>
+    	<%= f.label :recurring %><br>
+   		<%= f.text_field :recurring %>
+ 	</p> -->
+ 
+	<p>
+    	<%= f.submit %>
+  	</p>
+<% end %>

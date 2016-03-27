@@ -35,14 +35,24 @@ class ReservationsController < ApplicationController
   def create
 
 		@reservation = Reservation.new(reservation_params)
-    if !current_user.create_reservation_permission?(@reservation.resource)
-      redirect_to reservations_path, notice: "You don't have reservation access to the page!"
-    end
+    @reservation.resources.each do |resource|
+      if !current_user.create_reservation_permission?(resource)
+        redirect_to reservations_path, notice: "You don't have reservation access to the page!"
+      end
+    end 
   		@reservation.occupied = current_user.id
         if @reservation.overlaps?
           flash[:notice] = "This reservation overlaps!"
           redirect_to reservations_path
     		elsif @reservation.save
+          
+          params["reservation"]["resource_ids"].each do |resource_id|
+            if resource_id != ""
+              @reservation.resources << Resource.find(resource_id)
+            end
+          end
+          @reservation.save
+
           ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation) 
     			redirect_to reservations_path
     		else
@@ -58,7 +68,6 @@ class ReservationsController < ApplicationController
     if !current_user.edit_reservation_permission?(@reservation)
      redirect_to reservations_path, notice: "This isn't your reservation!"
     end
-		@resource = @reservation.resource
 	end
 
 	def update
@@ -88,6 +97,6 @@ class ReservationsController < ApplicationController
 
 	private
   	def reservation_params
-    	params.require(:reservation).permit(:starttime, :endtime, :recurring, :resource_id)
+    	params.require(:reservation).permit(:starttime, :endtime, :recurring, :resource_ids)
   	end
 end

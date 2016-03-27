@@ -15,7 +15,9 @@
     <% @myreservations.each do |reservation| %>
       <tr>
         <td><%= User.find(reservation.occupied).firstname %></td>
-        <td><%= reservation.resource.name %></td>
+        <% reservation.resources.each do |resource| %>
+          <td><%= resource.name %></td>
+        <% end %>
         <td><%= reservation.starttime %></td>
         <td><%= reservation.endtime %></td>
         <td>
@@ -45,10 +47,12 @@
   </thead>
   <tbody>
     <% @allreservations.each do |reservation| %>
-    <% if current_user.view_permission?(reservation.resource) %>
+    <% if current_user.view_permission?(reservation.resources.first) %>
       <tr>
         <td><%= User.find(reservation.occupied).firstname %></td>
-        <td><%= reservation.resource.name %></td>
+        <% reservation.resources.each do |resource| %>
+          <td><%= resource.name %></td>
+        <% end %>
         <td><%= reservation.starttime %></td>
         <td><%= reservation.endtime %></td>
         <% if current_user.has_reservation_management? %>

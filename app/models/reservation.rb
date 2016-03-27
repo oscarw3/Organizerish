@@ -1,13 +1,15 @@
 class Reservation < ActiveRecord::Base
-  belongs_to :resource
+  has_and_belongs_to_many :resources
 
   enum recurring: [:never, :daily, :weekly, :monthly]
 
   def overlaps?
-  	self.resource.reservations.each do |reservation|
-  		if (reservation.starttime < self.endtime && reservation.endtime > self.starttime) 
-  			return true
-  		end
+  	self.resources.each do |resource|
+      resource.reservations.each do |reservation|
+    		if (reservation.starttime < self.endtime && reservation.endtime > self.starttime) 
+    			return true
+    		end
+      end
   		
   	end
   	false
