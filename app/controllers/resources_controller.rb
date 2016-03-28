@@ -2,6 +2,7 @@ class ResourcesController < ApplicationController
 	include ResourcesHelper
 
 	# Admin Index
+	# test
 	def index
 		checkaccess
 		# @users are users without admins
