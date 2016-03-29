@@ -15,9 +15,17 @@
       <%= f.text_area :temp_tags %>
   </p>
 
+
+ <p>
+      <%= f.label :isrestricted, 'Restricted' %>
+      <%= f.check_box :isrestricted %>
+  </p>
+
   <p>
       <%= f.association :groups, as: :check_boxes, :label_method => :name %>
   </p>
+
+
 	<p>
     	<%= f.submit %>
   </p>

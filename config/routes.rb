@@ -13,7 +13,17 @@ Rails.application.routes.draw do
   get '/resources/:id/permissions', to: 'resources#permissions', as: 'permissions_resource'
   post '/resources/:id/permissions', to: 'resources#updatepermissions', as: 'update_permissions_resource'
   resources :groups
-  resources :reservations
+  resources :reservations do
+    member do
+      get 'approve'
+      end
+    end
+
+
+
+
+
+
   resources :users, except: :create
   post 'create_user' => 'users#create', as: :create_user
   root 'reservations#index'

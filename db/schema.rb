@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160327231212) do
+ActiveRecord::Schema.define(version: 20160329021757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20160327231212) do
     t.datetime "starttime"
     t.datetime "endtime"
     t.integer  "recurring"
+    t.boolean  "isapproved"
   end
 
   create_table "reservations_resources", id: false, force: :cascade do |t|
@@ -85,8 +86,9 @@ ActiveRecord::Schema.define(version: 20160327231212) do
     t.string   "name"
     t.string   "description"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.boolean  "isrestricted"
   end
 
   add_index "resources", ["user_id"], name: "index_resources_on_user_id", using: :btree

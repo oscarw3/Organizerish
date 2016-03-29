@@ -20,6 +20,7 @@
     <tr>
       <th>Resource</th>
       <th>Description</th>
+      <th>Restricted </th>
       <th>Tags</th>
       <th>Actions</th>
     </tr>
@@ -29,6 +30,14 @@
       <tr>
         <td><%= resource.name %></td>
         <td><%= resource.description %></td>
+        <td>
+        <% if resource.isrestricted %>
+          restricted
+          <% else %>
+          not restricted
+          <% end %>
+
+        </td>
         <td>
         <% resource.tags.each do |tag| %>
 	    	<%= link_to tag.text, resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH, :class => 'btn btn-xs btn-primary' %>

@@ -35,11 +35,10 @@ class ReservationsController < ApplicationController
   def create
 
 		@reservation = Reservation.new(reservation_params)
-    @reservation.resources.each do |resource|
-      if !current_user.create_reservation_permission?(resource)
-        redirect_to reservations_path, notice: "You don't have reservation access to the page!"
-      end
-    end 
+    @reservation.isapproved = true
+    puts @reservation.resources.size
+    puts "HELLOOOOOOOOOOOOOOOOOOOOOOOO BEFORE LOOOOOOOOOOOOOOOOOOOOOOOOOOOP \n\n\n\n\n"
+
   		@reservation.occupied = current_user.id
         if @reservation.overlaps?
           flash[:notice] = "This reservation overlaps!"
@@ -51,6 +50,32 @@ class ReservationsController < ApplicationController
               @reservation.resources << Resource.find(resource_id)
             end
           end
+
+
+      @reservation.resources.each do |resource|
+
+      #Check if any of the resources are restricted
+
+      puts "INSIDE RESOURCE LOOP"
+
+      puts resource.isrestricted
+
+      puts "HELLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO \n\n\n"
+
+      if resource.isrestricted?
+        puts "FOUND RESTRICTED RESOURCE"
+        @reservation.isapproved = false
+      end
+
+      if !current_user.create_reservation_permission?(resource)
+        redirect_to reservations_path, notice: "You don't have reservation access to the page!"
+      end
+      
+    end 
+
+
+
+
           @reservation.save
 
           ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation) 
@@ -102,8 +127,21 @@ class ReservationsController < ApplicationController
     	redirect_to reservations_path
 	end
 
+  def approve
+    puts "APPROVE METHOD CALLED"
+
+
+
+
+
+
+    redirect_to reservations_path
+
+  end
+
+
 	private
   	def reservation_params
-    	params.require(:reservation).permit(:starttime, :endtime, :recurring, :resource_ids)
+    	params.require(:reservation).permit(:starttime, :endtime, :recurring, :resource_ids, :isapproved)
   	end
 end

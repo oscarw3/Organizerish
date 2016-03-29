@@ -20,6 +20,14 @@ class ResourcesController < ApplicationController
 	def create
 		checkaccess
 		@resource = Resource.new(resource_params)
+
+		if @resource.isrestricted
+			puts "is restricted"
+		else
+			puts "not restricted"
+		end
+
+
  		@resource.user_id = current_user.id
   		if @resource.save
   			@resource.initialize_permissions
@@ -117,6 +125,6 @@ class ResourcesController < ApplicationController
 
 	private
   	def resource_params
-    	params.require(:resource).permit(:name, :description, :temp_tags, :group_ids)
+    	params.require(:resource).permit(:name, :description, :temp_tags, :group_ids, :isrestricted)
   	end
 end
