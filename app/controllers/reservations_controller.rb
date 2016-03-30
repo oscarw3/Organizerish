@@ -12,7 +12,7 @@ class ReservationsController < ApplicationController
     @start_date = Time.zone.local(*params[:range_end].sort.map(&:last).map(&:to_i)).utc
     end
     configuretags
-
+    
   end
 
   def new
