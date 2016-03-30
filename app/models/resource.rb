@@ -38,14 +38,17 @@ class Resource < ActiveRecord::Base
         else
           tag = tagsearch.first
         end
-
-        #if tag is not yet associated with resource, add tag to resource.tags
-        if !self.tags.exists?(tag.id)
-          self.tags << tag
-        end
+        addtag(tag)
       end
     #save resource after iterating
     self.save
+  end
+
+  def addtag(tag)
+    #if tag is not yet associated with resource, add tag to resource.tags
+    if !self.tags.exists?(tag.id)
+      self.tags << tag
+    end
   end
 
   def removealltags

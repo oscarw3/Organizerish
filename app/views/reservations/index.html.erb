@@ -1,3 +1,4 @@
+<a name = "mine"></a>
 <div class="page-header">
 <h1>My Reservations</h1>
 </div>
@@ -7,7 +8,7 @@
       <th>Title</th>
       <th>Description</th>
       <th>User</th>
-      <th>Resource</th>
+      <th>Resources</th>
       <th>Approved</th>
       <th>Start Time</th>
       <th>End Time</th>
@@ -65,6 +66,8 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>Title</th>
+      <th>Description</th>
       <th>User</th>
       <th>Resources</th>
       <th>Approved</th>
@@ -77,6 +80,8 @@
     <% @allreservations.each do |reservation| %>
     <% if current_user.view_permission?(reservation.resources.first) %>
       <tr>
+        <td><%= reservation.title %></td>
+        <td><%= reservation.description %></td>
         <td><%= User.find(reservation.occupied).firstname %></td>
         <td>
         <% j = 0 %>
@@ -107,8 +112,6 @@
           <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
             <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: 'Are you sure?'}, :class => 'btn btn-xs btn-primary' %>
           <% end %>
-
-
         </td>
         
       </tr>
@@ -146,7 +149,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @resources.each do |resource| %>
+    <% @resources.sort_by{|x| x.name}.each do |resource| %>
     <% if current_user.view_permission?(resource) %>
       <tr>
         <td><%= resource.name %></td>
@@ -159,7 +162,7 @@
         	<%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring, anchor: "reserve"}), :class => 'btn btn-xs btn-primary' %>
         <% end %>
         </td>
-        <td><%= link_to 'Reserve', new_reservation_path(:resource => resource.id) %></td>
+        <td><%= link_to 'Reserve', new_reservation_path(:resource => resource.id), :class => 'btn btn-xs btn-success' %></td>
       </tr>
       <% end %>
     <% end %>

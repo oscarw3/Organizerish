@@ -97,6 +97,15 @@ class ResourcesController < ApplicationController
 		redirect_to resources_path
 	end
 
+	def addtag
+		checkaccess
+		tag = Tag.find(params[:tag])
+		resource = Resource.find(params[:resource])
+		resource.addtag(tag)
+		refreshtags
+		redirect_to resources_path
+	end
+
 	# update list of tags
 	def refreshtags
 		if Tag.all != nil

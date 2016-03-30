@@ -1,18 +1,4 @@
 <a name = "all"></a>
-<h1>Resources</h1>
-
-<%= link_to 'New User', new_user_path %> <br> <br>
-<% @users.each do |user| %>
-	<%= user.id%> | 
-	<%= user.email %> |
-	<% if current_user.has_user_management? %>
-		<%= link_to 'Edit', edit_user_path(user) %> | 
-		<%= link_to 'Delete', user_path(user),
-	              method: :delete,
-	              data: { confirm: 'Are you sure?' } %>
-	<% end %>
-	<br> 
-<% end %>
 <a name = "filter"></a>
 <div class="page-header">
 <h1>Resources</h1>
@@ -42,17 +28,16 @@
     </tr>
   </thead>
   <tbody>
-    <% @resources.each do |resource| %>
+    <% @resources.sort_by{|x| x.name}.each do |resource| %>
       <tr>
         <td><%= resource.name %></td>
         <td><%= resource.description %></td>
         <td>
         <% if resource.isrestricted %>
-          restricted
-          <% else %>
-          not restricted
-          <% end %>
-
+        <span class="label label-success">yes</span>
+        <% else %>
+        <span class="label label-danger">no</span>
+        <% end %>
         </td>
         <td>
         <% alphabetizetags(resource.tags & @tags_selected).each do |tag| %>
@@ -72,6 +57,16 @@
               <li><a href="#"><%= link_to "remove tag", resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>
             </ul>
           </div>
+        <% end %>
+        <% if !(Tag.all - resource.tags).empty? %>
+        <div class="btn-group">
+        <a href="#" class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Add Tag&nbsp;&nbsp;&nbsp;<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+            <% alphabetizetags(Tag.all - resource.tags).each do |tag| %>
+              <li><a href="#"><%= link_to tag.text, resource_add_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>
+            <% end %>
+            </ul> 
+        </div>
         <% end %>
         </td>
         <% if current_user.has_resource_management? %>

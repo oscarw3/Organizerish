@@ -1,11 +1,11 @@
 <!-- Form for Admins to create resources -->
 <%= form_for @user, url: create_user_path do |f| %>
 	<p>
-    	<%= f.label :firstname %><br>
+    	<label for="user_firstname">First Name</label><br>
     	<%= f.text_field :firstname %>
   	</p>
 	<p>
-    	<%= f.label :lastname %><br>
+    	<label for="user_lastname">Last Name</label><br>
     	<%= f.text_field :lastname %>
   	</p>
   	<p>
