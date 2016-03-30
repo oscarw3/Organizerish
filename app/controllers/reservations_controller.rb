@@ -37,33 +37,25 @@ class ReservationsController < ApplicationController
 		@reservation = Reservation.new(reservation_params)
     @reservation.isapproved = true
     puts @reservation.resources.size
-    puts "HELLOOOOOOOOOOOOOOOOOOOOOOOO BEFORE LOOOOOOOOOOOOOOOOOOOOOOOOOOOP \n\n\n\n\n"
-
-  		@reservation.occupied = current_user.id
-        if @reservation.overlaps?
+  	@reservation.occupied = current_user.id
+      if @reservation.overlaps?
           flash[:notice] = "This reservation overlaps!"
           redirect_to reservations_path
-    		elsif @reservation.save
+      elsif @reservation.save
           
-          params["reservation"]["resource_ids"].each do |resource_id|
-            if resource_id != ""
-              @reservation.resources << Resource.find(resource_id)
-            end
+        params["reservation"]["resource_ids"].each do |resource_id|
+          if resource_id != ""
+            @reservation.resources << Resource.find(resource_id)
           end
+        end
 
 
-      @reservation.resources.each do |resource|
+    @reservation.resources.each do |resource|
 
       #Check if any of the resources are restricted
 
-      puts "INSIDE RESOURCE LOOP"
-
-      puts resource.isrestricted
-
-      puts "HELLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO \n\n\n"
 
       if resource.isrestricted?
-        puts "FOUND RESTRICTED RESOURCE"
         @reservation.isapproved = false
       end
 
@@ -73,16 +65,23 @@ class ReservationsController < ApplicationController
       
     end 
 
+    @reservation.save
 
+    if @reservation.isapproved 
+      notapprovedarray = @reservation.not_approved_overlaps
 
+      notapprovedarray.each do |reservation|
+        #delete and email
+        ReservationMailer.reservation_unapproved(@reservation)
+        reservation.destroy
+      end
+    end
 
-          @reservation.save
-
-          ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation) 
-    			redirect_to reservations_path
-    		else
-    			render 'new'
-    		end
+    ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation) 
+    redirect_to reservations_path
+    else
+    	render 'new'
+    end
 	end
 
 	def show 
@@ -134,6 +133,15 @@ class ReservationsController < ApplicationController
     @reservation.isapproved = true
     @reservation.save
 
+    notapprovedarray = @reservation.not_approved_overlaps
+
+    notapprovedarray.each do |reservation|
+      #delete and email
+      reservation.destroy
+    end
+
+
+
 
 
 
@@ -144,6 +152,6 @@ class ReservationsController < ApplicationController
 
 	private
   	def reservation_params
-    	params.require(:reservation).permit(:starttime, :endtime, :recurring, :resource_ids, :isapproved)
+    	params.require(:reservation).permit(:starttime, :endtime, :recurring, :resource_ids, :isapproved, :title, :description)
   	end
 end

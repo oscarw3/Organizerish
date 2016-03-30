@@ -34,7 +34,12 @@ class ResourcesController < ApplicationController
   			@resource.storetags
 	  		  params["resource"]["group_ids"].each do |group_id|
 	            if group_id != ""
-	              @resource.groups << Group.find(group_id)
+	              restricted_managers_group = Group.find(group_id)
+	              @resource.groups << restricted_managers_group
+	              # add restricted managers to resource
+	              restricted_managers_group.permissions << @resource.permissions.where(viewaccess: 1).where(reserveaccess: 0) 
+	              restricted_managers_group.permissions << @resource.permissions.where(viewaccess: 0).where(reserveaccess: 1)
+	              restricted_managers_group.save
 	            end
 	          end
 	          @resource.save

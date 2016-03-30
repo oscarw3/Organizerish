@@ -4,6 +4,8 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>Title</th>
+      <th>Description</th>
       <th>User</th>
       <th>Resource</th>
       <th>Approved</th>
@@ -15,6 +17,8 @@
   <tbody>
     <% @myreservations.each do |reservation| %>
       <tr>
+        <td><%= reservation.title %></td>
+        <td><%= reservation.description %></td>
         <td><%= User.find(reservation.occupied).firstname %></td>
         <% reservation.resources.each do |resource| %>
           <td><%= resource.name %></td>
@@ -27,8 +31,13 @@
           <%= link_to 'Delete', reservation_path(reservation), method: :delete,
               data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
 
+<!--- puts also need to check for if manager -->
 
-          <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: 'Are you sure?'}, :class => 'btn btn-xs btn-primary' %>
+
+
+          <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
+            <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: 'Are you sure?'}, :class => 'btn btn-xs btn-primary' %>
+          <% end %>
         </td>
       </tr>
     <% end %>
@@ -62,14 +71,20 @@
         <td> <%= reservation.isapproved %> </td>
         <td><%= reservation.starttime %></td>
         <td><%= reservation.endtime %></td>
-        <% if current_user.has_reservation_management? %>
+        
         <td>
+        <% if current_user.has_reservation_management? %>
           <%= link_to 'Edit', edit_reservation_path(reservation), :class => 'btn btn-xs btn-success' %>
           <%= link_to 'Delete', reservation_path(reservation), method: :delete,
               data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
-          <%= link_to 'Approve', reservation_path(reservation), method: :approve, data: { confirm: 'Are you sure?'}, :class => 'btn btn-xs btn-primary' %>
+        <% end %>      
+          <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
+            <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: 'Are you sure?'}, :class => 'btn btn-xs btn-primary' %>
+          <% end %>
+
+
         </td>
-        <% end %>
+        
       </tr>
       <% end %>
     <% end %>
