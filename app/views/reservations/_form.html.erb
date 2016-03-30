@@ -24,7 +24,9 @@
  	</p>
 
   <p>
-      <%= f.association :resources, as: :check_boxes, :label_method => :name, :checked => @resource.id %>
+      <% puts "hi" %>
+      <% puts Resource.order('name ASC')%>
+      <%= f.association :resources, as: :check_boxes, :label_method => :name, :checked => @resource.id, collection: Resource.order('name ASC')%>
   </p>
 
  

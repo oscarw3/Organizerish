@@ -22,7 +22,8 @@
     <tr>
       <th>Resource</th>
       <th>Description</th>
-      <th>Restricted </th>
+      <th>Restricted?</th>
+      <th>Managers</th>
       <th>Edit Tags</th>
       <th>Actions</th>
     </tr>
@@ -37,6 +38,11 @@
         <span class="label label-success">yes</span>
         <% else %>
         <span class="label label-danger">no</span>
+        <% end %>
+        </td>
+        <td>
+        <% resource.groups.each do |group| %>
+        <span class="label label-info"><%= group.name %></span>
         <% end %>
         </td>
         <td>

@@ -1,4 +1,10 @@
 <a name = "mine"></a>
+
+<%= form_tag(method: "get") do %>
+<h4 alignment = "center">Filter Timespan:&nbsp;
+<%= date_select('range', 'start_date', :order => [:month, :day, :year])%>&nbsp;to&nbsp;<%= date_select('range', 'end_date', :order => [:month, :day, :year])%>
+<%= submit_tag("Go") %>
+<% end %>
 <div class="page-header">
 <h1>My Reservations</h1>
 </div>
@@ -144,6 +150,8 @@
     <tr>
       <th>Resource</th>
       <th>Description</th>
+      <th>Restricted?</th>
+      <th>Managers</th>
       <th>Tags</th>
       <th>Actions</th>
     </tr>
@@ -154,6 +162,18 @@
       <tr>
         <td><%= resource.name %></td>
         <td><%= resource.description %></td>
+        <td>
+        <% if resource.isrestricted %>
+        <span class="label label-success">yes</span>
+        <% else %>
+        <span class="label label-danger">no</span>
+        <% end %>
+        </td>
+        <td>
+        <% resource.groups.each do |group| %>
+        <span class="label label-info"><%= group.name %></span>
+        <% end %>
+        </td>
         <td>
         <% alphabetizetags(resource.tags & @tags_selected).each do |tag| %>
         	<%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>

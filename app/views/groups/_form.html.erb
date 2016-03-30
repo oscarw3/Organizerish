@@ -6,17 +6,17 @@
   	</p>
   <% end %>
 	<p>
-    	<%= label_tag(:resourcemanagement, "Resource Management")%><br>
+    	<%= label_tag(:resourcemanagement, "Resource Management: ")%>
       <%= f.check_box :resourcemanagement %>
  	</p>
 
 	<p>
-    	<%= label_tag(:reservationmanagement, "Reservation Management") %><br>
+    	<%= label_tag(:reservationmanagement, "Reservation Management: ") %>
    		<%= f.check_box :reservationmanagement %>
  	</p>
 
  		<p>
-    	<%= label_tag(:usermanagement, "User Management") %><br>
+    	<%= label_tag(:usermanagement, "User Management: ") %>
    		<%= f.check_box :usermanagement %>
  	</p>
   <% if !@group.hidden %>

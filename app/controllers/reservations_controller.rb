@@ -5,6 +5,12 @@ class ReservationsController < ApplicationController
 
     @allreservations = Reservation.all 
     @myreservations = Reservation.where(occupied: current_user.id)
+    if params[:range_start] != nil
+    @start_date = Time.zone.local(*params[:range_start].sort.map(&:last).map(&:to_i)).utc
+    end
+    if params[:range_end] != nil
+    @start_date = Time.zone.local(*params[:range_end].sort.map(&:last).map(&:to_i)).utc
+    end
     configuretags
 
   end
