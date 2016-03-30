@@ -21,6 +21,7 @@ Setting up react: https://www.airpair.com/reactjs/posts/reactjs-a-guide-for-rail
 1. Email time won't update when the time of the reservation is updated
 2. Can't edit reservation if it overlaps with the reservation that is currently being edited
 3. Cannot currently update tags with api
+4. the other resources that show up is when creating a reservation is all resources, not ones with reserve access
 
 Cool things to do later on:
 1. Recurring reservations
@@ -67,7 +68,7 @@ end time: datetime
 recurring: integer (enum)
 
 Groups
-(1 group to many users)
+(many groups to many users)
 name: string
 resourcemanagement: (0= no access, 1= yes access)
 reservationmanagement: (0= no access, 1= yes access)
@@ -76,7 +77,7 @@ usermanagement: (0= no access, 1= yes access)
 
 Permission 
 (1 Resource to many permissions)
-(1 Group to many permissions)
+(many groups to many permissions)
 viewaccess: (0= no access, 1= yes access)
 reserveaccess: (0= no access, 1= yes access)
 

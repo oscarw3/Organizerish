@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229204857) do
+ActiveRecord::Schema.define(version: 20160329021757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,11 @@ ActiveRecord::Schema.define(version: 20160229204857) do
     t.integer "permission_id", null: false
   end
 
+  create_table "groups_resources", id: false, force: :cascade do |t|
+    t.integer "group_id",    null: false
+    t.integer "resource_id", null: false
+  end
+
   create_table "groups_users", id: false, force: :cascade do |t|
     t.integer "group_id", null: false
     t.integer "user_id",  null: false
@@ -64,22 +69,26 @@ ActiveRecord::Schema.define(version: 20160229204857) do
 
   create_table "reservations", force: :cascade do |t|
     t.integer  "occupied"
-    t.integer  "resource_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.datetime "starttime"
     t.datetime "endtime"
     t.integer  "recurring"
+    t.boolean  "isapproved"
   end
 
-  add_index "reservations", ["resource_id"], name: "index_reservations_on_resource_id", using: :btree
+  create_table "reservations_resources", id: false, force: :cascade do |t|
+    t.integer "reservation_id", null: false
+    t.integer "resource_id",    null: false
+  end
 
   create_table "resources", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.boolean  "isrestricted"
   end
 
   add_index "resources", ["user_id"], name: "index_resources_on_user_id", using: :btree
@@ -119,6 +128,5 @@ ActiveRecord::Schema.define(version: 20160229204857) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "permissions", "resources"
-  add_foreign_key "reservations", "resources"
   add_foreign_key "resources", "users"
 end

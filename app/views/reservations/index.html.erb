@@ -6,6 +6,7 @@
     <tr>
       <th>User</th>
       <th>Resource</th>
+      <th>Approved</th>
       <th>Start Time</th>
       <th>End Time</th>
       <th>Actions</th>
@@ -15,13 +16,19 @@
     <% @myreservations.each do |reservation| %>
       <tr>
         <td><%= User.find(reservation.occupied).firstname %></td>
-        <td><%= reservation.resource.name %></td>
+        <% reservation.resources.each do |resource| %>
+          <td><%= resource.name %></td>
+        <% end %>
+        <td> <%= reservation.isapproved %> </td>
         <td><%= reservation.starttime %></td>
         <td><%= reservation.endtime %></td>
         <td>
           <%= link_to 'Edit', edit_reservation_path(reservation), :class => 'btn btn-xs btn-success' %>
           <%= link_to 'Delete', reservation_path(reservation), method: :delete,
               data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
+
+
+          <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: 'Are you sure?'}, :class => 'btn btn-xs btn-primary' %>
         </td>
       </tr>
     <% end %>
@@ -38,6 +45,7 @@
     <tr>
       <th>User</th>
       <th>Resource</th>
+      <th> Approved </th>
       <th>Start Time</th>
       <th>End Time</th>
       <th>Actions</th>
@@ -45,10 +53,13 @@
   </thead>
   <tbody>
     <% @allreservations.each do |reservation| %>
-    <% if current_user.view_permission?(reservation.resource) %>
+    <% if current_user.view_permission?(reservation.resources.first) %>
       <tr>
         <td><%= User.find(reservation.occupied).firstname %></td>
-        <td><%= reservation.resource.name %></td>
+        <% reservation.resources.each do |resource| %>
+          <td><%= resource.name %></td>
+        <% end %>
+        <td> <%= reservation.isapproved %> </td>
         <td><%= reservation.starttime %></td>
         <td><%= reservation.endtime %></td>
         <% if current_user.has_reservation_management? %>
@@ -56,6 +67,7 @@
           <%= link_to 'Edit', edit_reservation_path(reservation), :class => 'btn btn-xs btn-success' %>
           <%= link_to 'Delete', reservation_path(reservation), method: :delete,
               data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
+          <%= link_to 'Approve', reservation_path(reservation), method: :approve, data: { confirm: 'Are you sure?'}, :class => 'btn btn-xs btn-primary' %>
         </td>
         <% end %>
       </tr>

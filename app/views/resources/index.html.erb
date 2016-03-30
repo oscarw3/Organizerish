@@ -36,6 +36,7 @@
     <tr>
       <th>Resource</th>
       <th>Description</th>
+      <th>Restricted </th>
       <th>Edit Tags</th>
       <th>Actions</th>
     </tr>
@@ -45,6 +46,14 @@
       <tr>
         <td><%= resource.name %></td>
         <td><%= resource.description %></td>
+        <td>
+        <% if resource.isrestricted %>
+          restricted
+          <% else %>
+          not restricted
+          <% end %>
+
+        </td>
         <td>
         <% alphabetizetags(resource.tags & @tags_selected).each do |tag| %>
           <div class="btn-group">

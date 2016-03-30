@@ -1,8 +1,8 @@
 <!-- Form for creating reservations -->
+
 <p><%= @resource.name %></p>
-<%= form_for @reservation do |f| %>
+<%= simple_form_for @reservation do |f| %>
   
-  <%= f.hidden_field :resource_id, :value => @resource.id %>
 
   <p>
     	<%= f.label :starttime %><br>
@@ -13,6 +13,12 @@
     	<%= f.label :endtime %><br>
    		<%= f.datetime_select :endtime %>
  	</p>
+
+  <p>
+      <%= f.association :resources, as: :check_boxes, :label_method => :name, :checked => @resource.id %>
+  </p>
+
+ 
 
 <!--  	<p>
     	<%= f.label :recurring %><br>
