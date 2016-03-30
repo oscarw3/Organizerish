@@ -6,9 +6,11 @@ class Reservation < ActiveRecord::Base
   def overlaps?
   	self.resources.each do |resource|
       resource.reservations.each do |reservation|
-    		if (reservation.starttime < self.endtime && reservation.endtime > self.starttime) 
-    			return true
-    		end
+        if reservation.isapproved?
+    		  if (reservation.starttime < self.endtime && reservation.endtime > self.starttime) 
+    			 return true
+    		  end
+        end
       end
   		
   	end
