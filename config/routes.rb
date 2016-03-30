@@ -13,12 +13,23 @@ Rails.application.routes.draw do
   get '/resources/:id/permissions', to: 'resources#permissions', as: 'permissions_resource'
   post '/resources/:id/permissions', to: 'resources#updatepermissions', as: 'update_permissions_resource'
   resources :groups
-  resources :reservations
+  resources :reservations do
+    member do
+      get 'approve'
+      end
+    end
+
+
+
+
+
+
   resources :users, except: :create
   post 'create_user' => 'users#create', as: :create_user
   root 'reservations#index'
 
-  patch '/resources/tags/:resource/:tag', to: 'resources#removetag', as: 'resource_remove_tags'
+  patch '/resources/tags/remove/:resource/:tag', to: 'resources#removetag', as: 'resource_remove_tags'
+  patch '/resources/tags/add/:resource/:tag', to: 'resources#addtag', as: 'resource_add_tags'
   # You can have the root of your site routed with "root"
   
   namespace :api, defaults: {format: 'json'} do 

@@ -7,10 +7,18 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  
-
   # used to distinguish if user is admin or not
   enum role: [:admin, :basic]
+
+	after_update :log_changed
+
+  def log_changed
+    Group.where(:name => changed_attributes["email"]).each do |usergroup|
+ 			if usergroup.hidden
+ 				usergroup.destroy
+ 			end
+ 		end
+  end
 
 	def admin?
 		if self.role == "admin"
@@ -30,6 +38,26 @@ class User < ActiveRecord::Base
 			end
 		end
 		return false
+	end
+
+	def is_restricted_resource_manager(reservation)
+
+		reservation.resources.each do |resource|
+
+			if resource.isrestricted
+				resource.groups.each do |group|
+					group.users do |user|
+						if self.id == user.id
+							return true
+						end
+					end
+				end
+
+			end
+
+		end
+
+
 	end
 
 	def has_reservation_management?

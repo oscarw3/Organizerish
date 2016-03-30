@@ -1,24 +1,27 @@
+<a name = "edit"></a>
+<div class = "jumbotron" align = "center">
 <h1> Edit User </h1>
 <!-- can't use same form due to the create url line needed for authentication -->
 <%= form_for @user do |f| %>
-	<p>
-    	<%= f.label :firstname %><br>
-    	<%= f.text_field :firstname %>
-  	</p>
-	<p>
-    	<%= f.label :lastname %><br>
-    	<%= f.text_field :lastname %>
-  	</p>
-  	<p>
-    	<%= f.label :email %><br>
-    	<%= f.text_field :email %>
-  	</p>
-  	<p>
-    	<%= f.label :password %><br>
-    	<%= f.text_field :password %>
-  	</p>  
+  <p>
+      <label for="user_firstname">First Name</label><br>
+      <%= f.text_field :firstname %>
+    </p>
+  <p>
+      <label for="user_lastname">Last Name</label><br>
+      <%= f.text_field :lastname %>
+    </p>
+    <p>
+      <%= f.label :email %><br>
+      <%= f.text_field :email %>
+    </p>
+    <p>
+      <%= f.label :password %><br>
+      <%= f.text_field :password %>
+    </p>  
  
-	<p>
-    	<%= f.submit %>
-  	</p>
+  <p>
+      <%= f.submit %>
+    </p>
 <% end %>
+</div>

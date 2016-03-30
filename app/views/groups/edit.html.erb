@@ -1,4 +1,13 @@
-<h1>Edit Group</h1>
+<a name = "edit"></a>
+<div class = "jumbotron" align = "center">
+<h1>
+	<% if @group.hidden %>
+      Edit Permissions
+  <% else %>
+  	  Edit Group
+  <% end %>
+</h1>
 
 <!-- See _form.html.erb -->
 <%= render 'form' %>
+</div>

@@ -53,6 +53,10 @@ gem 'tzinfo-data'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
+# time range selector stuff
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

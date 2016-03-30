@@ -19,3 +19,6 @@
 //= require components
 //= require superhero/loader
 //= require superhero/bootswatch
+//= require moment
+//= require bootstrap-datetimepicker
+//= require pickers

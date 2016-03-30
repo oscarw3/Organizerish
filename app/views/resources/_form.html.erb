@@ -1,5 +1,5 @@
 <!-- Form for Admins to create resources -->
-<%= form_for @resource do |f| %>
+<%= simple_form_for @resource do |f| %>
 	<p>
     	<%= f.label :name %><br>
     	<%= f.text_field :name %>
@@ -14,6 +14,18 @@
       <%= f.label :tags %><br>
       <%= f.text_area :temp_tags %>
   </p>
+
+
+ <p>
+      <%= f.label :isrestricted, 'Restrict Resource:' %>
+      <%= f.check_box :isrestricted %>
+  </p>
+
+  <p>
+      <%= f.association :groups, as: :check_boxes, :label_method => :name, collection: Group.order('name ASC')%>
+  </p>
+
+
 	<p>
     	<%= f.submit %>
   </p>
