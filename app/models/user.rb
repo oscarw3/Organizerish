@@ -32,6 +32,26 @@ class User < ActiveRecord::Base
 		return false
 	end
 
+	def is_restricted_resource_manager(reservation)
+
+		reservation.resources.each do |resource|
+
+			if resource.isrestricted
+				resource.groups.each do |group|
+					group.users do |user|
+						if self.id == user.id
+							return true
+						end
+					end
+				end
+
+			end
+
+		end
+
+
+	end
+
 	def has_reservation_management?
 		if self.admin?
 			return true

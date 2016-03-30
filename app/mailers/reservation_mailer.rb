@@ -14,5 +14,11 @@ class ReservationMailer < ApplicationMailer
 
   	end
 
+    def reservation_unapproved(reservation)
+      @reservation = reservation
+      @user = User.find(@reservation.occupied)
+      mail(to: @user.email, subject: 'Your reservation was not approved')
+    end
+
 
 end

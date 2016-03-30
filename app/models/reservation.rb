@@ -12,10 +12,29 @@ class Reservation < ActiveRecord::Base
     		  end
         end
       end
-  		
   	end
   	false
   end
+
+  def not_approved_overlaps
+    reservations = []
+
+    self.resources.each do |resource|
+      resource.reservations.each do |reservation|
+        if !reservation.isapproved?
+          if (reservation.starttime < self.endtime && reservation.endtime > self.starttime) 
+           reservations << reservation
+          end
+        end
+      end
+    end
+
+    return reservations
+  end
+
+
+    #IDs << reservation.id
+
 
   def clear_resources
     self.resources.each do |resource|

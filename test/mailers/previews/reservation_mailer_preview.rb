@@ -7,4 +7,5 @@ class ReservationMailerPreview < ActionMailer::Preview
     	ReservationMailer.resource_deleted(Reservation.first)
   	end
   	
+  	
 end
