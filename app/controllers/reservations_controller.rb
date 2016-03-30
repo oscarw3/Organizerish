@@ -140,11 +140,6 @@ class ReservationsController < ApplicationController
       reservation.destroy
     end
 
-
-
-
-
-
     redirect_to reservations_path
 
   end
