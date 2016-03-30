@@ -71,7 +71,7 @@
         </td>
         <% if current_user.has_resource_management? %>
         <td>
-          <%= link_to 'Edit', edit_resource_path(resource), :class => 'btn btn-xs btn-success' %>
+          <%= link_to 'Edit', edit_resource_path(resource, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
           <%= link_to 'Manage Permissions', permissions_resource_path(resource), :class => 'btn btn-xs btn-warning'%>
           <%= link_to 'Delete', resource_path(resource),
 	              method: :delete,

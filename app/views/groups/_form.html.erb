@@ -1,30 +1,35 @@
 <%= simple_form_for @group do |f| %>
+  <% if !@group.hidden %>
 	<p>
     	<%= f.label :name %><br>
     	<%= f.text_field :name %>
   	</p>
- 
+  <% end %>
 	<p>
-    	<%= f.label :resourcemanagement %><br>
-   		<%= f.text_area :resourcemanagement %>
+    	<%= label_tag(:resourcemanagement, "Resource Management")%><br>
+      <%= f.check_box :resourcemanagement %>
  	</p>
 
 	<p>
-    	<%= f.label :reservationmanagement %><br>
-   		<%= f.text_area :reservationmanagement %>
+    	<%= label_tag(:reservationmanagement, "Reservation Management") %><br>
+   		<%= f.check_box :reservationmanagement %>
  	</p>
 
  		<p>
-    	<%= f.label :usermanagement %><br>
-   		<%= f.text_area :usermanagement %>
+    	<%= label_tag(:usermanagement, "User Management") %><br>
+   		<%= f.check_box :usermanagement %>
  	</p>
-
+  <% if !@group.hidden %>
     <p>
       <%= f.association :users, as: :check_boxes, :label_method => :firstname %>
   </p>
-
+  <% end %>
 	<p>
-    	<%= f.submit %>
 
+  <% if @group.hidden %>
+      <%= f.submit "Update Permissions"%>
+  <% else %>
+    	<%= f.submit %>
+  <% end%>
   </p>
 <% end %>

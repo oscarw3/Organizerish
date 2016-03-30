@@ -41,7 +41,7 @@
         <td><%= reservation.starttime %></td>
         <td><%= reservation.endtime %></td>
         <td>
-          <%= link_to 'Edit', edit_reservation_path(reservation), :class => 'btn btn-xs btn-success' %>
+          <%= link_to 'Edit', edit_reservation_path(reservation, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
           <%= link_to 'Delete', reservation_path(reservation), method: :delete,
               data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
 
@@ -105,7 +105,7 @@
         
         <td>
         <% if current_user.has_reservation_management? %>
-          <%= link_to 'Edit', edit_reservation_path(reservation), :class => 'btn btn-xs btn-success' %>
+          <%= link_to 'Edit', edit_reservation_path(reservation, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
           <%= link_to 'Delete', reservation_path(reservation), method: :delete,
               data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
         <% end %>      
@@ -162,7 +162,7 @@
         	<%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring, anchor: "reserve"}), :class => 'btn btn-xs btn-primary' %>
         <% end %>
         </td>
-        <td><%= link_to 'Reserve', new_reservation_path(:resource => resource.id), :class => 'btn btn-xs btn-success' %></td>
+        <td><%= link_to 'Reserve', new_reservation_path(:resource => resource.id, anchor: "new"), :class => 'btn btn-xs btn-success' %></td>
       </tr>
       <% end %>
     <% end %>

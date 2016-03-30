@@ -4,11 +4,11 @@
 <!-- can't use same form due to the create url line needed for authentication -->
 <%= form_for @user do |f| %>
   <p>
-      <%= f.label :firstname %><br>
+      <label for="user_firstname">First Name</label><br>
       <%= f.text_field :firstname %>
     </p>
   <p>
-      <%= f.label :lastname %><br>
+      <label for="user_lastname">Last Name</label><br>
       <%= f.text_field :lastname %>
     </p>
     <p>

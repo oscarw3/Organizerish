@@ -5,17 +5,52 @@
 
 <div align = "right"><%= link_to '+ New Group', new_group_path(anchor: "new"), :class => "btn btn-success btn-lg" %></div>
 
-<% @groups.each do |group| %>
-	<%= group.name %> | <%= group.resourcemanagement %> | <%= group.reservationmanagement %> | <%= group.usermanagement %> | <%= link_to 'Edit', edit_group_path(group) %> | 
-	<%= link_to 'Delete', group_path(group),
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Group Name</th>
+      <th>Members</th>
+      <th>Management Permissions</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @groups.each do |group| %>
+      <tr>
+      	<td>
+      	<%= group.name %>
+      	</td>
+      	<td>
+      	<% group.users.each do |user|%>
+      		<span class="label label-info"><%= user.firstname %></span>
+      	<% end %>
+      	</td>
+        <td>
+        <%if group.resourcemanagement == 1 %>
+        <span class="label label-success">Resource Management</span>
+        <% else %>
+        <span class="label label-danger">Resource Management</span>
+        <% end %>
+        <%if group.reservationmanagement == 1 %>
+        <span class="label label-success">Reservation Management</span>
+        <% else %>
+        <span class="label label-danger">Reservation Management</span>
+        <% end %>
+        <%if group.usermanagement == 1 %>
+        <span class="label label-success">User Management</span>
+        <% else %>
+        <span class="label label-danger">User Management</span>
+        <% end %>
+        </td>
+        <td>
+        <%= link_to 'Edit', edit_group_path(group, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
+        <%= link_to 'Delete', group_path(group),
               method: :delete,
-              data: { confirm: 'Are you sure?' } %><br>
-<% end %>
+              data: { confirm: 'Are you sure?' },
+              :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 <br>
-
-<% @user_groups.each do |group| %>
-	<%= group.name %> | <%= group.resourcemanagement %> | <%= group.reservationmanagement %> | <%= group.usermanagement %> | <%= link_to 'Edit', edit_group_path(group) %> | 
-	<%= link_to 'Delete', group_path(group),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %><br>
-<% end %>

@@ -8,10 +8,12 @@ class Group < ActiveRecord::Base
 			self.users.delete(user)
 		end
 		
-		usersarray.each do |userid|
-			if userid != ''
-				user = User.find(userid)
-				self.users << user
+		unless usersarray == nil
+			usersarray.each do |userid|
+				if userid != ''
+					user = User.find(userid)
+					self.users << user
+				end
 			end
 		end
 		self.save
