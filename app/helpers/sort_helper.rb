@@ -1,4 +1,21 @@
 module SortHelper
+
+  def configuretags
+    if params[:tag] != nil && params[:tags] != nil
+      @tagstring = params[:tags] + '%' + params[:tag]
+    elsif params[:tag] != nil && params[:tags] == nil
+      @tagstring = params[:tag]
+    else
+      @tagstring = ''
+    end
+  
+    @resources, @tags_selected = getresources(@tagstring)
+    @tags_selected = alphabetizetags(@tags_selected)
+
+    @tags_left = removeselectedtags(@tags_selected)
+    @tags_left = alphabetizetags(@tags_left)
+  end
+
   def getresources(tagstring)
     if tagexists(tagstring)
       tagarray = tagstring.split('%').drop(1)

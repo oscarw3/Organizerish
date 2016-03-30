@@ -28,7 +28,8 @@ Rails.application.routes.draw do
   post 'create_user' => 'users#create', as: :create_user
   root 'reservations#index'
 
-  patch '/resources/tags/:resource/:tag', to: 'resources#removetag', as: 'resource_remove_tags'
+  patch '/resources/tags/remove/:resource/:tag', to: 'resources#removetag', as: 'resource_remove_tags'
+  patch '/resources/tags/add/:resource/:tag', to: 'resources#addtag', as: 'resource_add_tags'
   # You can have the root of your site routed with "root"
   
   namespace :api, defaults: {format: 'json'} do 

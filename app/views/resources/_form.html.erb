@@ -17,12 +17,12 @@
 
 
  <p>
-      <%= f.label :isrestricted, 'Restricted' %>
+      <%= f.label :isrestricted, 'Restrict Resource:' %>
       <%= f.check_box :isrestricted %>
   </p>
 
   <p>
-      <%= f.association :groups, as: :check_boxes, :label_method => :name %>
+      <%= f.association :groups, as: :check_boxes, :label_method => :name, collection: Group.order('name ASC')%>
   </p>
 
 

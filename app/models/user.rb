@@ -7,10 +7,18 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  
-
   # used to distinguish if user is admin or not
   enum role: [:admin, :basic]
+
+	after_update :log_changed
+
+  def log_changed
+    Group.where(:name => changed_attributes["email"]).each do |usergroup|
+ 			if usergroup.hidden
+ 				usergroup.destroy
+ 			end
+ 		end
+  end
 
 	def admin?
 		if self.role == "admin"

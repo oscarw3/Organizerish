@@ -41,7 +41,11 @@ class GroupsController < ApplicationController
  
     	if @group.update(group_params)
     		@group.addusers(params["group"]["user_ids"])
-    		redirect_to groups_path
+    		if @group.hidden
+    			redirect_to users_path
+    		else
+    			redirect_to groups_path
+    		end
     	else
     	render 'edit'
     	end

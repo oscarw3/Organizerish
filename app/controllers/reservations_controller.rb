@@ -5,20 +5,13 @@ class ReservationsController < ApplicationController
 
     @allreservations = Reservation.all 
     @myreservations = Reservation.where(occupied: current_user.id)
-    
-    if params[:tag] != nil && params[:tags] != nil
-      @tagstring = params[:tags] + '%' + params[:tag]
-    elsif params[:tag] != nil && params[:tags] == nil
-      @tagstring = params[:tag]
-    else
-      @tagstring = ''
+    if params[:range_start] != nil
+    @start_date = Time.zone.local(*params[:range_start].sort.map(&:last).map(&:to_i)).utc
     end
-  
-  	@resources, @tags_selected = getresources(@tagstring)
-    @tags_selected = alphabetizetags(@tags_selected)
-
-    @tags_left = removeselectedtags(@tags_selected)
-    @tags_left = alphabetizetags(@tags_left)
+    if params[:range_end] != nil
+    @start_date = Time.zone.local(*params[:range_end].sort.map(&:last).map(&:to_i)).utc
+    end
+    configuretags
 
   end
 
