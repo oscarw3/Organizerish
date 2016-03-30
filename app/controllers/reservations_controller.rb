@@ -5,20 +5,7 @@ class ReservationsController < ApplicationController
 
     @allreservations = Reservation.all 
     @myreservations = Reservation.where(occupied: current_user.id)
-    
-    if params[:tag] != nil && params[:tags] != nil
-      @tagstring = params[:tags] + '%' + params[:tag]
-    elsif params[:tag] != nil && params[:tags] == nil
-      @tagstring = params[:tag]
-    else
-      @tagstring = ''
-    end
-  
-  	@resources, @tags_selected = getresources(@tagstring)
-    @tags_selected = alphabetizetags(@tags_selected)
-
-    @tags_left = removeselectedtags(@tags_selected)
-    @tags_left = alphabetizetags(@tags_left)
+    configuretags
 
   end
 

@@ -68,13 +68,14 @@
 <a name = "reserve"></a>
 <div class="page-header">
 <h1>Reserve a Resource</h1>
+
 </div>
 <h4>Filter Tags:
 <% @tags_selected.each do |tag| %>
-		<%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
+    <%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
 <% end %>
 <% @tags_left.each do |tag| %>
-		<%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring, anchor: "reserve"}), :class => 'btn btn-xs btn-primary' %>
+    <%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring, anchor: "reserve"}), :class => 'btn btn-xs btn-primary' %>
 <% end %>
 <% if @tagstring != '' %>
 <%= link_to 'reset', reservations_path({anchor: "reserve"}), :class => 'btn btn-xs btn-danger' %>

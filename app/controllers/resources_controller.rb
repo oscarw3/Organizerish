@@ -1,14 +1,14 @@
 class ResourcesController < ApplicationController
 	include ResourcesHelper
+	include SortHelper
 
 	# Admin Index
 	def index
 		checkaccess
 		# @users are users without admins
 		@users = User.where(role: 1)
-		@resources = Resource.all
-		@tags = Tag.all
 		refreshtags
+		configuretags
 	end
 
 	def new
@@ -71,8 +71,8 @@ class ResourcesController < ApplicationController
 
 	# update list of tags
 	def refreshtags
-		if @tags != nil
-			@badtags = @tags.select {
+		if Tag.all != nil
+			@badtags = Tag.all.select {
 				|tag|
 				@usedresources = Resource.all.select {
 	        	|resource|
