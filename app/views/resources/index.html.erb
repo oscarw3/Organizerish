@@ -1,6 +1,6 @@
 <a name = "all"></a>
 <h1>Resources</h1>
-<h2>Welcome <%= current_user.firstname %>! </h2>
+
 <%= link_to 'New User', new_user_path %> <br> <br>
 <% @users.each do |user| %>
 	<%= user.id%> | 
@@ -17,8 +17,8 @@
 <div class="page-header">
 <h1>Resources</h1>
 </div>
-
-<h4>Filter Tags:
+<div align = "right"><%= link_to '+ New Resource', new_resource_path(anchor: "new"), :class => "btn btn-success btn-lg" %></div>
+<h4>Filter Tags:&nbsp;
 <% @tags_selected.each do |tag| %>
     <%= link_to tag.text, resources_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "filter"}), :class => 'btn btn-xs btn-success' %>
 <% end %>

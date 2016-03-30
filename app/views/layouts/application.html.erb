@@ -32,11 +32,9 @@
           <ul class="nav navbar-nav">
             <li class="<%= 'active' if current_page?(reservations_path) %>"><%= link_to 'Reservations', reservations_path(anchor: "all") %></li>
             <% if current_user.has_resource_management? %>
-            <li class="<%= 'active' if current_page?(new_resource_path) %>"><%= link_to 'New Resource', new_resource_path(anchor: "new") %></li>
             <li class="<%= 'active' if current_page?(resources_path) %>"><%= link_to 'Resources', resources_path(anchor: "all") %></li>
             <% end %>
             <% if current_user.has_user_management? %>
-            <li class="<%= 'active' if current_page?(new_group_path) %>"><%= link_to 'New Group', new_group_path(anchor: "new") %></li>
             <li class="<%= 'active' if current_page?(groups_path) %>"><%= link_to 'Groups', groups_path(anchor: "all") %></li>
             <% end %>
             <li class="dropdown">

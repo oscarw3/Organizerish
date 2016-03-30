@@ -16,10 +16,23 @@
     <% @myreservations.each do |reservation| %>
       <tr>
         <td><%= User.find(reservation.occupied).firstname %></td>
-        <% reservation.resources.each do |resource| %>
-          <td><%= resource.name %></td>
+        <td>
+        <% i = 0 %>
+        <% reservation.resources.sort_by{|x| x.name}.each do |resource| %>
+        <span class="label label-info"><%= resource.name %></span>
+        <% i = i+1 %>
+        <% if (i % 5) == 0 %>
+        <br>
         <% end %>
-        <td> <%= reservation.isapproved %> </td>
+        <% end %>
+        </td>
+        <td>
+        <%if reservation.isapproved %>
+        <span class="label label-success">yes</span>
+        <% else %>
+        <span class="label label-danger">no</span>
+        <% end %>
+        </td>
         <td><%= reservation.starttime %></td>
         <td><%= reservation.endtime %></td>
         <td>
@@ -44,8 +57,8 @@
   <thead>
     <tr>
       <th>User</th>
-      <th>Resource</th>
-      <th> Approved </th>
+      <th>Resources</th>
+      <th>Approved</th>
       <th>Start Time</th>
       <th>End Time</th>
       <th>Actions</th>
@@ -56,10 +69,23 @@
     <% if current_user.view_permission?(reservation.resources.first) %>
       <tr>
         <td><%= User.find(reservation.occupied).firstname %></td>
-        <% reservation.resources.each do |resource| %>
-          <td><%= resource.name %></td>
+        <td>
+        <% j = 0 %>
+        <% reservation.resources.sort_by{|x| x.name}.each do |resource| %>
+        <span class="label label-info"><%= resource.name %></span>
+        <% j = j+1 %>
+        <% if (j % 5) == 0 %>
+        <br>
         <% end %>
-        <td> <%= reservation.isapproved %> </td>
+        <% end %>
+        </td>
+        <td>
+        <%if reservation.isapproved %>
+        <span class="label label-success">yes</span>
+        <% else %>
+        <span class="label label-danger">no</span>
+        <% end %>
+        </td>
         <td><%= reservation.starttime %></td>
         <td><%= reservation.endtime %></td>
         <% if current_user.has_reservation_management? %>
@@ -82,7 +108,7 @@
 <h1>Reserve a Resource</h1>
 
 </div>
-<h4>Filter Tags:
+<h4>Filter Tags:&nbsp;
 <% @tags_selected.each do |tag| %>
     <%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
 <% end %>
