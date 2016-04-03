@@ -5,8 +5,6 @@ class Resource < ActiveRecord::Base
   has_and_belongs_to_many :groups
   has_many :permissions
 
-  validates :sharing_limit, :numericality => {:greater_than => 0}
-
   attr_accessor :temp_tags
 
   def clear_groups
