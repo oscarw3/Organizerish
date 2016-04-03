@@ -63,10 +63,10 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
 
 
           <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
-            <%= link_to 'Disapprove', reservation_path(reservation), method: :delete,
-              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
-              <% confirmstring = 'Are you sure? Other reservations may be deleted'%>
+              <% confirmstring = 'Are you sure? Other reservations may be deleted!'%>
             <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: confirmstring}, :class => 'btn btn-xs btn-primary' %>
+            <%= link_to 'Reject', reservation_path(reservation), method: :delete,
+              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-warning' %>
           <% end %>
         </td>
       </tr>
@@ -125,13 +125,12 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
           <%= link_to 'Delete', reservation_path(reservation), method: :delete,
               data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
 
-        <% end %>      
-          <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
-
-             <%= link_to 'Disapprove', reservation_path(reservation), method: :delete,
-              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
-
-            <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: 'Are you sure? Other reservations may be deleted'}, :class => 'btn btn-xs btn-primary' %>
+        <% end %>
+                  <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
+              <% confirmstring = 'Are you sure? Other reservations may be deleted!'%>
+            <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: confirmstring}, :class => 'btn btn-xs btn-primary' %>
+            <%= link_to 'Reject', reservation_path(reservation), method: :delete,
+              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-warning' %>
           <% end %>
         </td>
         
@@ -165,7 +164,7 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
     <tr>
       <th>Resource</th>
       <th>Description</th>
-      <th>Restricted?</th>
+      <th>Properties</th>
       <th>Managers</th>
       <th>Tags</th>
       <th>Actions</th>
@@ -178,10 +177,16 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
         <td><%= resource.name %></td>
         <td><%= resource.description %></td>
         <td>
+        <% if resource.sharing_level == 0 %>
+        <span class="label label-warning">exclusive</span>
+        <% elsif resource.sharing_level == 1 %>
+        <span class="label label-primary">limited to&nbsp;<%= resource.sharing_limit %></span>
+        <% elsif resource.sharing_level == 2 %>
+        <span class="label label-success">unlimited</span>
+        <% end %>
         <% if resource.isrestricted %>
-        <span class="label label-success">yes</span>
-        <% else %>
-        <span class="label label-danger">no</span>
+        <br>
+        <span class="label label-danger">restricted</span>
         <% end %>
         </td>
         <td>
@@ -190,11 +195,24 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
         <% end %>
         </td>
         <td>
+        <% j = 0 %>
         <% alphabetizetags(resource.tags & @tags_selected).each do |tag| %>
         	<%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
+                  <% j = j+1 %>
+        <% if (j % 5) == 0 %>
+        <div style="line-height:20%;">
+        <br>
+        </div>
+        <% end %>
         <% end %>
         <% alphabetizetags(resource.tags & @tags_left).each do |tag| %>
         	<%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring, anchor: "reserve"}), :class => 'btn btn-xs btn-primary' %>
+                  <% j = j+1 %>
+        <% if (j % 5) == 0 %>
+        <div style="line-height:20%;">
+        <br>
+        </div>
+        <% end %>
         <% end %>
         </td>
         <td><%= link_to 'Reserve', new_reservation_path(:resource => resource.id, anchor: "new"), :class => 'btn btn-xs btn-success' %></td>

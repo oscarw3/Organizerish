@@ -22,11 +22,22 @@
   </p>
 
   <p>
-    <%= f.collection_radio_buttons :sharing_level, [[0, 'Exclusive'] ,[1, 'Limited'], [2, 'Unlimited']], :first, :last %>
+    <%= f.label :sharing_level, 'Sharing Level:' %>
+    <% if @resource.sharing_level == nil %>
+    <%= f.collection_radio_buttons :sharing_level, [[0, raw('Exclusive&nbsp;&nbsp;&nbsp;')] ,[1, raw('Limited&nbsp;&nbsp;&nbsp;')], [2, 'Unlimited']], :first, :last, checked: 0 %>
+    <% else %>
+    <%= f.collection_radio_buttons :sharing_level, [[0, raw('Exclusive&nbsp;&nbsp;&nbsp;')] ,[1, raw('Limited&nbsp;&nbsp;&nbsp;')], [2, 'Unlimited']], :first, :last %>
+    <% end %>
+    <br>
+    <% if @resource.sharing_limit == nil %>
+    <%= f.input :sharing_limit, input_html: { min: '1', step: 'any', style: 'width: 100px', value: 1}, label: 'Sharing Limit (if limited):'%>
+    <% else %>
+    <%= f.input :sharing_limit, input_html: { min: '1', step: 'any', style: 'width: 100px'}, label: 'Sharing Limit (if limited):'%>
+    <% end %>
   </p>
 
   <p>
-      <%= f.association :groups, as: :check_boxes, :label_method => :name, collection: Group.order('name ASC')%>
+      <%= f.association :groups, as: :check_boxes, :label_method => :name, collection: Group.order('name ASC'), label: "Resource Managers:" %>
   </p>
 
 

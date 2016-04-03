@@ -22,7 +22,7 @@
     <tr>
       <th>Resource</th>
       <th>Description</th>
-      <th>Restricted?</th>
+      <th>Properties</th>
       <th>Managers</th>
       <th>Edit Tags</th>
       <th>Actions</th>
@@ -34,10 +34,16 @@
         <td><%= resource.name %></td>
         <td><%= resource.description %></td>
         <td>
+        <% if resource.sharing_level == 0 %>
+        <span class="label label-warning">exclusive</span>
+        <% elsif resource.sharing_level == 1 %>
+        <span class="label label-primary">limited to&nbsp;<%= resource.sharing_limit %></span>
+        <% elsif resource.sharing_level == 2 %>
+        <span class="label label-success">unlimited</span>
+        <% end %>
         <% if resource.isrestricted %>
-        <span class="label label-success">yes</span>
-        <% else %>
-        <span class="label label-danger">no</span>
+        <br>
+        <span class="label label-danger">restricted</span>
         <% end %>
         </td>
         <td>
@@ -46,6 +52,7 @@
         <% end %>
         </td>
         <td>
+        <% j = 0 %>
         <% alphabetizetags(resource.tags & @tags_selected).each do |tag| %>
           <div class="btn-group">
           <%= link_to tag.text, resources_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
@@ -54,6 +61,12 @@
               <li><a href="#"><%= link_to "remove tag", resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>
             </ul>
           </div>
+                  <% j = j+1 %>
+        <% if (j % 3) == 0 %>
+        <div style="line-height:20%;">
+        <br>
+        </div>
+        <% end %>
         <% end %>
         <% alphabetizetags(resource.tags & @tags_left).each do |tag| %>
           <div class="btn-group">
@@ -63,6 +76,12 @@
               <li><a href="#"><%= link_to "remove tag", resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>
             </ul>
           </div>
+                  <% j = j+1 %>
+        <% if (j % 3) == 0 %>
+        <div style="line-height:20%;">
+        <br>
+        </div>
+        <% end %>
         <% end %>
         <% if !(Tag.all - resource.tags).empty? %>
         <div class="btn-group">
