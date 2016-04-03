@@ -30,7 +30,7 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="<%= 'active' if current_page?(reservations_path) %>"><%= link_to 'Reservations', reservations_path(anchor: "mine") %></li>
+            <li class="<%= 'active' if current_page?(reservations_path)||current_page?(search_path)%>"><%= link_to 'Reservations', reservations_path(anchor: "mine") %></li>
             <% if current_user.has_resource_management? %>
             <li class="<%= 'active' if current_page?(resources_path)||current_page?(new_resource_path) %>"><%= link_to 'Resources', resources_path(anchor: "all") %></li>
             <% end %>

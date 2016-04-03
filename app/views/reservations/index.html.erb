@@ -1,10 +1,17 @@
 <a name = "mine"></a>
-
-<%= form_tag(method: "get") do %>
-<h4 alignment = "center">Filter Timespan:&nbsp;
-<%= date_select('range', 'start_date', :order => [:month, :day, :year])%>&nbsp;to&nbsp;<%= date_select('range', 'end_date', :order => [:month, :day, :year])%>
-<%= submit_tag("Go") %>
+<%= form_tag("/search", method: "get") do %>
+<h4 align = "center">Filter Timespan:&nbsp;
+<%= datetime_select('range', 'start_date', default: @start) %>&nbsp;to&nbsp;<%= datetime_select('range', 'end_date', default: @end) %>&nbsp;
+<%= submit_tag "Search"%>&nbsp;
+<%= submit_tag "Reset"%>
 <% end %>
+</h4>
+<% if params[:commit] == 'Search' %>
+<h4 align = "center">
+Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= @end.to_formatted_s(:long)  %>
+</h4>
+<% end %>
+
 <div class="page-header">
 <h1>My Reservations</h1>
 </div>
@@ -44,8 +51,8 @@
         <span class="label label-danger">no</span>
         <% end %>
         </td>
-        <td><%= reservation.starttime %></td>
-        <td><%= reservation.endtime %></td>
+        <td><%= reservation.starttime.to_formatted_s(:long) %></td>
+        <td><%= reservation.endtime.to_formatted_s(:long) %></td>
         <td>
           <%= link_to 'Edit', edit_reservation_path(reservation, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
           <%= link_to 'Delete', reservation_path(reservation), method: :delete,
@@ -106,8 +113,8 @@
         <span class="label label-danger">no</span>
         <% end %>
         </td>
-        <td><%= reservation.starttime %></td>
-        <td><%= reservation.endtime %></td>
+        <td><%= reservation.starttime.to_formatted_s(:long) %></td>
+        <td><%= reservation.endtime.to_formatted_s(:long) %></td>
         
         <td>
         <% if current_user.has_reservation_management? %>

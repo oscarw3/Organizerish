@@ -19,7 +19,7 @@ Rails.application.routes.draw do
       end
     end
 
-
+  get '/search', to: 'reservations#index', as: 'search'
 
 
 

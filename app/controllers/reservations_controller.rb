@@ -5,11 +5,18 @@ class ReservationsController < ApplicationController
 
     @allreservations = Reservation.all 
     @myreservations = Reservation.where(occupied: current_user.id)
-    if params[:range_start] != nil
-    @start_date = Time.zone.local(*params[:range_start].sort.map(&:last).map(&:to_i)).utc
-    end
-    if params[:range_end] != nil
-    @start_date = Time.zone.local(*params[:range_end].sort.map(&:last).map(&:to_i)).utc
+    puts "hi"
+    puts params
+    if params[:commit] == 'Search'
+      @rangedata = params[:range]
+      @start = DateTime.new(@rangedata["start_date(1i)"].to_i, @rangedata["start_date(2i)"].to_i, @rangedata["start_date(3i)"].to_i, @rangedata["start_date(4i)"].to_i, @rangedata["start_date(5i)"].to_i)
+      @end = DateTime.new(@rangedata["end_date(1i)"].to_i, @rangedata["end_date(2i)"].to_i, @rangedata["end_date(3i)"].to_i, @rangedata["end_date(4i)"].to_i, @rangedata["end_date(5i)"].to_i)
+      if @start > @end
+        redirect_to reservations_path, notice: "Invalid date range!"
+      else
+        @allreservations = Reservation.all.select {|x| x.starttime >= @start && x.endtime <= @end}
+        @myreservations = Reservation.where(occupied: current_user.id).select {|x| x.starttime >= @start && x.endtime <= @end}
+      end
     end
     configuretags
 
@@ -35,7 +42,6 @@ class ReservationsController < ApplicationController
           flash[:notice] = "This reservation overlaps!"
           redirect_to reservations_path
       elsif @reservation.save
-          
         params["reservation"]["resource_ids"].each do |resource_id|
           if resource_id != ""
             @reservation.resources << Resource.find(resource_id)

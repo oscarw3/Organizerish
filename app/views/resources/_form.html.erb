@@ -22,6 +22,10 @@
   </p>
 
   <p>
+    <%= f.collection_radio_buttons :sharing_level, [[0, 'Exclusive'] ,[1, 'Limited'], [2, 'Unlimited']], :first, :last %>
+  </p>
+
+  <p>
       <%= f.association :groups, as: :check_boxes, :label_method => :name, collection: Group.order('name ASC')%>
   </p>
 
