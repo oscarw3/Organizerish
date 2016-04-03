@@ -59,11 +59,14 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
               data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
 
 <!--- puts also need to check for if manager -->
-
+    
 
 
           <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
-            <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: 'Are you sure?'}, :class => 'btn btn-xs btn-primary' %>
+            <%= link_to 'Disapprove', reservation_path(reservation), method: :delete,
+              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
+              <% confirmstring = 'Are you sure? Other reservations may be deleted'%>
+            <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: confirmstring}, :class => 'btn btn-xs btn-primary' %>
           <% end %>
         </td>
       </tr>
@@ -121,9 +124,14 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
           <%= link_to 'Edit', edit_reservation_path(reservation, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
           <%= link_to 'Delete', reservation_path(reservation), method: :delete,
               data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
+
         <% end %>      
           <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
-            <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: 'Are you sure?'}, :class => 'btn btn-xs btn-primary' %>
+
+             <%= link_to 'Disapprove', reservation_path(reservation), method: :delete,
+              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
+
+            <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: 'Are you sure? Other reservations may be deleted'}, :class => 'btn btn-xs btn-primary' %>
           <% end %>
         </td>
         

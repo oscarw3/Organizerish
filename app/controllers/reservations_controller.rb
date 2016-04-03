@@ -19,7 +19,7 @@ class ReservationsController < ApplicationController
       end
     end
     configuretags
-
+    
   end
 
   def new
@@ -138,11 +138,6 @@ class ReservationsController < ApplicationController
       #delete and email
       reservation.destroy
     end
-
-
-
-
-
 
     redirect_to reservations_path
 
