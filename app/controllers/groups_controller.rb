@@ -42,6 +42,8 @@ class GroupsController < ApplicationController
     	if @group.update(group_params)
     		@group.addusers(params["group"]["user_ids"])
     		if @group.hidden
+    			@user = User.where(email: @group.name).first
+    			@user.addgroup(@group)
     			redirect_to users_path
     		else
     			redirect_to groups_path

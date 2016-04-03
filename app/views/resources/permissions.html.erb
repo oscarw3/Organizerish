@@ -26,7 +26,8 @@
 		    	
 		    	    <%= p.collection_check_boxes(:id, Group.all, :id, :name) do |b| %>
        					<%= b.label class:"label-checkbox" do%>
-         				<%=b.check_box + b.text%> 
+       					<% box = b.check_box :checked => true%>
+         				<%=box + b.text%> 
         				<%end%>
         				<% end %>
 

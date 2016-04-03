@@ -114,4 +114,9 @@ class User < ActiveRecord::Base
 		return false
 	end
 
+	def addgroup(group)
+		self.groups << group
+		self.save
+	end
+
 end

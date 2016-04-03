@@ -1,19 +1,19 @@
 <a name = "all"></a>
 <a name = "filter"></a>
 <div class="page-header">
-<h1>Resources</h1>
+  <h1>Resources</h1>
 </div>
 <div align = "right"><%= link_to '+ New Resource', new_resource_path(anchor: "new"), :class => "btn btn-success btn-lg" %></div>
 <h4>Filter Tags:&nbsp;
-<% @tags_selected.each do |tag| %>
-    <%= link_to tag.text, resources_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "filter"}), :class => 'btn btn-xs btn-success' %>
-<% end %>
-<% @tags_left.each do |tag| %>
-    <%= link_to tag.text, resources_path({:tag => tag.text, :tags => @tagstring, anchor: "filter"}), :class => 'btn btn-xs btn-primary' %>
-<% end %>
-<% if @tagstring != '' %>
-<%= link_to 'reset', resources_path({anchor: "filter"}), :class => 'btn btn-xs btn-danger' %>
-<% end %>
+  <% @tags_selected.each do |tag| %>
+  <%= link_to tag.text, resources_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "filter"}), :class => 'btn btn-xs btn-success' %>
+  <% end %>
+  <% @tags_left.each do |tag| %>
+  <%= link_to tag.text, resources_path({:tag => tag.text, :tags => @tagstring, anchor: "filter"}), :class => 'btn btn-xs btn-primary' %>
+  <% end %>
+  <% if @tagstring != '' %>
+  <%= link_to 'reset', resources_path({anchor: "filter"}), :class => 'btn btn-xs btn-danger' %>
+  <% end %>
 </h4>
 <br>
 
@@ -23,6 +23,8 @@
       <th>Resource</th>
       <th>Description</th>
       <th>Properties</th>
+      <th>View Access</th>
+      <th>Reserve Access</th>
       <th>Managers</th>
       <th>Edit Tags</th>
       <th>Actions</th>
@@ -30,10 +32,10 @@
   </thead>
   <tbody>
     <% @resources.sort_by{|x| x.name}.each do |resource| %>
-      <tr>
-        <td><%= resource.name %></td>
-        <td><%= resource.description %></td>
-        <td>
+    <tr>
+      <td><%= resource.name %></td>
+      <td><%= resource.description %></td>
+      <td>
         <% if resource.sharing_level == 0 %>
         <span class="label label-warning">exclusive</span>
         <% elsif resource.sharing_level == 1 %>
@@ -45,65 +47,80 @@
         <br>
         <span class="label label-danger">restricted</span>
         <% end %>
-        </td>
-        <td>
+      </td>
+      <% viewaccess = resource.permissions.where(viewaccess: 1).where(reserveaccess: 0).first %>
+      <% reserveaccess = resource.permissions.where(viewaccess: 0).where(reserveaccess: 1).first %>
+      <td>
+        <% viewaccess.groups.each do |group| %>
+        <span class="label label-info"><%= group.name %></span>
+        <br>
+        <% end %>
+      </td>
+      <td>
+        <% reserveaccess.groups.each do |group| %>
+        <span class="label label-info"><%= group.name %></span>
+        <br>
+        <% end %>
+      </td>
+      <td>
         <% resource.groups.each do |group| %>
         <span class="label label-info"><%= group.name %></span>
+        <br>
         <% end %>
-        </td>
-        <td>
+      </td>
+      <td>
         <% j = 0 %>
         <% alphabetizetags(resource.tags & @tags_selected).each do |tag| %>
-          <div class="btn-group">
+        <div class="btn-group">
           <%= link_to tag.text, resources_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
           <a href="#" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#"><%= link_to "remove tag", resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>
-            </ul>
-          </div>
-                  <% j = j+1 %>
+          <ul class="dropdown-menu">
+            <li><a href="#"><%= link_to "remove tag", resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>
+          </ul>
+        </div>
+        <% j = j+1 %>
         <% if (j % 3) == 0 %>
         <div style="line-height:20%;">
-        <br>
+          <br>
         </div>
         <% end %>
         <% end %>
         <% alphabetizetags(resource.tags & @tags_left).each do |tag| %>
-          <div class="btn-group">
+        <div class="btn-group">
           <%= link_to tag.text, resources_path({:tag => tag.text, :tags => @tagstring, anchor: "filter"}), :class => 'btn btn-xs btn-primary' %>
           <a href="#" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#"><%= link_to "remove tag", resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>
-            </ul>
-          </div>
-                  <% j = j+1 %>
+          <ul class="dropdown-menu">
+            <li><a href="#"><%= link_to "remove tag", resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>
+          </ul>
+        </div>
+        <% j = j+1 %>
         <% if (j % 3) == 0 %>
         <div style="line-height:20%;">
-        <br>
+          <br>
         </div>
         <% end %>
         <% end %>
         <% if !(Tag.all - resource.tags).empty? %>
         <div class="btn-group">
-        <a href="#" class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Add Tag&nbsp;&nbsp;&nbsp;<span class="caret"></span></a>
-            <ul class="dropdown-menu">
+          <a href="#" class="btn btn-xs btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Add Tag&nbsp;&nbsp;&nbsp;<span class="caret"></span></a>
+          <ul class="dropdown-menu">
             <% alphabetizetags(Tag.all - resource.tags).each do |tag| %>
-              <li><a href="#"><%= link_to tag.text, resource_add_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>
+            <li><a href="#"><%= link_to tag.text, resource_add_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>
             <% end %>
-            </ul> 
+          </ul> 
         </div>
         <% end %>
-        </td>
-        <% if current_user.has_resource_management? %>
-        <td>
-          <%= link_to 'Edit', edit_resource_path(resource, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
-          <%= link_to 'Manage Permissions', permissions_resource_path(resource), :class => 'btn btn-xs btn-warning'%>
-          <%= link_to 'Delete', resource_path(resource),
-	              method: :delete,
-	              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger'  %>
-        </td>
-        <% end %>
-      </tr>
+      </td>
+      <% if current_user.has_resource_management? %>
+      <td>
+        <%= link_to 'Edit', edit_resource_path(resource, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
+        <%= link_to 'Manage Permissions', permissions_resource_path(resource), :class => 'btn btn-xs btn-warning'%>
+        <%= link_to 'Delete', resource_path(resource),
+        method: :delete,
+        data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger'  %>
+      </td>
+      <% end %>
+    </tr>
     <% end %>
   </tbody>
 </table>

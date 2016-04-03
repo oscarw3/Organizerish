@@ -36,6 +36,7 @@ class UsersController < ApplicationController
   		@group = Group.create(name: user.email, resourcemanagement: 0, reservationmanagement: 0, usermanagement: 0, hidden: true)
   		@group.users << user
   		@group.save
+  		user.save
 	end
 
 	def destroygroup(email)

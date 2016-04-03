@@ -1,19 +1,18 @@
 <a name = "mine"></a>
 <%= form_tag("/search", method: "get") do %>
 <h4 align = "center">Filter Timespan:&nbsp;
-<%= datetime_select('range', 'start_date', default: @start) %>&nbsp;to&nbsp;<%= datetime_select('range', 'end_date', default: @end) %>&nbsp;
-<%= submit_tag "Search"%>&nbsp;
-<%= submit_tag "Reset"%>
-<% end %>
+  <%= datetime_select('range', 'start_date', default: @start) %>&nbsp;to&nbsp;<%= datetime_select('range', 'end_date', default: @end) %>&nbsp;
+  <%= submit_tag "Search"%>&nbsp;
+  <%= submit_tag "Reset"%>
+  <% end %>
 </h4>
 <% if params[:commit] == 'Search' %>
 <h4 align = "center">
-Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= @end.to_formatted_s(:long)  %>
+  Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= @end.to_formatted_s(:long)  %>
 </h4>
 <% end %>
-
 <div class="page-header">
-<h1>My Reservations</h1>
+  <h1>My Reservations</h1>
 </div>
 <table class="table table-striped">
   <thead>
@@ -30,11 +29,11 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
   </thead>
   <tbody>
     <% @myreservations.each do |reservation| %>
-      <tr>
-        <td><%= reservation.title %></td>
-        <td><%= reservation.description %></td>
-        <td><%= User.find(reservation.occupied).firstname %></td>
-        <td>
+    <tr>
+      <td><%= reservation.title %></td>
+      <td><%= reservation.description %></td>
+      <td><%= User.find(reservation.occupied).firstname %></td>
+      <td>
         <% i = 0 %>
         <% reservation.resources.sort_by{|x| x.name}.each do |resource| %>
         <span class="label label-info"><%= resource.name %></span>
@@ -43,33 +42,33 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
         <br>
         <% end %>
         <% end %>
-        </td>
-        <td>
+      </td>
+      <td>
         <%if reservation.isapproved %>
         <span class="label label-success">yes</span>
         <% else %>
         <span class="label label-danger">no</span>
         <% end %>
-        </td>
-        <td><%= reservation.starttime.to_formatted_s(:long) %></td>
-        <td><%= reservation.endtime.to_formatted_s(:long) %></td>
-        <td>
-          <%= link_to 'Edit', edit_reservation_path(reservation, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
-          <%= link_to 'Delete', reservation_path(reservation), method: :delete,
-              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
+      </td>
+      <td><%= reservation.starttime.to_formatted_s(:long) %></td>
+      <td><%= reservation.endtime.to_formatted_s(:long) %></td>
+      <td>
+        <%= link_to 'Edit', edit_reservation_path(reservation, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
+        <%= link_to 'Delete', reservation_path(reservation), method: :delete,
+        data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
 
-<!--- puts also need to check for if manager -->
-    
+        <!--- puts also need to check for if manager -->
 
 
-          <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
-              <% confirmstring = 'Are you sure? Other reservations may be deleted!'%>
-            <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: confirmstring}, :class => 'btn btn-xs btn-primary' %>
-            <%= link_to 'Reject', reservation_path(reservation), method: :delete,
-              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-warning' %>
-          <% end %>
-        </td>
-      </tr>
+
+        <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
+        <% confirmstring = 'Are you sure? Other reservations may be deleted!'%>
+        <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: confirmstring}, :class => 'btn btn-xs btn-primary' %>
+        <%= link_to 'Reject', reservation_path(reservation), method: :delete,
+        data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-warning' %>
+        <% end %>
+      </td>
+    </tr>
     <% end %>
   </tbody>
 </table>
@@ -77,7 +76,7 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
 
 <a name = "all"></a>
 <div class="page-header">
-<h1>All Reservations</h1>
+  <h1>All Reservations</h1>
 </div>
 <table class="table table-striped">
   <thead>
@@ -95,11 +94,11 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
   <tbody>
     <% @allreservations.each do |reservation| %>
     <% if current_user.view_permission?(reservation.resources.first) %>
-      <tr>
-        <td><%= reservation.title %></td>
-        <td><%= reservation.description %></td>
-        <td><%= User.find(reservation.occupied).firstname %></td>
-        <td>
+    <tr>
+      <td><%= reservation.title %></td>
+      <td><%= reservation.description %></td>
+      <td><%= User.find(reservation.occupied).firstname %></td>
+      <td>
         <% j = 0 %>
         <% reservation.resources.sort_by{|x| x.name}.each do |resource| %>
         <span class="label label-info"><%= resource.name %></span>
@@ -108,34 +107,34 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
         <br>
         <% end %>
         <% end %>
-        </td>
-        <td>
+      </td>
+      <td>
         <%if reservation.isapproved %>
         <span class="label label-success">yes</span>
         <% else %>
         <span class="label label-danger">no</span>
         <% end %>
-        </td>
-        <td><%= reservation.starttime.to_formatted_s(:long) %></td>
-        <td><%= reservation.endtime.to_formatted_s(:long) %></td>
-        
-        <td>
+      </td>
+      <td><%= reservation.starttime.to_formatted_s(:long) %></td>
+      <td><%= reservation.endtime.to_formatted_s(:long) %></td>
+
+      <td>
         <% if current_user.has_reservation_management? %>
-          <%= link_to 'Edit', edit_reservation_path(reservation, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
-          <%= link_to 'Delete', reservation_path(reservation), method: :delete,
-              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
+        <%= link_to 'Edit', edit_reservation_path(reservation, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
+        <%= link_to 'Delete', reservation_path(reservation), method: :delete,
+        data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger' %>
 
         <% end %>
-                  <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
-              <% confirmstring = 'Are you sure? Other reservations may be deleted!'%>
-            <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: confirmstring}, :class => 'btn btn-xs btn-primary' %>
-            <%= link_to 'Reject', reservation_path(reservation), method: :delete,
-              data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-warning' %>
-          <% end %>
-        </td>
-        
-      </tr>
-      <% end %>
+        <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
+        <% confirmstring = 'Are you sure? Other reservations may be deleted!'%>
+        <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: confirmstring}, :class => 'btn btn-xs btn-primary' %>
+        <%= link_to 'Reject', reservation_path(reservation), method: :delete,
+        data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-warning' %>
+        <% end %>
+      </td>
+
+    </tr>
+    <% end %>
     <% end %>
   </tbody>
 </table>
@@ -143,19 +142,19 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
 
 <a name = "reserve"></a>
 <div class="page-header">
-<h1>Reserve a Resource</h1>
+  <h1>Reserve a Resource</h1>
 
 </div>
 <h4>Filter Tags:&nbsp;
-<% @tags_selected.each do |tag| %>
-    <%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
-<% end %>
-<% @tags_left.each do |tag| %>
-    <%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring, anchor: "reserve"}), :class => 'btn btn-xs btn-primary' %>
-<% end %>
-<% if @tagstring != '' %>
-<%= link_to 'reset', reservations_path({anchor: "reserve"}), :class => 'btn btn-xs btn-danger' %>
-<% end %>
+  <% @tags_selected.each do |tag| %>
+  <%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
+  <% end %>
+  <% @tags_left.each do |tag| %>
+  <%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring, anchor: "reserve"}), :class => 'btn btn-xs btn-primary' %>
+  <% end %>
+  <% if @tagstring != '' %>
+  <%= link_to 'reset', reservations_path({anchor: "reserve"}), :class => 'btn btn-xs btn-danger' %>
+  <% end %>
 </h4>
 <br>
 
@@ -173,10 +172,10 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
   <tbody>
     <% @resources.sort_by{|x| x.name}.each do |resource| %>
     <% if current_user.view_permission?(resource) %>
-      <tr>
-        <td><%= resource.name %></td>
-        <td><%= resource.description %></td>
-        <td>
+    <tr>
+      <td><%= resource.name %></td>
+      <td><%= resource.description %></td>
+      <td>
         <% if resource.sharing_level == 0 %>
         <span class="label label-warning">exclusive</span>
         <% elsif resource.sharing_level == 1 %>
@@ -188,36 +187,42 @@ Selected Date Range:&nbsp;<%= @start.to_formatted_s(:long)  %>&nbsp;to&nbsp;<%= 
         <br>
         <span class="label label-danger">restricted</span>
         <% end %>
-        </td>
-        <td>
+      </td>
+      <td>
         <% resource.groups.each do |group| %>
         <span class="label label-info"><%= group.name %></span>
         <% end %>
-        </td>
-        <td>
+      </td>
+      <td>
         <% j = 0 %>
         <% alphabetizetags(resource.tags & @tags_selected).each do |tag| %>
-        	<%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
-                  <% j = j+1 %>
+        <%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
+        <% j = j+1 %>
         <% if (j % 5) == 0 %>
         <div style="line-height:20%;">
-        <br>
+          <br>
         </div>
         <% end %>
         <% end %>
         <% alphabetizetags(resource.tags & @tags_left).each do |tag| %>
-        	<%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring, anchor: "reserve"}), :class => 'btn btn-xs btn-primary' %>
-                  <% j = j+1 %>
+        <%= link_to tag.text, reservations_path({:tag => tag.text, :tags => @tagstring, anchor: "reserve"}), :class => 'btn btn-xs btn-primary' %>
+        <% j = j+1 %>
         <% if (j % 5) == 0 %>
         <div style="line-height:20%;">
-        <br>
+          <br>
         </div>
         <% end %>
         <% end %>
-        </td>
-        <td><%= link_to 'Reserve', new_reservation_path(:resource => resource.id, anchor: "new"), :class => 'btn btn-xs btn-success' %></td>
-      </tr>
+      </td>
+      <td>
+      <% if current_user.create_reservation_permission?(resource) %>
+      <%= link_to 'Reserve', new_reservation_path(:resource => resource.id, anchor: "new"), :class => 'btn btn-xs btn-success' %>
+      <% else %>
+      <span class="label label-danger">access denied</span>
       <% end %>
+      </td>
+    </tr>
+    <% end %>
     <% end %>
   </tbody>
 </table>
