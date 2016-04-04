@@ -7,6 +7,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  # netID sign in stuff
+  devise :omniauthable, :omniauth_providers => [:shibboleth]
+
   # used to distinguish if user is admin or not
   enum role: [:admin, :basic]
 

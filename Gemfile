@@ -48,6 +48,11 @@ gem 'devise'
 gem 'simple_token_authentication', '~> 1.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+
+# authentication via shib
+gem 'omniauth-shibboleth'
+# we're gonna get this working this time
+
 # For Andrew
 gem 'tzinfo-data'
 # Use Unicorn as the app server

@@ -240,6 +240,11 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
+  config.omniauth :shibboleth, "ECE458_Resource_manager6", "At4Zv$p1IMl7IrSsonm9FEqY8es+D!$Yi79y7myooPiyas8*ci"
+                         {:uid_field => 'eppn',
+                         :info_fields => {:email => 'mail', :name => 'cn', :last_name => 'sn'},
+                  }
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
