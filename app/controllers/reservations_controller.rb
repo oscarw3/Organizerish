@@ -5,8 +5,6 @@ class ReservationsController < ApplicationController
 
     @allreservations = Reservation.all 
     @myreservations = Reservation.where(occupied: current_user.id)
-    puts "hi"
-    puts params
     if params[:commit] == 'Search'
       @rangedata = params[:range]
       @start = DateTime.new(@rangedata["start_date(1i)"].to_i, @rangedata["start_date(2i)"].to_i, @rangedata["start_date(3i)"].to_i, @rangedata["start_date(4i)"].to_i, @rangedata["start_date(5i)"].to_i)
