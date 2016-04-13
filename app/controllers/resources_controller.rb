@@ -82,12 +82,18 @@ class ResourcesController < ApplicationController
 	      			@resource.groups << Group.find(group_id)
 	       		end
 	    	end
+	    	if Node.where(:parent_id => @resource.id).count == 0
+	    		node = Node.create(:parent_id => @resource.id)
+	    	else
+	    		node = Node.where(:parent_id => @resource.id).first
+	    	end
 
-	    	node = Node.where(:parent_id => @resource.id).first
 	    	childrenarray = params["resource"]["id"]
 	        childrenarray.pop
 
 	    	if childrenarray.count == 0
+	    		node.clear_children
+	    		
 	    		node.destroy
 	    	else
 	    		node.clear_children
