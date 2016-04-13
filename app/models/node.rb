@@ -6,4 +6,16 @@ class Node < ActiveRecord::Base
       self.resources.delete(resource)
     end
   end
+
+  def add_to_reservation(reservation)
+  	self.resources.each do |resource|
+  		if !reservation.resources.include?(resource)
+  			reservation.resources << resource
+            if Node.where(:parent_id => resource.id).count == 1
+              Node.where(:parent_id => resource.id).first.add_to_reservation(reservation)
+            end
+  		end
+  	end
+  end
+
 end
