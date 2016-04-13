@@ -81,3 +81,7 @@ Permission
 viewaccess: (0= no access, 1= yes access)
 reserveaccess: (0= no access, 1= yes access)
 
+Node 
+(1 Node to many resources (children))
+parent id: integer
+

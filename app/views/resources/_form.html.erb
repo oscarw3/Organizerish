@@ -25,6 +25,29 @@
       <%= f.association :groups, as: :check_boxes, :label_method => :name, collection: Group.order('name ASC'), label: "Resource Managers:" %>
   </p>
 
+  <p>
+  <p> Children Resources: </p>
+  Current Children: <br>
+  <% if Node.where(:parent_id => @resource.id).count != 0 %>
+    <% Node.where(:parent_id => @resource.id).first.resources.each do |child| %>
+      <%= child.name %> <br>
+    <% end %>
+  <% end %>
+  <%= f.collection_check_boxes(:id, Resource.where.not(id: @resource.id), :id, :name) do |b| %>
+                
+                <%= b.label class:"label-checkbox" do%>
+                    
+                    <% box = b.check_box  %>
+                    <%=box + b.text %>
+
+                 
+                <%end%>
+
+                 
+  <% end %>
+
+  </p>
+
 
 	<p>
     	<%= f.submit %>

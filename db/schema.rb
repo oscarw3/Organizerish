@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160403083222) do
+ActiveRecord::Schema.define(version: 20160413023510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,12 @@ ActiveRecord::Schema.define(version: 20160403083222) do
     t.integer "user_id",  null: false
   end
 
+  create_table "nodes", force: :cascade do |t|
+    t.integer  "parent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "permissions", force: :cascade do |t|
     t.integer  "viewaccess"
     t.integer  "reserveaccess"
@@ -93,8 +99,10 @@ ActiveRecord::Schema.define(version: 20160403083222) do
     t.boolean  "isrestricted"
     t.integer  "sharing_level"
     t.integer  "sharing_limit"
+    t.integer  "node_id"
   end
 
+  add_index "resources", ["node_id"], name: "index_resources_on_node_id", using: :btree
   add_index "resources", ["user_id"], name: "index_resources_on_user_id", using: :btree
 
   create_table "resources_tags", id: false, force: :cascade do |t|
@@ -132,5 +140,6 @@ ActiveRecord::Schema.define(version: 20160403083222) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "permissions", "resources"
+  add_foreign_key "resources", "nodes"
   add_foreign_key "resources", "users"
 end
