@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   get '/search', to: 'reservations#index', as: 'search'
 
-
+  get 'netidsignin', to: 'signin#checknetid', as: 'signin'
 
 
   resources :users, except: :create
