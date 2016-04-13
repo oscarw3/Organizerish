@@ -6,17 +6,27 @@
 <div align = "right"><%= link_to '+ New Resource', new_resource_path(anchor: "new"), :class => "btn btn-success btn-lg" %></div>
 <h4>Filter Tags:&nbsp;
   <% @tags_selected.each do |tag| %>
-  <%= link_to tag.text, resources_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "filter"}), :class => 'btn btn-xs btn-success' %>
+  <%= link_to tag.text, resources_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), :path => params[:path], :parent => params[:parent], anchor: "filter"}), :class => 'btn btn-xs btn-success' %>
   <% end %>
   <% @tags_left.each do |tag| %>
-  <%= link_to tag.text, resources_path({:tag => tag.text, :tags => @tagstring, anchor: "filter"}), :class => 'btn btn-xs btn-primary' %>
+  <%= link_to tag.text, resources_path({:tag => tag.text, :tags => @tagstring, :path => params[:path], :parent => params[:parent], anchor: "filter"}), :class => 'btn btn-xs btn-primary' %>
   <% end %>
   <% if @tagstring != '' %>
-  <%= link_to 'reset', resources_path({anchor: "filter"}), :class => 'btn btn-xs btn-danger' %>
+  <%= link_to 'reset', resources_path({:path => params[:path], :parent => params[:parent], anchor: "filter"}), :class => 'btn btn-xs btn-danger' %>
   <% end %>
 </h4>
 <br>
-
+<% if !@root %>
+  <h4>Heirarchy Navigation:&nbsp;
+  <% if @path != nil %>
+  <% @path.each do |step| %>
+  <%= link_to step, resources_path({:path => findpath(step), :parent => step, anchor: "filter"}), :class => 'btn btn-xs btn-info' %>&nbsp;>
+  <% end %>
+  <% end %>
+  <a class="btn btn-xs btn-success disabled"><%= params[:parent]%></a>&nbsp;<%= link_to 'reset', reservations_path({anchor: "reserve"}), :class => 'btn btn-xs btn-danger' %>
+</h4>
+<br>
+<% end %>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -31,9 +41,13 @@
     </tr>
   </thead>
   <tbody>
-    <% @resources.select{|x| x.node == nil}.sort_by{|x| x.name}.each do |resource| %>
+    <% @visibleresources.each do |resource| %>
     <tr>
-      <td><%= resource.name %></td>
+      <td><%= resource.name %>
+      <% if !findchildren(resource).empty? %>
+      <%= link_to ">", resources_path({:path => @nextpath, :parent => resource.name, anchor: "filter"}), :class => 'btn btn-xs btn-success' %>
+      <% end %>
+      </td>
       <td><%= resource.description %></td>
       <td>
         <% if resource.sharing_level == 0 %>
@@ -72,7 +86,7 @@
         <% j = 0 %>
         <% alphabetizetags(resource.tags & @tags_selected).each do |tag| %>
         <div class="btn-group">
-          <%= link_to tag.text, resources_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
+          <%= link_to tag.text, resources_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), :path => params[:path], :parent => params[:parent], anchor: "filter"}), :class => 'btn btn-xs btn-success' %>
           <a href="#" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#"><%= link_to "remove tag", resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>
@@ -87,7 +101,7 @@
         <% end %>
         <% alphabetizetags(resource.tags & @tags_left).each do |tag| %>
         <div class="btn-group">
-          <%= link_to tag.text, resources_path({:tag => tag.text, :tags => @tagstring, anchor: "filter"}), :class => 'btn btn-xs btn-primary' %>
+          <%= link_to tag.text, resources_path({:tag => tag.text, :tags => @tagstring, :path => params[:path], :parent => params[:parent], anchor: "filter"}), :class => 'btn btn-xs btn-primary' %>
           <a href="#" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#"><%= link_to "remove tag", resource_remove_tags_path({:resource => resource, :tag => tag}), :method => :PATCH%></a></li>

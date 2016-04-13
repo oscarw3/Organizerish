@@ -10,6 +10,7 @@ class ResourcesController < ApplicationController
 		@users = User.where(role: 1)
 		refreshtags
 		configuretags
+		configureresources
 	end
 
 	def new

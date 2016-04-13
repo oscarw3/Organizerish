@@ -19,7 +19,7 @@ class ReservationsController < ApplicationController
       end
     end
     configuretags
-    
+    configureresources
   end
 
   def new
