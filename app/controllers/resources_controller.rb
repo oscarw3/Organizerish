@@ -173,6 +173,6 @@ class ResourcesController < ApplicationController
 
 	private
   	def resource_params
-    	params.require(:resource).permit(:name, :description, :temp_tags, :group_ids, :isrestricted, :id)
+    	params.require(:resource).permit(:name, :description, :temp_tags, :group_ids, :isrestricted, :sharing_level, :sharing_limit)
   	end
 end

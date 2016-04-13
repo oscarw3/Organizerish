@@ -126,7 +126,6 @@ class ReservationsController < ApplicationController
 	end
 
   def approve
-    puts "APPROVE METHOD CALLED"
 
     @reservation = Reservation.find(params[:id])
     @reservation.isapproved = true

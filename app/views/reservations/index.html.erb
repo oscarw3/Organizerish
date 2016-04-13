@@ -163,7 +163,7 @@
     <tr>
       <th>Resource</th>
       <th>Description</th>
-      <th>Restricted?</th>
+      <th>Properties</th>
       <th>Managers</th>
       <th>Tags</th>
       <th>Actions</th>
@@ -176,7 +176,15 @@
       <td><%= resource.name %></td>
       <td><%= resource.description %></td>
       <td>
+        <% if resource.sharing_level == 0 %>
+        <span class="label label-warning">exclusive</span>
+        <% elsif resource.sharing_level == 1 %>
+        <span class="label label-primary">limited to&nbsp;<%= resource.sharing_limit %></span>
+        <% elsif resource.sharing_level == 2 %>
+        <span class="label label-success">unlimited</span>
+        <% end %>
         <% if resource.isrestricted %>
+        <br>
         <span class="label label-danger">restricted</span>
         <% end %>
       </td>
