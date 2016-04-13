@@ -15,7 +15,7 @@
       <%= f.text_area :temp_tags %>
   </p>
 
-
+<p> Properties </p>
  <p>
       <%= f.label :isrestricted, 'Restrict Resource:' %>
       <%= f.check_box :isrestricted %>
@@ -35,25 +35,28 @@
     <%= f.input :sharing_limit, input_html: { min: '1', step: 'any', style: 'width: 100px'}, label: 'Sharing Limit (if limited):'%>
     <% end %>
   </p>
-
+<p> Management </p>
   <p>
       <%= f.association :groups, as: :check_boxes, :label_method => :name, collection: Group.order('name ASC'), label: "Resource Managers:" %>
   </p>
 
   <p>
   <p> Children Resources: </p>
-  Current Children: <br>
+  <%= f.label :children, 'Current Children:' %>
   <% if Node.where(:parent_id => @resource.id).count != 0 %>
     <% Node.where(:parent_id => @resource.id).first.resources.each do |child| %>
-      <%= child.name %> <br>
+      <span class="label label-info"><%= child.name %></span>
     <% end %>
+  <% else %>
+  <span class="label label-danger">none</span>
   <% end %>
-  <%= f.collection_check_boxes(:id, Resource.where.not(id: @resource.id), :id, :name) do |b| %>
+  <br>
+  <%= f.label :children, raw('Add Children:&nbsp;&nbsp;&nbsp;') %><%= f.collection_check_boxes(:id, Resource.order('name ASC').where.not(id: @resource.id), :id, :name) do |b| %>
                 
                 <%= b.label class:"label-checkbox" do%>
                     
                     <% box = b.check_box  %>
-                    <%=box + b.text %>
+                    <%=box + b.text %>&nbsp;&nbsp;&nbsp;
 
                  
                 <%end%>

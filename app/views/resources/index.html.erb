@@ -31,7 +31,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @resources.sort_by{|x| x.name}.each do |resource| %>
+    <% @resources.select{|x| x.node == nil}.sort_by{|x| x.name}.each do |resource| %>
     <tr>
       <td><%= resource.name %></td>
       <td><%= resource.description %></td>
