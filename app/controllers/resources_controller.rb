@@ -35,6 +35,24 @@ class ResourcesController < ApplicationController
 	              restricted_managers_group.save
 	            end
 	          end
+	          #adding children to parent node
+	          childrenarray = params["resource"]["id"]
+	          childrenarray.pop
+
+	          if childrenarray.count > 0
+	          	node = Node.create(:parent_id => @resource.id)
+	          	node.save
+	          	childrenarray.each do |child_id|
+	          		child = Resource.find(child_id)
+	          		child.node = node
+	          		child.save
+
+	          	end
+	          	node.save
+	          end
+
+
+
 	          @resource.save
   			redirect_to resources_path
   		else
@@ -64,6 +82,23 @@ class ResourcesController < ApplicationController
 	      			@resource.groups << Group.find(group_id)
 	       		end
 	    	end
+
+	    	node = Node.where(:parent_id => @resource.id).first
+	    	childrenarray = params["resource"]["id"]
+	        childrenarray.pop
+
+	    	if childrenarray.count == 0
+	    		node.destroy
+	    	else
+	    		node.clear_children
+	          	childrenarray.each do |child_id|
+	          		child = Resource.find(child_id)
+	          		child.node = node
+	          		child.save
+
+	          	end
+	          	node.save
+	         end
 	    	@resource.save
     		redirect_to resources_path
     	else
@@ -132,6 +167,6 @@ class ResourcesController < ApplicationController
 
 	private
   	def resource_params
-    	params.require(:resource).permit(:name, :description, :temp_tags, :group_ids, :isrestricted, :sharing_level, :sharing_limit)
+    	params.require(:resource).permit(:name, :description, :temp_tags, :group_ids, :isrestricted, :id)
   	end
 end
