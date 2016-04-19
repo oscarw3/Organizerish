@@ -24,6 +24,21 @@ class Resource < ActiveRecord::Base
 
   end
 
+  def cycle?(parent)
+    if self == parent
+      return true
+    end
+    if Node.where(:parent_id => self.id).count == 1
+      node = Node.where(:parent_id => self.id).first
+      node.resources.each do |child|
+        if child.cycle?(parent)
+          return true
+        end
+      end 
+    end
+    return false
+  end
+
 
   #takes the tag array and actually adds them
   def addtags(tagarray)
