@@ -102,16 +102,31 @@ class ReservationsController < ApplicationController
     if !current_user.edit_reservation_permission?(@reservation)
      redirect_to reservations_path, notice: "This isn't your reservation!"
     end
+
+      @oldresources = @reservation.resources
+      @reservation.clear_resources
+      params["reservation"]["resource_ids"].each do |resource_id|
+          if resource_id != ""
+            @reservation.resources << Resource.find(resource_id)
+            if Node.where(:parent_id => resource_id).count == 1
+              Node.where(:parent_id => resource_id).first.add_to_reservation(@reservation)
+            end
+          end
+      end
       if @reservation.overlaps?
+        @oldresources.each do |resource| 
+          @reservation.resources << resource
+        end
+        @reservation.save
         flash[:notice] = "This reservation overlaps!"
         redirect_to reservations_path
     	elsif @reservation.update(reservation_params)
-          @reservation.clear_resources
-          params["reservation"]["resource_ids"].each do |resource_id|
-            if resource_id != ""
-              @reservation.resources << Resource.find(resource_id)
-            end
-          end
+          # @reservation.clear_resources
+          # params["reservation"]["resource_ids"].each do |resource_id|
+          #   if resource_id != ""
+          #     @reservation.resources << Resource.find(resource_id)
+          #   end
+          # end
           @reservation.save
     		redirect_to reservations_path
     	else
