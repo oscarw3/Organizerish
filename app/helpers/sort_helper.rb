@@ -53,6 +53,42 @@ module SortHelper
     end
   end
 
+  def findparent(resource)
+    return @resources.select{|x| (resource.node != nil) && (resource.node.parent_id == x.id)}
+  end
+
+  def retracepath(resource)
+    output = ""
+    parent = findparent(resource)
+    while !parent.empty? do
+      output = parent.first.name + output
+      nextparent = findparent(parent.first)
+      unless nextparent.empty?
+        output = '@!&' + output
+      end
+      parent = nextparent
+    end
+    if output == ""
+      return nil
+    else
+      return output
+    end
+  end
+
+  def findallchildren(resource)
+    queue = @resources.select{|x| (x.node != nil) && (x.node.parent_id == resource.id)}
+    output = Array.new
+    while !queue.empty? do
+      nextqueue = Array.new
+      queue.each do |x|
+        (nextqueue << findchildren(x)).flatten!
+        output << x
+      end
+      queue = nextqueue
+    end
+    return output
+  end
+
   def findchildren(resource)
     return @resources.select{|x| (x.node != nil) && (x.node.parent_id == resource.id)}
   end
@@ -87,7 +123,7 @@ module SortHelper
     else
      return false
     end
-    end
+  end
 
   def removeselectedtags(selectedtags)
     if selectedtags != nil
@@ -103,4 +139,5 @@ module SortHelper
       x.text.downcase
     }
   end
+
 end

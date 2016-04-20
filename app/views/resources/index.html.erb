@@ -23,7 +23,7 @@
   <%= link_to step, resources_path({:path => findpath(step), :parent => step, anchor: "filter"}), :class => 'btn btn-xs btn-info' %>&nbsp;>
   <% end %>
   <% end %>
-  <a class="btn btn-xs btn-success disabled"><%= params[:parent]%></a>&nbsp;<%= link_to 'reset', reservations_path({anchor: "reserve"}), :class => 'btn btn-xs btn-danger' %>
+  <a class="btn btn-xs btn-success disabled"><%= params[:parent]%></a>&nbsp;<%= link_to 'reset', resources_path({anchor: "filter"}), :class => 'btn btn-xs btn-danger' %>
 </h4>
 <br>
 <% end %>
@@ -45,7 +45,18 @@
     <tr>
       <td><%= resource.name %>
       <% if !findchildren(resource).empty? %>
-      <%= link_to ">", resources_path({:path => @nextpath, :parent => resource.name, anchor: "filter"}), :class => 'btn btn-xs btn-success' %>
+      <div class="btn-group">
+          <a href="#" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+          <li><a href="#">All Children:</a></li>
+          <li class="divider"></li>
+            <% findallchildren(resource).each do |x| %>
+              <% root = findparent(x).first %>
+              <li><a><%= link_to '> ' + x.name, resources_path({:path => retracepath(root), :parent => root.name, anchor: "filter"})%></a></li>
+            <% end %>
+          </ul>
+        </div>
+      <%= link_to ">", resources_path({:path => @nextpath, :parent => resource.name, anchor: "filter"}), :class => 'btn btn-xs btn-success'%>
       <% end %>
       </td>
       <td><%= resource.description %></td>

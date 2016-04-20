@@ -145,6 +145,7 @@
   <h1>Reserve a Resource</h1>
 
 </div>
+<a name = "filter"></a>
 <h4>Filter Tags:&nbsp;
   <% @tags_selected.each do |tag| %>
   <%= link_to tag.text, reservations_path({:tag => @tagstring.gsub(/%#{tag.text}/, ""), :path => params[:path], :parent => params[:parent], anchor: "reserve"}), :class => 'btn btn-xs btn-success' %>
@@ -161,7 +162,7 @@
   <h4>Heirarchy Navigation:&nbsp;
   <% if @path != nil %>
   <% @path.each do |step| %>
-  <%= link_to step, resources_path({:path => findpath(step), :parent => step, anchor: "filter"}), :class => 'btn btn-xs btn-info' %>&nbsp;>
+  <%= link_to step, reservations_path({:path => findpath(step), :parent => step, anchor: "filter"}), :class => 'btn btn-xs btn-info' %>&nbsp;>
   <% end %>
   <% end %>
   <a class="btn btn-xs btn-success disabled"><%= params[:parent]%></a>&nbsp;<%= link_to 'reset', reservations_path({anchor: "reserve"}), :class => 'btn btn-xs btn-danger' %>
@@ -185,7 +186,18 @@
     <tr>
       <td><%= resource.name %>
       <% if !findchildren(resource).empty? %>
-      <%= link_to ">", resources_path({:path => @nextpath, :parent => resource.name, anchor: "filter"}), :class => 'btn btn-xs btn-success' %>
+      <div class="btn-group">
+          <a href="#" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+          <li><a href="#">All Children:</a></li>
+          <li class="divider"></li>
+            <% findallchildren(resource).each do |x| %>
+              <% root = findparent(x).first %>
+              <li><a><%= link_to '> ' + x.name, reservations_path({:path => retracepath(root), :parent => root.name, anchor: "filter"})%></a></li>
+            <% end %>
+          </ul>
+        </div>
+      <%= link_to ">", reservations_path({:path => @nextpath, :parent => resource.name, anchor: "filter"}), :class => 'btn btn-xs btn-success'%>
       <% end %>
       </td>
       <td><%= resource.description %></td>
