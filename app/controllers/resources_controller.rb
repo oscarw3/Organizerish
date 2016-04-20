@@ -46,7 +46,14 @@ class ResourcesController < ApplicationController
 	          	childrenarray.each do |child_id|
 	          		child = Resource.find(child_id)
 	          		child.node = node
-	          		child.save
+	          		if child.cycle?(Resource.find(node.parent_id))
+	          			node.clear_children
+	          			node.destroy
+	          			redirect_to resources_path, notice: "There's a cycle!"
+	          			return
+	          		else
+	          			child.save
+	          		end
 
 	          	end
 	          	node.save
@@ -74,7 +81,8 @@ class ResourcesController < ApplicationController
 	def update
 		checkaccess
 		@resource = Resource.find(params[:id])
-		
+		alreadyredirected = false
+	    
     	if @resource.update(resource_params)
     		@resource.storetags
     		@resource.clear_groups
@@ -89,6 +97,12 @@ class ResourcesController < ApplicationController
 	    		node = Node.where(:parent_id => @resource.id).first
 	    	end
 
+	    	@oldresources = []
+	    	node.resources.each do |resource|
+	    		@oldresources << resource
+	    	end
+	    	
+
 	    	childrenarray = params["resource"]["id"]
 	        childrenarray.pop
 
@@ -97,17 +111,38 @@ class ResourcesController < ApplicationController
 	    		
 	    		node.destroy
 	    	else
+
 	    		node.clear_children
 	          	childrenarray.each do |child_id|
 	          		child = Resource.find(child_id)
 	          		child.node = node
-	          		child.save
+	          		if child.cycle?(Resource.find(node.parent_id))
+	          			node.clear_children
+	          			
+	          			if @oldresources.count == 0
+	          				node.destroy
+	          			else
+
+	          				@oldresources.each do |resource|
+	          					node.resources << resource
+	          				end
+	          				node.save
+	          				@resource.save
+	          			end
+
+	          			redirect_to resources_path, notice: "There's a cycle!"
+	          			alreadyredirected = true
+	          		else
+	          			child.save
+	          		end
 
 	          	end
 	          	node.save
 	         end
 	    	@resource.save
-    		redirect_to resources_path
+	    	if !alreadyredirected
+    			redirect_to resources_path
+    		end
     	else
     	render 'edit'
     	end
