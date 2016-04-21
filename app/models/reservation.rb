@@ -4,6 +4,8 @@ class Reservation < ActiveRecord::Base
 
   enum recurring: [:never, :daily, :weekly, :monthly]
 
+  validates :title, presence: true, allow_blank: false
+
   def overlaps?
   	self.resources.each do |resource|
       resource.reservations.each do |reservation|
@@ -31,7 +33,7 @@ class Reservation < ActiveRecord::Base
     self.resources.each do |resource|
       resource.reservations.each do |reservation|
         if !reservation.isapproved?
-          if (reservation.starttime < self.endtime && reservation.endtime > self.starttime) 
+          if (reservation.starttime < self.endtime && reservation.endtime > self.starttime) && (!reservations.include?(reservation)) && (reservation != self)
            reservations << reservation
           end
         end

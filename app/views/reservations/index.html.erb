@@ -36,7 +36,11 @@
       <td>
         <% i = 0 %>
         <% reservation.resources.sort_by{|x| x.name}.each do |resource| %>
+        <% if reservation.unapproved_resources.include?(resource) %>
+        <span class="label label-danger"><%= resource.name %></span>
+        <% else %>
         <span class="label label-info"><%= resource.name %></span>
+        <% end %>
         <% i = i+1 %>
         <% if (i % 5) == 0 %>
         <br>
@@ -62,7 +66,15 @@
 
 
         <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
-        <% confirmstring = 'Are you sure? Other reservations may be deleted!'%>
+        <% notapprovedarray = reservation.not_approved_overlaps %>
+        <% if !notapprovedarray.empty? %>
+        <% confirmstring = 'Are you sure? The following reservations will be deleted: '%>
+        <% notapprovedarray.each do |x| %>
+        <% confirmstring = confirmstring + x.title + ' ' %>
+        <% end %>
+        <% else %>
+        <% confirmstring = 'Are you sure? No other reservations will be deleted. '%>
+        <% end %>
         <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: confirmstring}, :class => 'btn btn-xs btn-primary' %>
         <%= link_to 'Reject', reservation_path(reservation), method: :delete,
         data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-warning' %>
@@ -101,7 +113,11 @@
       <td>
         <% j = 0 %>
         <% reservation.resources.sort_by{|x| x.name}.each do |resource| %>
+        <% if reservation.unapproved_resources.include?(resource) %>
+        <span class="label label-danger"><%= resource.name %></span>
+        <% else %>
         <span class="label label-info"><%= resource.name %></span>
+        <% end %>
         <% j = j+1 %>
         <% if (j % 5) == 0 %>
         <br>
@@ -126,7 +142,15 @@
 
         <% end %>
         <% if !reservation.isapproved && (current_user.has_reservation_management? || current_user.is_restricted_resource_manager(reservation)) %>
-        <% confirmstring = 'Are you sure? Other reservations may be deleted!'%>
+        <% notapprovedarray = reservation.not_approved_overlaps %>
+        <% if !notapprovedarray.empty? %>
+        <% confirmstring = 'Are you sure? The following reservations will be deleted: '%>
+        <% notapprovedarray.each do |x| %>
+        <% confirmstring = confirmstring + x.title + ' ' %>
+        <% end %>
+        <% else %>
+        <% confirmstring = 'Are you sure? No other reservations will be deleted. '%>
+        <% end %>
         <%= link_to 'Approve', approve_reservation_path(reservation), data: { confirm: confirmstring}, :class => 'btn btn-xs btn-primary' %>
         <%= link_to 'Reject', reservation_path(reservation), method: :delete,
         data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-warning' %>

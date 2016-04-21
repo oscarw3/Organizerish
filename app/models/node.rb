@@ -8,9 +8,6 @@ class Node < ActiveRecord::Base
   end
 
   def add_to_reservation(reservation)
-    reservation.resources.each do |resource|
-      puts resource.name
-    end
   	self.resources.each do |resource|
   		if !reservation.resources.include?(resource)
   			reservation.resources << resource

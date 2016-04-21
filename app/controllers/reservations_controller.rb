@@ -39,7 +39,10 @@
       @reservation.occupied = current_user.id
       params["reservation"]["resource_ids"].each do |resource_id|
         if resource_id != ""
-          @reservation.resources << Resource.find(resource_id)
+          nextresource = Resource.find(resource_id)
+          if !@reservation.resources.include?(nextresource)
+            @reservation.resources << nextresource
+          end
           if Node.where(:parent_id => resource_id).count == 1
             Node.where(:parent_id => resource_id).first.add_to_reservation(@reservation)
           end
@@ -51,6 +54,9 @@
       elsif @reservation.invalid?
         flash[:notice] = "Invalid time range!"
         redirect_to reservations_path
+      elsif @reservation.title == ""
+        flash[:notice] = "The reservation needs a title!"
+        redirect_to reservations_path
       elsif @reservation.save
         checkrestrictions
 
@@ -59,59 +65,62 @@
         if @reservation.isapproved 
           notapprovedarray = @reservation.not_approved_overlaps
           notapprovedarray.each do |reservation|
-          #delete and email
-          ReservationMailer.reservation_unapproved(@reservation)
-          reservation.destroy
+            ReservationMailer.reservation_unapproved(reservation)
+            reservation.destroy
+          end
+          ReservationMailer.reservation_approved(@reservation)
         end
+
+        ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation)
+        redirect_to reservations_path
+      else
+        redirect_to reservations_path
       end
-
-      ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation)
-      redirect_to reservations_path
-    else
-      redirect_to reservations_path
     end
-  end
 
-  def show 
-  end
+    def show 
+    end
 
-  def edit
+    def edit
+      @reservation = Reservation.find(params[:id])
+      if !current_user.edit_reservation_permission?(@reservation)
+       redirect_to reservations_path, notice: "This isn't your reservation!"
+     end
+   end
+
+   def update
     @reservation = Reservation.find(params[:id])
     if !current_user.edit_reservation_permission?(@reservation)
      redirect_to reservations_path, notice: "This isn't your reservation!"
    end
- end
 
- def update
-  @reservation = Reservation.find(params[:id])
-  if !current_user.edit_reservation_permission?(@reservation)
-   redirect_to reservations_path, notice: "This isn't your reservation!"
- end
-
- @oldresources = @reservation.resources
- @reservation.clear_resources
- params["reservation"]["resource_ids"].each do |resource_id|
-  if resource_id != ""
-    @reservation.resources << Resource.find(resource_id)
-    if Node.where(:parent_id => resource_id).count == 1
-      Node.where(:parent_id => resource_id).first.add_to_reservation(@reservation)
+   @oldresources = @reservation.resources
+   @reservation.clear_resources
+   params["reservation"]["resource_ids"].each do |resource_id|
+    if resource_id != ""
+      nextresource = Resource.find(resource_id)
+      if !@reservation.resources.include?(nextresource)
+        @reservation.resources << nextresource
+      end
+      if Node.where(:parent_id => resource_id).count == 1
+        Node.where(:parent_id => resource_id).first.add_to_reservation(@reservation)
+      end
     end
   end
-end
-if @reservation.overlaps?
-  @oldresources.each do |resource| 
-    @reservation.resources << resource
-  end
-  @reservation.save
-  flash[:notice] = "This reservation overlaps!"
-  redirect_to reservations_path
-elsif @reservation.update(reservation_params)
-  checkrestrictions
-  @reservation.save
-  redirect_to reservations_path
-else
- render 'edit'
-end
+  if @reservation.overlaps?
+    @oldresources.each do |resource| 
+      @reservation.resources << resource
+    end
+    @reservation.save
+    flash[:notice] = "This reservation overlaps!"
+    redirect_to reservations_path
+  elsif @reservation.update(reservation_params)
+    checkrestrictions
+    @reservation.save
+    redirect_to reservations_path
+  else
+   render 'edit'
+ end
 end
 
 def destroy
@@ -119,13 +128,30 @@ def destroy
   if !current_user.edit_reservation_permission?(@reservation)
    redirect_to reservations_path, notice: "This isn't your reservation!"
  end
+ ReservationMailer.reservation_deleted(@reservation)
  @reservation.destroy
-
  redirect_to reservations_path
 end
 
 def approve
+  @reservation = Reservation.find(params[:id])
+  @reservation.unapproved_resources.each do |resource|
+    resource.groups.each do |group|
+      group.users.each do |user|
+        if (current_user.id == user.id) || current_user.has_reservation_management?
+          @reservation.unapproved_resources.delete(resource)
+        end
+      end
+    end
+  end
+  if @reservation.unapproved_resources.empty?
+    complete
+  else
+    redirect_to reservations_path
+  end
+end
 
+def complete
   @reservation = Reservation.find(params[:id])
   @reservation.isapproved = true
   @reservation.save
@@ -133,28 +159,30 @@ def approve
   notapprovedarray = @reservation.not_approved_overlaps
 
   notapprovedarray.each do |reservation|
-        #delete and email
-        reservation.destroy
-      end
+    ReservationMailer.reservation_unapproved(reservation)
+    reservation.destroy
+  end
+  ReservationMailer.reservation_approved(@reservation)
 
-      redirect_to reservations_path
+  redirect_to reservations_path
+end
 
+def checkrestrictions
+  @reservation.resources.each do |resource|
+    if resource.isrestricted?
+      @reservation.isapproved = false
     end
-
-    def checkrestrictions
-      @reservation.resources.each do |resource|
-        #Check if any of the resources are restricted
-        if resource.isrestricted?
-          @reservation.isapproved = false
-        end
-        if !current_user.create_reservation_permission?(resource)
-          redirect_to reservations_path, notice: "You don't have reservation access to the page!"
-        end
-      end 
+    if !current_user.create_reservation_permission?(resource)
+      redirect_to reservations_path, notice: "You don't have reservation access to the page!"
     end
+  end
+  if !@reservation.isapproved
+    @reservation.record_unapproved_resources
+  end
+end
 
-    private
-    def reservation_params
-     params.require(:reservation).permit(:starttime, :endtime, :recurring, :resource_ids, :isapproved, :title, :description)
-   end
- end
+private
+def reservation_params
+ params.require(:reservation).permit(:starttime, :endtime, :recurring, :resource_ids, :isapproved, :title, :description)
+end
+end
