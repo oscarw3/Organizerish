@@ -75,11 +75,10 @@
         end
       end
 
-      ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation) 
+      ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation)
       redirect_to reservations_path
     else
       redirect_to reservations_path
-
     end
   end
 

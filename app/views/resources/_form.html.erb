@@ -51,7 +51,7 @@
   <span class="label label-danger">none</span>
   <% end %>
   <br>
-  <%= f.label :children, raw('Add Children:&nbsp;&nbsp;&nbsp;') %><%= f.collection_check_boxes(:id, Resource.order('name ASC').where.not(id: @resource.id), :id, :name) do |b| %>
+  <%= f.label :children, raw('Choose Children:&nbsp;&nbsp;&nbsp;') %><%= f.collection_check_boxes(:id, Resource.order('name ASC').where.not(id: @resource.id), :id, :name) do |b| %>
                 
                 <%= b.label class:"label-checkbox" do%>
                     

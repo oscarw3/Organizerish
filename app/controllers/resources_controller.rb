@@ -49,7 +49,7 @@ class ResourcesController < ApplicationController
 	          		if child.cycle?(Resource.find(node.parent_id))
 	          			node.clear_children
 	          			node.destroy
-	          			redirect_to resources_path, notice: "There's a cycle!"
+	          			redirect_to resources_path, notice: "This creates a cycle!"
 	          			return
 	          		else
 	          			child.save
