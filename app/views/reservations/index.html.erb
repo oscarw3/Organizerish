@@ -113,7 +113,7 @@
   </thead>
   <tbody>
     <% @allreservations.each do |reservation| %>
-    <% if current_user.view_permission?(reservation.resources.first) %>
+    <% if current_user.view_reservation?(reservation) %>
     <tr>
       <td><%= reservation.title %></td>
       <td><%= reservation.description %></td>

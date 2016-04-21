@@ -140,9 +140,16 @@
       <td>
         <%= link_to 'Edit', edit_resource_path(resource, anchor: "edit"), :class => 'btn btn-xs btn-success' %>
         <%= link_to 'Manage Permissions', permissions_resource_path(resource), :class => 'btn btn-xs btn-warning'%>
+        <% confirmstring = "Are you sure ?"%>
+        <% if !resource.reservations.empty? %>
+        <% confirmstring = confirmstring + " The following reservations will be affected: " %>
+        <% resource.reservations.each do |res| %>
+        <% confirmstring = confirmstring + res.title + " " %>
+        <% end %>
+        <% end %>
         <%= link_to 'Delete', resource_path(resource),
         method: :delete,
-        data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-danger'  %>
+        data: { confirm: confirmstring }, :class => 'btn btn-xs btn-danger'  %>
       </td>
       <% end %>
     </tr>

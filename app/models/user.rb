@@ -96,6 +96,18 @@ else
 end
 end
 
+def view_reservation?(reservation)
+  if self.has_resource_management? || self.has_reservation_management?
+    return true
+  end
+  reservation.resources.each do |resource|
+    if self.viewpermission?(resource)
+      return true
+    end
+  end
+  return false
+end
+
 def view_permission?(resource)
  if self.has_resource_management? || self.has_reservation_management?
   return true
