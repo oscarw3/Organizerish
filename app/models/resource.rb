@@ -5,6 +5,7 @@ class Resource < ActiveRecord::Base
   has_and_belongs_to_many :groups
   has_many :permissions
   belongs_to :node
+  has_and_belongs_to_many :unapproved_reservations, :class_name => 'Reservation', :join_table => :reservations_unapproved_resources
 
   validates :sharing_limit, :numericality => {:greater_than => 0}
 

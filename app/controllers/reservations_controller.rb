@@ -52,23 +52,13 @@
         flash[:notice] = "Invalid time range!"
         redirect_to reservations_path
       elsif @reservation.save
-        @reservation.resources.each do |resource|
-        #Check if any of the resources are restricted
-        if resource.isrestricted?
-          @reservation.isapproved = false
-        end
-        if !current_user.create_reservation_permission?(resource)
-          redirect_to reservations_path, notice: "You don't have reservation access to the page!"
-        end
-        
-      end 
+        checkrestrictions
 
-      @reservation.save
+        @reservation.save
 
-      if @reservation.isapproved 
-        notapprovedarray = @reservation.not_approved_overlaps
-
-        notapprovedarray.each do |reservation|
+        if @reservation.isapproved 
+          notapprovedarray = @reservation.not_approved_overlaps
+          notapprovedarray.each do |reservation|
           #delete and email
           ReservationMailer.reservation_unapproved(@reservation)
           reservation.destroy
@@ -116,38 +106,33 @@ if @reservation.overlaps?
   flash[:notice] = "This reservation overlaps!"
   redirect_to reservations_path
 elsif @reservation.update(reservation_params)
-            # @reservation.clear_resources
-            # params["reservation"]["resource_ids"].each do |resource_id|
-            #   if resource_id != ""
-            #     @reservation.resources << Resource.find(resource_id)
-            #   end
-            # end
-            @reservation.save
-            redirect_to reservations_path
-          else
-           render 'edit'
-         end
-       end
+  checkrestrictions
+  @reservation.save
+  redirect_to reservations_path
+else
+ render 'edit'
+end
+end
 
-       def destroy
-        @reservation = Reservation.find(params[:id])
-        if !current_user.edit_reservation_permission?(@reservation)
-         redirect_to reservations_path, notice: "This isn't your reservation!"
-       end
-       @reservation.destroy
+def destroy
+  @reservation = Reservation.find(params[:id])
+  if !current_user.edit_reservation_permission?(@reservation)
+   redirect_to reservations_path, notice: "This isn't your reservation!"
+ end
+ @reservation.destroy
 
-       redirect_to reservations_path
-     end
+ redirect_to reservations_path
+end
 
-     def approve
+def approve
 
-      @reservation = Reservation.find(params[:id])
-      @reservation.isapproved = true
-      @reservation.save
+  @reservation = Reservation.find(params[:id])
+  @reservation.isapproved = true
+  @reservation.save
 
-      notapprovedarray = @reservation.not_approved_overlaps
+  notapprovedarray = @reservation.not_approved_overlaps
 
-      notapprovedarray.each do |reservation|
+  notapprovedarray.each do |reservation|
         #delete and email
         reservation.destroy
       end
@@ -156,6 +141,17 @@ elsif @reservation.update(reservation_params)
 
     end
 
+    def checkrestrictions
+      @reservation.resources.each do |resource|
+        #Check if any of the resources are restricted
+        if resource.isrestricted?
+          @reservation.isapproved = false
+        end
+        if !current_user.create_reservation_permission?(resource)
+          redirect_to reservations_path, notice: "You don't have reservation access to the page!"
+        end
+      end 
+    end
 
     private
     def reservation_params

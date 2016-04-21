@@ -1,5 +1,6 @@
 class Reservation < ActiveRecord::Base
   has_and_belongs_to_many :resources
+  has_and_belongs_to_many :unapproved_resources, :class_name => 'Resource', :join_table => :reservations_unapproved_resources
 
   enum recurring: [:never, :daily, :weekly, :monthly]
 
@@ -14,6 +15,14 @@ class Reservation < ActiveRecord::Base
       end
   	end
   	false
+  end
+
+  def record_unapproved_resources
+    self.resources.each do |resource|
+      if resource.isrestricted?
+        self.unapproved_resources << resource
+      end
+    end
   end
 
   def not_approved_overlaps
