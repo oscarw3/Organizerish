@@ -2,7 +2,9 @@
 <div class = "jumbotron" align = "center">
 <h1>Edit Reservation</h1>
 <%= simple_form_for @reservation do |f| %>
-  
+<% if @reservation.errors.any? %>
+<font color = "red">You can not extend the time of your reservation.  Would you like to create a <%= link_to 'new reservation', new_reservation_path(:resource => @reservation.resources.first.id, anchor: "new") %> instead?</font>
+<% end %>
       <p>
       <%= f.label :title %><br>
       <%= f.text_field :title %>
@@ -24,7 +26,7 @@
  	</p>
 
   <p>
-      <%= f.association :resources, as: :check_boxes, :label_method => :name %>
+      <%= f.association :resources, as: :check_boxes, label_method: :name, collection: @reservation.resources.order('name ASC') %>
   </p>
  
 	<p>

@@ -1,6 +1,9 @@
   class ReservationsController < ApplicationController
     include ReservationsHelper
     include SortHelper
+
+
+    
     def index
 
       @allreservations = Reservation.all 

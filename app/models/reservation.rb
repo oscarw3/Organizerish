@@ -6,29 +6,31 @@ class Reservation < ActiveRecord::Base
 
   validates :title, presence: true, allow_blank: false
 
+  before_update :check_range
+
   def simultaneous(resource)
     simultaneousreservations = 1
     resource.reservations.each do |reservation|
       if reservation.isapproved?
         if (reservation.starttime < self.endtime && reservation.endtime > self.starttime) 
           simultaneousreservations = simultaneousreservations + 1
-       end
-     end
-   end
-   return simultaneousreservations
- end
-
- def overlaps?
-   self.resources.each do |resource|
-      sim = simultaneous(resource)
-      if ((resource.sharing_level == 0) && (sim > 1)) || ((resource.sharing_level == 1) && (sim > resource.sharing_limit))
-        return true
+        end
       end
-   end
-   return false
- end
+    end
+    return simultaneousreservations
+  end
 
- def record_unapproved_resources
+  def overlaps?
+   self.resources.each do |resource|
+    sim = simultaneous(resource)
+    if ((resource.sharing_level == 0) && (sim > 1)) || ((resource.sharing_level == 1) && (sim > resource.sharing_limit))
+      return true
+    end
+  end
+  return false
+end
+
+def record_unapproved_resources
   self.resources.each do |resource|
     if resource.isrestricted?
       self.unapproved_resources << resource
@@ -45,25 +47,38 @@ def not_approved_overlaps
           if (resource.sharing_level == 0) || ((resource.sharing_level == 1) && (self.simultaneous(resource) == resource.sharing_limit))
             reservations << reservation
           end
-       end
-     end
-   end
- end
+        end
+      end
+    end
+  end
 
- return reservations
+  return reservations
 end
 
 def invalid?
   return self.starttime >= self.endtime
 end
 
-    #IDs << reservation.id
 
-
-    def clear_resources
-      self.resources.each do |resource|
-        self.resources.delete(resource)
-      end
-    end
-
+def clear_resources
+  self.resources.each do |resource|
+    self.resources.delete(resource)
   end
+end
+
+private
+
+def check_range
+  if starttime < starttime_was
+    starttime = starttime_was
+    errors.add(:starttime, "You can not extend the time of your reservation.")
+    return false
+  end
+  if endtime > endtime_was
+    endtime = endtime_was
+    errors.add(:endtime, "You can not extend the time of your reservation.")
+    return false
+  end
+  return true
+end
+end
