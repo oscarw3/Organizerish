@@ -32,6 +32,9 @@ class Reservation < ActiveRecord::Base
     return reservations
   end
 
+  def invalid?
+    return self.starttime > self.endtime
+  end
 
     #IDs << reservation.id
 
