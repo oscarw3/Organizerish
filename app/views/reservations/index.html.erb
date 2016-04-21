@@ -36,10 +36,18 @@
       <td>
         <% i = 0 %>
         <% reservation.resources.sort_by{|x| x.name}.each do |resource| %>
+        <% label = resource.name%>
+        <% if resource.sharing_level == 0 %>
+        <% label = label + ' [E]' %>
+        <% elsif resource.sharing_level == 1 %>
+        <% label = label + ' [' + "#{reservation.simultaneous(resource) - 1}" + '/' + "#{resource.sharing_limit}" + ']' %>
+        <% elsif resource.sharing_level == 2 %>
+        <% label = label + ' [U]' %>
+        <% end %>
         <% if reservation.unapproved_resources.include?(resource) %>
-        <span class="label label-danger"><%= resource.name %></span>
+        <span class="label label-danger"><%= label %></span>
         <% else %>
-        <span class="label label-info"><%= resource.name %></span>
+        <span class="label label-info"><%= label %></span>
         <% end %>
         <% i = i+1 %>
         <% if (i % 5) == 0 %>
@@ -113,10 +121,18 @@
       <td>
         <% j = 0 %>
         <% reservation.resources.sort_by{|x| x.name}.each do |resource| %>
+        <% label = resource.name%>
+        <% if resource.sharing_level == 0 %>
+        <% label = label + ' [E]' %>
+        <% elsif resource.sharing_level == 1 %>
+        <% label = label + ' [' + "#{reservation.simultaneous(resource) - 1}" + '/' + "#{resource.sharing_limit}" + ']' %>
+        <% elsif resource.sharing_level == 2 %>
+        <% label = label + ' [U]' %>
+        <% end %>
         <% if reservation.unapproved_resources.include?(resource) %>
-        <span class="label label-danger"><%= resource.name %></span>
+        <span class="label label-danger"><%= label %></span>
         <% else %>
-        <span class="label label-info"><%= resource.name %></span>
+        <span class="label label-info"><%= label %></span>
         <% end %>
         <% j = j+1 %>
         <% if (j % 5) == 0 %>

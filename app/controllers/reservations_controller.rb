@@ -49,7 +49,7 @@
         end
       end
       if @reservation.overlaps?
-        flash[:notice] = "This reservation overlaps!"
+        flash[:notice] = "Too many simultaneous reservations!"
         redirect_to reservations_path
       elsif @reservation.invalid?
         flash[:notice] = "Invalid time range!"
@@ -115,7 +115,6 @@
     flash[:notice] = "This reservation overlaps!"
     redirect_to reservations_path
   elsif @reservation.update(reservation_params)
-    checkrestrictions
     @reservation.save
     redirect_to reservations_path
   else
@@ -153,8 +152,6 @@ end
 
 def complete
   @reservation = Reservation.find(params[:id])
-  @reservation.isapproved = true
-  @reservation.save
 
   notapprovedarray = @reservation.not_approved_overlaps
 
@@ -163,7 +160,8 @@ def complete
     reservation.destroy
   end
   ReservationMailer.reservation_approved(@reservation)
-
+  @reservation.isapproved = true
+  @reservation.save
   redirect_to reservations_path
 end
 
