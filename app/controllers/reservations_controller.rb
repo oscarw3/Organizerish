@@ -138,15 +138,18 @@ end
 def approve
   @reservation = Reservation.find(params[:id])
   @reservation.unapproved_resources.each do |resource|
+    if current_user.has_reservation_management?
+      @reservation.unapproved_resources.delete(resource)
+    end
     resource.groups.each do |group|
       group.users.each do |user|
-        if (current_user.id == user.id) || current_user.has_reservation_management?
+        if (current_user.id == user.id)
           @reservation.unapproved_resources.delete(resource)
         end
       end
     end
   end
-  if @reservation.unapproved_resources.empty?
+  if @reservation.unapproved_resources.empty? || current_user.has_reservation_management?
     complete
   else
     redirect_to reservations_path
