@@ -101,7 +101,7 @@ def view_reservation?(reservation)
     return true
   end
   reservation.resources.each do |resource|
-    if self.viewpermission?(resource)
+    if self.view_permission?(resource)
       return true
     end
   end
