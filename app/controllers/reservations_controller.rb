@@ -68,10 +68,10 @@
         if @reservation.isapproved 
           notapprovedarray = @reservation.not_approved_overlaps
           notapprovedarray.each do |reservation|
-            ReservationMailer.reservation_unapproved(reservation)
+            ReservationMailer.reservation_unapproved(reservation).deliver_now
             reservation.destroy
           end
-          ReservationMailer.reservation_approved(@reservation)
+          ReservationMailer.reservation_approved(@reservation).deliver_now
         end
 
         ReservationMailer.delay(:run_at => @reservation.starttime).reservation_start(@reservation)
@@ -130,7 +130,7 @@ def destroy
   if !current_user.edit_reservation_permission?(@reservation)
    redirect_to reservations_path, notice: "This isn't your reservation!"
  end
- ReservationMailer.reservation_deleted(@reservation)
+ ReservationMailer.reservation_deleted(@reservation).deliver_now
  @reservation.destroy
  redirect_to reservations_path
 end
@@ -159,10 +159,10 @@ def complete
   notapprovedarray = @reservation.not_approved_overlaps
 
   notapprovedarray.each do |reservation|
-    ReservationMailer.reservation_unapproved(reservation)
+    ReservationMailer.reservation_unapproved(reservation).deliver_now
     reservation.destroy
   end
-  ReservationMailer.reservation_approved(@reservation)
+  ReservationMailer.reservation_approved(@reservation).deliver_now
   @reservation.isapproved = true
   @reservation.save
   redirect_to reservations_path
