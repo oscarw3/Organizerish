@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
         sign_out_and_redirect(current_user)
       elsif session[:netidcheck] != true
         session[:redirectcheck] = true
-        redirect_to "https://oauth.oit.duke.edu/oauth/authorize.php?client_id=organizerish&redirect_uri=http%3A%2F%2Fcolab-sbx-159.oit.duke.edu%3A3000%2Fnetidsignin&state=b7b486e7002feb52a588853507b403aa0729fbd8f4576105&response_type=token" 
+        redirect_to "https://oauth.oit.duke.edu/oauth/authorize.php?client_id=organizerish&redirect_uri=https%3A%2F%2Forganizerish.herokuapp.com%2Fnetidsignin&state=b7b486e7002feb52a588853507b403aa0729fbd8f4576105&response_type=token" 
       end
     end
   end
