@@ -143,8 +143,6 @@ ActiveRecord::Schema.define(version: 20160421083024) do
     t.string   "lastname"
     t.integer  "role",                   default: 1
     t.string   "authentication_token"
-    t.string   "provider"
-    t.string   "uid"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
